@@ -1,7 +1,7 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "lastUpdated": "2026-03-11",
   "institution": {
     "id": "uwa",
@@ -432,6 +432,15 @@
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week4/week4_code_snippets.md",
           "source": "github",
           "requiresAuth": false
+        },
+        {
+          "id": "w4_topic_notes",
+          "title": "Topic Notes: Optimization in Economics",
+          "description": "Lecture and homework notes on optimization theory",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week4/optimn.md",
+          "source": "github",
+          "requiresAuth": false
         }
       ]
     },
@@ -479,6 +488,15 @@
           "description": "R code for utility functions, indifference curves, and demand analysis",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week5/week5_code_snippets.md",
+          "source": "github",
+          "requiresAuth": false
+        },
+        {
+          "id": "w5_topic_notes",
+          "title": "Topic Notes: Consumer Choice & Optimization (Part I)",
+          "description": "Extended notes on consumer choice theory and utility optimization",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week5/consumer_part_I.md",
           "source": "github",
           "requiresAuth": false
         }
@@ -530,6 +548,15 @@
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week6/week6_code_snippets.md",
           "source": "github",
           "requiresAuth": false
+        },
+        {
+          "id": "w6_topic_notes",
+          "title": "Topic Notes: Consumer Choice & Optimization (Part II)",
+          "description": "Extended notes on duality, expenditure, and welfare analysis",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week6/consumer_part_II.md",
+          "source": "github",
+          "requiresAuth": false
         }
       ]
     },
@@ -570,7 +597,26 @@
           "requiresAuth": false
         }
       ],
-      "additionalReadings": []
+      "additionalReadings": [
+        {
+          "id": "w7_code",
+          "title": "R Code Reference: Producer Theory I",
+          "description": "R code for production functions, isoquants, cost minimization, and cost curves",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week7/week7_code_snippets.md",
+          "source": "github",
+          "requiresAuth": false
+        },
+        {
+          "id": "w7_topic_notes",
+          "title": "Topic Notes: Producer Theory (VII & VIII)",
+          "description": "Extended notes on production technology, costs, and profit maximization",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week7/producer_VII_and_VIII.md",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ]
     },
     "8": {
       "week": 8,
@@ -667,6 +713,15 @@
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week9/week9_code_snippets.md",
           "source": "github",
           "requiresAuth": false
+        },
+        {
+          "id": "w9_topic_notes",
+          "title": "Topic Notes: Market Equilibrium Analysis",
+          "description": "Outline of market types, equilibrium, and comparative statics",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week9/market_equilibrium_analysis.md",
+          "source": "github",
+          "requiresAuth": false
         }
       ]
     },
@@ -714,6 +769,15 @@
           "description": "R code for trade models, tariff analysis, and welfare calculations",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week10/week10_code_snippets.md",
+          "source": "github",
+          "requiresAuth": false
+        },
+        {
+          "id": "w10_topic_notes",
+          "title": "Topic Notes: International Trade and Policy",
+          "description": "Outline of trade theory, policy analysis, and welfare effects",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week10/international_trade_and_policy.md",
           "source": "github",
           "requiresAuth": false
         }
@@ -765,6 +829,15 @@
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week11/week11_code_snippets.md",
           "source": "github",
           "requiresAuth": false
+        },
+        {
+          "id": "w11_topic_notes",
+          "title": "Topic Notes: Welfare Economics",
+          "description": "Notes on economic welfare measures, market efficiency, and the invisible hand",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week11/welfare_economics.md",
+          "source": "github",
+          "requiresAuth": false
         }
       ]
     },
@@ -812,6 +885,15 @@
           "description": "R code for expected utility, risk analysis, and simulation",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week12/week12_code_snippets.md",
+          "source": "github",
+          "requiresAuth": false
+        },
+        {
+          "id": "w12_topic_notes",
+          "title": "Topic Notes: Uncertainty",
+          "description": "Notes on decision-making under uncertainty and risk",
+          "type": "lectureNotes",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week12/uncertainty.md",
           "source": "github",
           "requiresAuth": false
         }
