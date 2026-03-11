@@ -606,15 +606,6 @@
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week7/week7_code_snippets.md",
           "source": "github",
           "requiresAuth": false
-        },
-        {
-          "id": "w7_topic_notes",
-          "title": "Topic Notes: Producer Theory (VII & VIII)",
-          "description": "Extended notes on production technology, costs, and profit maximization",
-          "type": "lectureNotes",
-          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week7/producer_VII_and_VIII.md",
-          "source": "github",
-          "requiresAuth": false
         }
       ]
     },

@@ -1,11 +1,3 @@
-```markdown
----
-title: "Consumer Choice and Optimization in Economics"
-author: "Atakelty Hailu"
-date: "University of Western Australia"
-output: github_document
----
-
 # Consumer Choice (Part 1)
 
 ---
@@ -165,5 +157,3 @@ Chapter 4 (Consumer Choice) in Perloff's (2018) "Microeconomics" book, available
 3. Show what the optimal consumption choices would be for a consumer with an income of $72 if the prices for the two commodities $(X_{1},X_{2})$ s/he consumes are $3 and $4 per unit, respectively, and if the utility function is $U=X_{1}X_{2}$. Illustrate the solution graphically, marking clearly the budget constraint, the maximum achieved indifference curve, and the point of tangency between the two.
 
 4. Would your answer to the question above change if the utility function is $U=\sqrt{X_{1}X_{2}}$? How about for $U=\ln(X_{1}X_{2})+12$? Explain your answer in one sentence.
-```
-

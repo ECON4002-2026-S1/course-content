@@ -1,13 +1,3 @@
-Here is the combined Markdown file for all the documents you provided:
-
-```markdown
----
-title: "Optimization in Economics: Lecture and Homework Notes"
-author: "Atakelty Hailu"
-date: "University of Western Australia"
-output: github_document
----
-
 # Core Concepts in Agricultural and Applied Economics (ECON4002)
 
 ---
@@ -243,6 +233,3 @@ Answer the following questions clearly showing the steps you followed to find th
    - Marginal Cost: $MC = 3$
    - FOC: $MR = MC \Rightarrow 15 - 2Q = 3 \Rightarrow Q = 6$
    - Price: $P = 15 - Q = 9$
-```
-
-You can copy and paste this Markdown content into a `.md` file and save it for future reference.

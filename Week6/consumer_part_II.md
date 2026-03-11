@@ -1,11 +1,3 @@
-```markdown
----
-title: "Consumer Choice and Optimization in Economics"
-author: "Atakelty Hailu"
-date: "University of Western Australia"
-output: github_document
----
-
 # Homework 5: Core Concepts in Agricultural and Applied Economics (ECON4002)
 
 ## Instructions
