@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: R Code Snippets — Linear Algebra - ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        function copyCode(btn) {
+            const wrapper = btn.closest('.code-wrapper');
+            const code = wrapper.querySelector('code');
+            navigator.clipboard.writeText(code.innerText).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1600);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #16a085;
+            --accent-color: #e67e22;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --code-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --snippet-header: #34495e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h1 { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.5rem; font-weight: 700; }
+        .subtitle { font-size: 1.1rem; color: #666; font-weight: 600; }
+
+        h2 {
+            font-size: 1.8rem; color: var(--primary-color);
+            margin-top: 2.5rem; margin-bottom: 1rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 { font-size: 1.4rem; color: var(--secondary-color); margin-top: 2rem; margin-bottom: 0.8rem; }
+        h4 { font-size: 1.1rem; color: var(--text-color); margin-top: 1.3rem; margin-bottom: 0.6rem; font-weight: 600; }
+
+        p { margin-bottom: 1rem; }
+
+        .overview-box {
+            background-color: #ecf9f6;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .overview-box h2 { color: var(--secondary-color); border-bottom: none; margin-top: 0; }
+
+        /* ---- snippet card ---- */
+        .snippet-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .snippet-card-header {
+            background-color: var(--snippet-header);
+            color: white;
+            padding: 0.6rem 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .snippet-id {
+            font-size: 0.78rem;
+            opacity: 0.7;
+            font-weight: 400;
+            margin-left: 0.5rem;
+        }
+
+        .snippet-card-body { padding: 1rem 1.1rem; background-color: #fafafa; }
+        .snippet-card-body p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+        .code-wrapper { position: relative; margin: 0.5rem 0 0.5rem 0; }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.65rem;
+            font-size: 0.78rem;
+            cursor: pointer;
+            opacity: 0.88;
+            transition: opacity 0.2s, background 0.2s;
+            z-index: 10;
+        }
+
+        .copy-btn:hover { opacity: 1; background: #148f77; }
+        .copy-btn.copied { background: #27ae60; }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.88rem;
+            margin: 0;
+        }
+
+        pre.output-block {
+            background-color: #f0f0f0;
+            border-color: #ccc;
+            color: #444;
+            font-style: italic;
+            font-size: 0.84rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre code { background-color: transparent; padding: 0; }
+
+        .note-tag {
+            display: inline-block;
+            background-color: #d5f0eb;
+            color: #148f77;
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.4rem;
+        }
+
+        .warn-tag {
+            display: inline-block;
+            background-color: #fdf3e3;
+            color: #ca6f1e;
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.4rem;
+        }
+
+        .econ-tag {
+            display: inline-block;
+            background-color: #e8f4f8;
+            color: #1a6187;
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.4rem;
+        }
+
+        ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
+        strong { color: var(--primary-color); font-weight: 600; }
+
+        table {
+            width: 100%; border-collapse: collapse;
+            margin: 1.5rem 0; background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        thead { background-color: var(--snippet-header); color: white; }
+        th { padding: 0.75rem 1rem; text-align: left; font-weight: 600; }
+        td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        tbody tr:hover { background-color: #f8f9fa; }
+        td code { font-size: 0.85em; }
+
+        .quick-ref {
+            background-color: #fff8e1;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .quick-ref h2 { color: var(--accent-color); border-bottom: none; margin-top: 0; }
+
+        .errors-box {
+            background-color: #fef9e7;
+            border: 2px solid #c0392b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .errors-box h2 { color: #c0392b; border-bottom: none; margin-top: 0; }
+
+        hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+
+        footer { text-align: center; color: #999; font-size: 0.88rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+
+        @media print { body { max-width: 100%; padding: 1rem; } .snippet-card { page-break-inside: avoid; } }
+        @media (max-width: 768px) { body { padding: 1rem; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } table { font-size: 0.82rem; } th, td { padding: 0.45rem 0.5rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Week 2: R Code Snippets — Linear Algebra</h1>
+        <p class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics<br>University of Western Australia</p>
+    </header>
+
+    <main>
+        <div class="overview-box">
+            <h2>Overview</h2>
+            <p>This document contains essential R code snippets for Week 2. Each block can be copied directly into R or RStudio. Snippets cover matrix creation, operations, determinants, inverses, solving linear systems, and applied economic models.</p>
+        </div>
+
+        <!-- ===================== 1. CREATING MATRICES ===================== -->
+        <section>
+            <h2>1. Creating Matrices</h2>
+
+            <h3>1.1 Basic Matrix Creation</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Create Matrix by Row <span class="snippet-id">W2-CS01</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> <code>byrow = TRUE</code> fills the matrix row by row. The default is column by column.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r"># Fill by row
+A &lt;- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE)
+A
+#      [,1] [,2] [,3]
+# [1,]    1    2    3
+# [2,]    4    5    6
+
+# Fill by column (default — gives the same result here)
+B &lt;- matrix(c(1, 4, 2, 5, 3, 6), nrow = 2, ncol = 3)
+
+# Build from named vectors
+row1 &lt;- c(1, 2, 3)
+row2 &lt;- c(4, 5, 6)
+C &lt;- rbind(row1, row2)   # Bind rows
+
+col1 &lt;- c(1, 4)
+col2 &lt;- c(2, 5)
+D &lt;- cbind(col1, col2)   # Bind columns</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.2 Special Matrices</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Identity, Diagonal, and Zero Matrices <span class="snippet-id">W2-CS02</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> <code>diag(n)</code> creates the $n \times n$ identity. <code>diag(vector)</code> creates a diagonal matrix from the supplied values.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r"># 3×3 identity matrix
+I &lt;- diag(3)
+I
+#      [,1] [,2] [,3]
+# [1,]    1    0    0
+# [2,]    0    1    0
+# [3,]    0    0    1
+
+# Diagonal matrix with specified values
+D &lt;- diag(c(2, 3, 4))
+D
+#      [,1] [,2] [,3]
+# [1,]    2    0    0
+# [2,]    0    3    0
+# [3,]    0    0    4
+
+# Zero and ones matrices
+Z    &lt;- matrix(0, nrow = 2, ncol = 3)
+ones &lt;- matrix(1, nrow = 2, ncol = 3)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.3 Matrix Properties and Indexing</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Dimensions, Access, and Submatrices <span class="snippet-id">W2-CS03</span>
+                </div>
+                <div class="snippet-card-body">
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, byrow = TRUE)
+
+dim(A)        # Dimensions: 2 3
+nrow(A)       # Number of rows: 2
+ncol(A)       # Number of columns: 3
+length(A)     # Total elements: 6
+
+# Access individual elements and slices
+A[1, 2]       # Row 1, Column 2: 2
+A[1, ]        # Entire row 1:   1 2 3
+A[, 2]        # Entire column 2: 2 5
+A[1:2, 2:3]   # Submatrix: rows 1–2, columns 2–3</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== 2. MATRIX OPERATIONS ===================== -->
+        <section>
+            <h2>2. Matrix Operations</h2>
+
+            <h3>2.1 Element-Wise Operations</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Addition, Subtraction, and Scalar Operations <span class="snippet-id">W2-CS04</span>
+                </div>
+                <div class="snippet-card-body">
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)
+B &lt;- matrix(c(5, 6, 7, 8), nrow = 2, byrow = TRUE)
+
+# Element-wise operations (NOT matrix multiplication)
+A + B         # Addition
+A - B         # Subtraction
+A * B         # Element-wise multiplication
+A / B         # Element-wise division
+A^2           # Element-wise squaring
+
+# Scalar operations
+3 * A         # Multiply all elements by 3
+A + 10        # Add 10 to every element</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>2.2 Matrix Multiplication</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Matrix Multiplication with %*% <span class="snippet-id">W2-CS05</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="warn-tag">⚠ Common error</span> Using <code>*</code> instead of <code>%*%</code> gives element-wise, not matrix, multiplication.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)
+B &lt;- matrix(c(5, 6, 7, 8), nrow = 2, byrow = TRUE)
+
+# CORRECT: matrix multiplication
+A %*% B
+#      [,1] [,2]
+# [1,]   19   22
+# [2,]   43   50
+# Element [1,1] = 1×5 + 2×7 = 5 + 14 = 19
+
+# WRONG: element-wise multiplication
+A * B
+#      [,1] [,2]
+# [1,]    5   12
+# [2,]   21   32
+
+# Verify non-commutativity
+A %*% B  # Result 1
+B %*% A  # Result 2 — different!</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>2.3 Transpose</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Transpose and the Property (AB)' = B'A' <span class="snippet-id">W2-CS06</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> Dimensions change from m×n to n×m. Rows become columns.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, byrow = TRUE)
+t(A)
+#      [,1] [,2]
+# [1,]    1    4
+# [2,]    2    5
+# [3,]    3    6
+
+# Verify the transpose product rule: (AB)' = B'A'
+B &lt;- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3, byrow = TRUE)
+all.equal(t(A %*% B), t(B) %*% t(A))  # TRUE</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== 3. DETERMINANTS ===================== -->
+        <section>
+            <h2>3. Determinants</h2>
+
+            <h3>3.1 Calculating Determinants</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    2×2 and 3×3 Determinants <span class="snippet-id">W2-CS07</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> For a 2×2 matrix: $\det\begin{bmatrix}a & b \\ c & d\end{bmatrix} = ad - bc$. A determinant of 0 means the matrix is singular (no inverse exists).</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r"># 2×2 determinant
+A &lt;- matrix(c(3, 2, 1, 4), nrow = 2, byrow = TRUE)
+det(A)   # 3×4 - 2×1 = 10
+
+# 3×3 determinant
+B &lt;- matrix(c(1, 2, 3, 7, 0, 8, 4, 5, 6), nrow = 3, byrow = TRUE)
+det(B)   # 45
+
+# Singular matrix (det = 0)
+C &lt;- matrix(c(6, 2, 3, 1), nrow = 2, byrow = TRUE)
+det(C)   # 0 — row 1 = 2 × row 2</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>3.2 Invertibility Check Function</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    is_invertible() Helper Function <span class="snippet-id">W2-CS08</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> A small tolerance ($10^{-10}$) handles floating-point rounding errors.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">is_invertible &lt;- function(A) {
+  if (nrow(A) != ncol(A)) return(FALSE)   # Must be square
+  return(abs(det(A)) &gt; 1e-10)             # Non-zero determinant
+}
+
+A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+is_invertible(A)   # TRUE
+
+B &lt;- matrix(c(6, 2, 3, 1), nrow = 2, byrow = TRUE)
+is_invertible(B)   # FALSE</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== 4. MATRIX INVERSE ===================== -->
+        <section>
+            <h2>4. Matrix Inverse</h2>
+
+            <h3>4.1 Finding Inverses</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    solve(A) and Manual 2×2 Formula <span class="snippet-id">W2-CS09</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> <code>solve(A)</code> returns $A^{-1}$. Only works if $\det(A) \neq 0$.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+
+# Compute inverse using R
+A_inv &lt;- solve(A)
+A_inv
+#            [,1]       [,2]
+# [1,]  0.7142857 -0.1428571
+# [2,] -0.4285714  0.2857143
+
+# Verify: A %*% A^(-1) = I
+round(A %*% A_inv, 10)
+
+# Manual 2×2 formula: (1/det) × [[d, -b], [-c, a]]
+det_A &lt;- det(A)   # 7
+A_inv_manual &lt;- (1/det_A) * matrix(c(5, -1, -3, 2), nrow = 2, byrow = TRUE)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>4.2 Safe Inversion (Error Handling)</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    safe_inverse() — Handles Singular Matrices <span class="snippet-id">W2-CS10</span>
+                </div>
+                <div class="snippet-card-body">
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">safe_inverse &lt;- function(A) {
+  if (abs(det(A)) &lt; 1e-10) {
+    warning("Matrix is singular or near-singular — no inverse exists")
+    return(NULL)
+  }
+  return(solve(A))
+}
+
+B &lt;- matrix(c(6, 2, 3, 1), nrow = 2, byrow = TRUE)
+safe_inverse(B)   # Returns NULL with a warning</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== 5. SOLVING LINEAR SYSTEMS ===================== -->
+        <section>
+            <h2>5. Solving Linear Systems</h2>
+
+            <h3>5.1 Using solve()</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    solve(A, b) — Direct System Solver <span class="snippet-id">W2-CS11</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> <code>solve(A, b)</code> is more efficient than <code>solve(A) %*% b</code> — it avoids forming $A^{-1}$ explicitly.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r"># System: 2x + y  = 8
+#          3x + 5y = 19
+
+A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+b &lt;- c(8, 19)
+
+x &lt;- solve(A, b)
+x   # x = 3, y = 2
+
+# Verify: A %*% x should equal b
+A %*% x</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>5.2 Cramer's Rule</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    cramers_rule() Function <span class="snippet-id">W2-CS12</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> $x_i = \det(A_i) / \det(A)$, where $A_i$ is $A$ with column $i$ replaced by $b$.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">cramers_rule &lt;- function(A, b) {
+  det_A &lt;- det(A)
+  if (abs(det_A) &lt; 1e-10) stop("Singular matrix — no unique solution")
+
+  n &lt;- length(b)
+  x &lt;- numeric(n)
+
+  for (i in 1:n) {
+    A_i &lt;- A
+    A_i[, i] &lt;- b   # Replace column i with b
+    x[i] &lt;- det(A_i) / det_A
+  }
+  return(x)
+}
+
+A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+b &lt;- c(8, 19)
+cramers_rule(A, b)   # 3, 2</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>5.3 Classifying Solution Types</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    check_system() — Unique, Infinite, or No Solution <span class="snippet-id">W2-CS13</span>
+                </div>
+                <div class="snippet-card-body">
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">check_system &lt;- function(A, b) {
+  det_A &lt;- det(A)
+
+  if (abs(det_A) &gt; 1e-10) {
+    solution &lt;- solve(A, b)
+    cat("Unique solution:\n")
+    print(solution)
+  } else {
+    augmented &lt;- cbind(A, b)
+    rank_A   &lt;- qr(A)$rank
+    rank_aug &lt;- qr(augmented)$rank
+
+    if (rank_A == rank_aug) {
+      cat("Infinitely many solutions (dependent equations)\n")
+    } else {
+      cat("No solution (inconsistent system)\n")
+    }
+  }
+}
+
+# Test cases
+A1 &lt;- matrix(c(5, 3, 4, 1), nrow = 2, byrow = TRUE); b1 &lt;- c(11, 6)
+check_system(A1, b1)   # Unique solution
+
+A2 &lt;- matrix(c(2, 1, 4, 2), nrow = 2, byrow = TRUE); b2 &lt;- c(4, 8)
+check_system(A2, b2)   # Infinite solutions
+
+A3 &lt;- matrix(c(2, 1, 4, 2), nrow = 2, byrow = TRUE); b3 &lt;- c(4, 10)
+check_system(A3, b3)   # No solution</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== 6. ECONOMIC APPLICATIONS ===================== -->
+        <section>
+            <h2>6. Economic Applications</h2>
+
+            <h3>6.1 Single-Market Equilibrium</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    solve_market_matrix() — Matrix Form of Supply &amp; Demand <span class="snippet-id">W2-CS14</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="econ-tag">Economics</span> At equilibrium $Q_d = Q_s = Q$. Rewrite both equations in the form $Q + \text{(slope)} \cdot P = \text{intercept}$, then solve as a 2×2 system.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">solve_market_matrix &lt;- function(demand_intercept, demand_slope,
+                                 supply_intercept, supply_slope) {
+  # Rewrite: Q + demand_slope × P = demand_intercept
+  #          Q - supply_slope × P = supply_intercept
+  A &lt;- matrix(c(1,  demand_slope,
+                1, -supply_slope), nrow = 2, byrow = TRUE)
+  b &lt;- c(demand_intercept, supply_intercept)
+
+  if (abs(det(A)) &lt; 1e-10) return(list(error = "No unique equilibrium"))
+
+  eq &lt;- solve(A, b)
+  return(list(Q = eq[1], P = eq[2], determinant = det(A)))
+}
+
+# Qd = 100 - 2P, Qs = -20 + 4P
+result &lt;- solve_market_matrix(100, 2, -20, 4)
+cat("Q* =", result$Q, "  P* =", result$P)
+# Q* = 60, P* = 20</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>6.2 Two-Market System</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    Wheat and Corn Two-Market Equilibrium <span class="snippet-id">W2-CS15</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="econ-tag">Economics</span> Cross-price effects appear in the off-diagonal elements of $A$. The equilibrium accounts for both markets simultaneously.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r"># Wheat: Qw_d = 80 - 3Pw + Pc,  Qw_s = -10 + 2Pw
+# Corn:  Qc_d = 100 + Pw - 4Pc,  Qc_s = -20 + 3Pc
+#
+# Equilibrium (Qd = Qs):
+#   Wheat:  5Pw - Pc  = 90
+#   Corn:   -Pw + 7Pc = 120
+
+A &lt;- matrix(c(5, -1, -1, 7), nrow = 2, byrow = TRUE)
+b &lt;- c(90, 120)
+
+prices &lt;- solve(A, b)
+Pw &lt;- prices[1]
+Pc &lt;- prices[2]
+cat("Wheat price:", round(Pw, 2))   # 21.18
+cat("Corn price:",  round(Pc, 2))   # 20.18
+
+# Equilibrium quantities
+Qw &lt;- -10 + 2 * Pw
+Qc &lt;- -20 + 3 * Pc
+cat("Wheat quantity:", round(Qw, 2))  # 32.35
+cat("Corn quantity:",  round(Qc, 2))  # 40.53</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>6.3 Leontief Input-Output Model</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    leontief_model() — Total Output Requirements <span class="snippet-id">W2-CS16</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="econ-tag">Economics</span> The Leontief inverse $(I - A)^{-1}$ captures both direct and indirect input requirements — i.e., the full "multiplier" effect.</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">leontief_model &lt;- function(A, final_demand) {
+  n &lt;- nrow(A)
+  I &lt;- diag(n)
+
+  L &lt;- solve(I - A)          # Leontief inverse
+  x &lt;- L %*% final_demand    # Total output
+
+  return(list(
+    leontief_inverse = L,
+    total_output     = x,
+    intermediate     = A %*% x,
+    final            = final_demand
+  ))
+}
+
+# Technology matrix (A[i,j] = input from i per unit output of j)
+#                   Crops  Livestock
+# Crops              0.2     0.4
+# Livestock          0.1     0.2
+
+A &lt;- matrix(c(0.2, 0.4, 0.1, 0.2), nrow = 2, byrow = TRUE)
+d &lt;- c(80, 60)   # Final demand
+
+result &lt;- leontief_model(A, d)
+cat("Crops total output:",     round(result$total_output[1], 1))   # 151.7
+cat("Livestock total output:", round(result$total_output[2], 1))   #  96.6</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== 7. EIGENVALUES ===================== -->
+        <section>
+            <h2>7. Eigenvalues (Preview for Optimisation)</h2>
+
+            <h3>7.1 Computing Eigenvalues and Checking Definiteness</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    eigen() — Definiteness Check <span class="snippet-id">W2-CS17</span>
+                </div>
+                <div class="snippet-card-body">
+                    <p><span class="note-tag">Note</span> Positive definite: all eigenvalues $> 0$ (minimum). Negative definite: all $< 0$ (maximum). Indefinite: mixed signs (saddle point).</p>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r">A &lt;- matrix(c(2, 1, 1, 3), nrow = 2, byrow = TRUE)
+
+eig &lt;- eigen(A)
+eig$values    # 3.618, 1.382
+eig$vectors   # Corresponding eigenvectors
+
+# Check definiteness
+if (all(eig$values &gt; 0)) {
+  cat("Positive definite — minimum exists\n")
+} else if (all(eig$values &lt; 0)) {
+  cat("Negative definite — maximum exists\n")
+} else {
+  cat("Indefinite — saddle point\n")
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>7.2 Quadratic Form Analysis</h3>
+
+            <div class="snippet-card">
+                <div class="snippet-card-header">
+                    quadratic_form() — Evaluate and Classify Q = x'Ax <span class="snippet-id">W2-CS18</span>
+                </div>
+                <div class="snippet-card-body">
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code class="language-r"># Quadratic form: Q = 2x1² + 3x2² + 2x1x2
+# Symmetric matrix form (a12 = a21 = 1)
+A &lt;- matrix(c(2, 1, 1, 3), nrow = 2, byrow = TRUE)
+
+# Function to evaluate Q at a given x
+quadratic_form &lt;- function(A, x) {
+  as.numeric(t(x) %*% A %*% x)
+}
+
+x &lt;- c(1, 2)
+quadratic_form(A, x)
+# = 2(1)² + 3(2)² + 2(1)(2) = 2 + 12 + 4 = 18
+
+# Definiteness
+eig_vals &lt;- eigen(A)$values
+cat("Eigenvalues:", eig_vals)
+cat("Positive definite:", all(eig_vals &gt; 0))</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===================== QUICK REFERENCE ===================== -->
+        <section class="quick-ref">
+            <h2>Quick Reference</h2>
+            <table>
+                <thead>
+                    <tr><th>Task</th><th>R code</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Create matrix</td><td><code>matrix(data, nrow, ncol, byrow = TRUE)</code></td></tr>
+                    <tr><td>Identity matrix</td><td><code>diag(n)</code></td></tr>
+                    <tr><td>Diagonal matrix</td><td><code>diag(c(a, b, c))</code></td></tr>
+                    <tr><td>Dimensions</td><td><code>dim(A)</code>, <code>nrow(A)</code>, <code>ncol(A)</code></td></tr>
+                    <tr><td>Transpose</td><td><code>t(A)</code></td></tr>
+                    <tr><td>Matrix multiplication</td><td><code>A %*% B</code></td></tr>
+                    <tr><td>Determinant</td><td><code>det(A)</code></td></tr>
+                    <tr><td>Inverse</td><td><code>solve(A)</code></td></tr>
+                    <tr><td>Solve $Ax = b$</td><td><code>solve(A, b)</code></td></tr>
+                    <tr><td>Eigenvalues</td><td><code>eigen(A)$values</code></td></tr>
+                    <tr><td>Bind rows</td><td><code>rbind(row1, row2)</code></td></tr>
+                    <tr><td>Bind columns</td><td><code>cbind(col1, col2)</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===================== COMMON ERRORS ===================== -->
+        <section class="errors-box">
+            <h2>Common Errors</h2>
+            <table>
+                <thead>
+                    <tr><th>Error message</th><th>Cause</th><th>Fix</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>non-conformable arguments</code></td>
+                        <td>Matrix dimensions do not match for multiplication</td>
+                        <td>Check <code>dim(A)</code> and <code>dim(B)</code>. For <code>A %*% B</code>, need <code>ncol(A) == nrow(B)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>system is exactly singular</code></td>
+                        <td>$\det(A) = 0$; matrix has no inverse</td>
+                        <td>Check <code>det(A)</code>. If 0, the system has infinitely many or no solutions</td>
+                    </tr>
+                    <tr>
+                        <td>Wrong numerical result</td>
+                        <td>Used <code>*</code> instead of <code>%*%</code> for matrix multiplication</td>
+                        <td>Always use <code>%*%</code> for matrix multiplication</td>
+                    </tr>
+                    <tr>
+                        <td><code>subscript out of bounds</code></td>
+                        <td>Index exceeds matrix dimensions</td>
+                        <td>Check <code>dim(A)</code> before indexing</td>
+                    </tr>
+                    <tr>
+                        <td>Unexpected matrix layout</td>
+                        <td>Forgot <code>byrow = TRUE</code> when entering data row by row</td>
+                        <td>Add <code>byrow = TRUE</code> to <code>matrix()</code> calls where data is listed row by row</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        Week 2 Code Snippets — ECON4002
+    </footer>
+</body>
+</html>

@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "week": 7,
+    "title": "Producer Theory I: Technology & Costs",
+    "learning_objectives": [
+      "Calculate marginal and average products",
+      "Derive and interpret MRTS",
+      "Classify returns to scale",
+      "Solve cost minimization problems",
+      "Derive cost functions from production functions",
+      "Apply Shephard's Lemma"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W7-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Marginal and Average Products",
+      "question": "For the production function f(L,K) = 20L^0.5 K^0.5: (a) Calculate MP_L and MP_K. (b) Calculate AP_L. (c) Show that MP_L < AP_L.",
+      "hints": [
+        "MP_L = ∂f/∂L",
+        "AP_L = f(L,K)/L",
+        "For Cobb-Douglas, MP_L = α·AP_L"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Returns to Scale",
+      "question": "Determine returns to scale for: (a) f(L,K) = 3L^0.6 K^0.5 (b) f(L,K) = L^0.3 K^0.7 (c) f(L,K) = min{2L, 3K}",
+      "hints": [
+        "Calculate f(tL, tK) and compare to t·f(L,K)",
+        "For Cobb-Douglas, check if α + β =, >, or < 1",
+        "For Leontief, factor out t"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "MRTS",
+      "question": "For f(L,K) = L^0.4 K^0.6: (a) Derive MRTS_LK. (b) Calculate MRTS when L=10, K=20. (c) Interpret this value.",
+      "hints": [
+        "MRTS_LK = MP_L/MP_K",
+        "For Cobb-Douglas: MRTS = (α/β)·(K/L)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Isoquants",
+      "question": "A farm produces corn using f(L,K) = 100L^0.5K^0.5. (a) Write the equation for the isoquant at y=500. (b) At what (L,K) does this isoquant have slope -1? (c) What is the capital-labor ratio at this point?",
+      "hints": [
+        "Isoquant: set f(L,K) = y and solve for K",
+        "Slope of isoquant = -MRTS",
+        "Set MRTS = 1"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Cost Minimization",
+      "question": "A firm has f(L,K) = L^0.5K^0.5, w=10, r=20. (a) Set up the cost minimization problem for y=100. (b) Find optimal L* and K*. (c) Calculate minimum cost.",
+      "hints": [
+        "Use the condition MRTS = w/r",
+        "Substitute into production constraint",
+        "C* = wL* + rK*"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P6",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Cost Function Derivation",
+      "question": "For f(L,K) = L^0.5K^0.5 with input prices w and r: (a) Derive conditional input demands L*(w,r,y) and K*(w,r,y). (b) Derive the cost function C(w,r,y). (c) Verify Shephard's Lemma.",
+      "hints": [
+        "Use MRTS = w/r to express K in terms of L",
+        "Substitute into production constraint and solve",
+        "Check ∂C/∂w = L*"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P7",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Short-Run vs Long-Run",
+      "question": "A dairy farm has f(L,K) = 10L^0.5K^0.5, w=20, r=10. Capital is fixed at K̄=100 in the short run. (a) Derive the short-run cost function SC(y). (b) Find AVC, AFC, AC. (c) At what output does MC = AC?",
+      "hints": [
+        "With K̄ fixed, solve f(L,K̄) = y for L",
+        "SC = wL + rK̄",
+        "MC = AC when AC is minimized"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P8",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Properties of Cost Functions",
+      "question": "Explain why the cost function C(w,r,y) must be: (a) Homogeneous of degree 1 in (w,r). (b) Concave in (w,r). (c) Non-decreasing in y.",
+      "hints": [
+        "Think about what happens when all prices double",
+        "Consider substitution possibilities",
+        "More output requires more inputs"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P9",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Agricultural Technology Choice",
+      "question": "A wheat farm can use two technologies: Traditional: f_T(L,K) = L^0.7K^0.3 or Modern: f_M(L,K) = 2L^0.4K^0.6. With w=15, r=30: (a) Which technology is more labor-intensive? (b) For y=100, which minimizes cost? (c) How does your answer change if r doubles to 60?",
+      "hints": [
+        "Compare K/L ratios at optimal input mix",
+        "Solve cost minimization for each technology",
+        "Higher capital price favors labor-intensive technology"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P10",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Leontief Production",
+      "question": "A processing plant has f(L,K) = min{L/2, K/3} with w=12, r=8. (a) What input combination produces y=10? (b) Derive the cost function. (c) Why is there no substitution effect for Leontief?",
+      "hints": [
+        "At optimum, L/2 = K/3 = y",
+        "No flexibility in input proportions",
+        "MRTS is 0 or ∞ except at kink"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P11",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Shephard's Lemma Derivation",
+      "question": "Prove Shephard's Lemma using the Envelope Theorem. That is, show that ∂C(w,r,y)/∂w = L*(w,r,y).",
+      "hints": [
+        "Write the Lagrangian for cost minimization",
+        "Apply the Envelope Theorem",
+        "The indirect effect (through optimal L*, K*) vanishes at the optimum"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W7-P12",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Precision Agriculture",
+      "question": "A precision agriculture system changes production from f₁(L,K) = L^0.5K^0.5 to f₂(L,K) = 1.2L^0.5K^0.5 (20% productivity boost). For y=1000, w=20, r=30: (a) Calculate cost savings. (b) What's the value of the technology if it costs $500/period? (c) How does the K/L ratio change?",
+      "hints": [
+        "A neutral technology shift scales the production function",
+        "Solve cost minimization for both technologies",
+        "The K/L ratio depends only on relative prices and exponents"
+      ],
+      "solution": ""
+    }
+  ]
+}

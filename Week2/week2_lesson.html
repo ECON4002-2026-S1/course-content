@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Mathematical Methods I — Linear Algebra - ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            document.querySelectorAll('pre code[class*="language-"]').forEach(codeEl => {
+                const pre = codeEl.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copy';
+                wrapper.insertBefore(btn, pre);
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                        btn.textContent = 'Copied!';
+                        btn.style.background = '#27ae60';
+                        setTimeout(() => {
+                            btn.textContent = 'Copy';
+                            btn.style.background = '';
+                        }, 1600);
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --code-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --table-header-bg: #34495e;
+            --table-header-text: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h1 { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.5rem; font-weight: 700; }
+        .subtitle { font-size: 1.1rem; color: #666; font-weight: 600; }
+
+        h2 {
+            font-size: 1.8rem; color: var(--primary-color);
+            margin-top: 2.5rem; margin-bottom: 1rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 { font-size: 1.4rem; color: var(--secondary-color); margin-top: 2rem; margin-bottom: 0.8rem; }
+        h4 { font-size: 1.2rem; color: var(--text-color); margin-top: 1.5rem; margin-bottom: 0.6rem; font-weight: 600; }
+
+        p { margin-bottom: 1rem; text-align: justify; }
+
+        .code-wrapper {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.65rem;
+            font-size: 0.78rem;
+            cursor: pointer;
+            opacity: 0.85;
+            transition: opacity 0.2s, background 0.2s;
+            z-index: 10;
+        }
+
+        .copy-btn:hover { opacity: 1; background: #2980b9; }
+        .copy-btn.copied { background: #27ae60; }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem 1rem 1rem 1rem;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre code { background-color: transparent; padding: 0; }
+
+        ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        strong { color: var(--primary-color); font-weight: 600; }
+
+        table {
+            width: 100%; border-collapse: collapse;
+            margin: 1.5rem 0; background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        thead { background-color: var(--table-header-bg); color: var(--table-header-text); }
+        th { padding: 1rem; text-align: left; font-weight: 600; }
+        td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-color); }
+        tbody tr:hover { background-color: #f8f9fa; }
+
+        .highlight-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong { color: #c0392b; }
+
+        .learning-objectives {
+            background-color: #f0f7fb;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .learning-objectives h2 { color: var(--secondary-color); border-bottom: none; margin-top: 0; }
+
+        hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+
+        .summary-box {
+            background-color: #f0f4f8;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .references { font-size: 0.95rem; color: #555; }
+        .references li { margin-bottom: 0.3rem; }
+
+        @media print { body { max-width: 100%; padding: 1rem; } pre, table { page-break-inside: avoid; } }
+        @media (max-width: 768px) { body { padding: 1rem; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } table { font-size: 0.85rem; } th, td { padding: 0.5rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Week 2: Mathematical Methods I — Linear Algebra</h1>
+        <p class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics<br>University of Western Australia</p>
+    </header>
+
+    <main>
+        <section class="learning-objectives">
+            <h2>Learning Objectives</h2>
+            <p>By the end of this week, you will be able to:</p>
+            <ol>
+                <li>Create and manipulate matrices in R</li>
+                <li>Perform matrix operations (addition, multiplication, transpose, inverse)</li>
+                <li>Calculate determinants and understand their economic significance</li>
+                <li>Solve systems of linear equations using matrices</li>
+                <li>Apply Cramer's Rule to economic problems</li>
+                <li>Represent supply-and-demand systems in matrix form</li>
+            </ol>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>1. Why Linear Algebra in Economics?</h2>
+
+            <h3>1.1 Economic Applications</h3>
+            <p>Linear algebra is fundamental to economics because many economic relationships can be expressed as systems of linear equations:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Application</th><th>Example</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Market equilibrium</strong></td><td>Multiple markets with interdependent prices</td></tr>
+                    <tr><td><strong>Input-output analysis</strong></td><td>Leontief models of industry interdependence</td></tr>
+                    <tr><td><strong>Consumer demand</strong></td><td>Linear expenditure systems</td></tr>
+                    <tr><td><strong>Regression</strong></td><td>Estimating economic relationships from data</td></tr>
+                    <tr><td><strong>Optimization</strong></td><td>Constraints in linear programming</td></tr>
+                    <tr><td><strong>Dynamic systems</strong></td><td>Difference equations in macroeconomics</td></tr>
+                </tbody>
+            </table>
+
+            <h3>1.2 Linear Equations and Their Uses</h3>
+            <p>A <strong>linear equation</strong> has the form:</p>
+            <p>$$a_1 x_1 + a_2 x_2 + \cdots + a_n x_n = b$$</p>
+            <p>Linear equations are important because:</p>
+            <ul>
+                <li>Many economic relationships are approximately linear over relevant ranges</li>
+                <li>Linear systems can be solved analytically</li>
+                <li>First-order approximations of nonlinear relationships are linear</li>
+                <li>Computational methods are well-developed</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>2. Matrices: Fundamentals</h2>
+
+            <h3>2.1 What is a Matrix?</h3>
+            <p>A <strong>matrix</strong> is a rectangular array of numbers arranged in rows and columns:</p>
+            <p>$$A = \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \end{bmatrix}$$</p>
+            <ul>
+                <li><strong>Dimensions</strong>: rows × columns (this matrix is 2×3)</li>
+                <li><strong>Element</strong>: $a_{ij}$ is in row $i$, column $j$</li>
+                <li><strong>Square matrix</strong>: equal number of rows and columns</li>
+            </ul>
+
+            <h3>2.2 Special Matrices</h3>
+            <p><strong>Identity Matrix</strong> ($I$): Square matrix with 1s on the main diagonal and 0s elsewhere:</p>
+            <p>$$I_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$</p>
+
+            <p><strong>Zero Matrix</strong>: All elements are zero.</p>
+            <p><strong>Diagonal Matrix</strong>: Non-zero elements appear only on the main diagonal.</p>
+            <p><strong>Symmetric Matrix</strong>: $A = A'$ (equals its own transpose).</p>
+            <p><strong>Transpose</strong> ($A'$ or $A^T$): Rows become columns:</p>
+            <p>$$A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix} \Rightarrow A' = \begin{bmatrix} 1 & 3 & 5 \\ 2 & 4 & 6 \end{bmatrix}$$</p>
+
+            <h3>2.3 Matrices in R</h3>
+            <pre><code class="language-r"># Create a matrix filled by row (byrow = TRUE)
+A &lt;- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE)
+A
+#      [,1] [,2] [,3]
+# [1,]    1    2    3
+# [2,]    4    5    6
+
+# Create by column (default — same result as above)
+B &lt;- matrix(c(1, 4, 2, 5, 3, 6), nrow = 2, ncol = 3)
+
+# Special matrices
+I &lt;- diag(3)           # 3×3 identity matrix
+D &lt;- diag(c(2, 3, 4))  # Diagonal matrix with 2, 3, 4
+Z &lt;- matrix(0, 2, 3)   # 2×3 zero matrix
+
+# Matrix properties
+dim(A)       # Dimensions: 2 3
+nrow(A)      # Number of rows: 2
+ncol(A)      # Number of columns: 3
+t(A)         # Transpose</code></pre>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>3. Matrix Operations</h2>
+
+            <h3>3.1 Addition and Subtraction</h3>
+            <p>Addition and subtraction require matrices to have the <strong>same dimensions</strong>. Elements are added or subtracted position by position:</p>
+            <p>$$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} + \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix} = \begin{bmatrix} 6 & 8 \\ 10 & 12 \end{bmatrix}$$</p>
+
+            <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)
+B &lt;- matrix(c(5, 6, 7, 8), nrow = 2, byrow = TRUE)
+
+A + B  # Element-wise addition
+A - B  # Element-wise subtraction</code></pre>
+
+            <h3>3.2 Scalar Multiplication</h3>
+            <p>Multiply each element by the scalar:</p>
+            <p>$$3 \times \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 3 & 6 \\ 9 & 12 \end{bmatrix}$$</p>
+
+            <pre><code class="language-r">3 * A</code></pre>
+
+            <h3>3.3 Matrix Multiplication</h3>
+            <p>For matrices $A$ (m×n) and $B$ (n×p), the product $C = AB$ is m×p. The number of <strong>columns in A must equal the number of rows in B</strong>.</p>
+            <p>Element $c_{ij}$ is the dot product of row $i$ of $A$ and column $j$ of $B$:</p>
+            <p>$$c_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj}$$</p>
+            <p><strong>Example:</strong></p>
+            <p>$$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \times \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix} = \begin{bmatrix} 1(5)+2(7) & 1(6)+2(8) \\ 3(5)+4(7) & 3(6)+4(8) \end{bmatrix} = \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}$$</p>
+
+            <p><strong>Key properties of matrix multiplication:</strong></p>
+            <ul>
+                <li><strong>Not commutative</strong>: $AB \neq BA$ in general</li>
+                <li><strong>Associative</strong>: $(AB)C = A(BC)$</li>
+                <li><strong>Distributive</strong>: $A(B + C) = AB + AC$</li>
+                <li>$AI = IA = A$ (the identity matrix is the multiplicative identity)</li>
+            </ul>
+
+            <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)
+B &lt;- matrix(c(5, 6, 7, 8), nrow = 2, byrow = TRUE)
+
+# Matrix multiplication — use %*%
+A %*% B    # Correct matrix multiplication
+
+# Verify non-commutativity
+A %*% B
+B %*% A    # Different result!</code></pre>
+
+            <div class="warning-box">
+                <p><strong>⚠ Critical R note:</strong> Use <code>%*%</code> for matrix multiplication. The <code>*</code> operator performs element-wise multiplication, which is <em>not</em> matrix multiplication.</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>4. Determinants</h2>
+
+            <h3>4.1 Definition and Calculation</h3>
+            <p>The <strong>determinant</strong> is a scalar value that characterises a square matrix.</p>
+
+            <p><strong>2×2 determinant:</strong></p>
+            <p>$$\det\begin{bmatrix} a & b \\ c & d \end{bmatrix} = ad - bc$$</p>
+
+            <p><strong>3×3 determinant</strong> (expansion along the first row):</p>
+            <p>$$\det\begin{bmatrix} a & b & c \\ d & e & f \\ g & h & i \end{bmatrix} = a(ei - fh) - b(di - fg) + c(dh - eg)$$</p>
+
+            <pre><code class="language-r">A &lt;- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)
+det(A)   # 1*4 - 2*3 = -2
+
+B &lt;- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow = 3, byrow = TRUE)
+det(B)   # 0 (singular matrix)</code></pre>
+
+            <h3>4.2 Economic Significance of the Determinant</h3>
+            <p>The determinant indicates whether a system of equations has a <strong>unique solution</strong>:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Determinant</th><th>Meaning</th><th>Geometric interpretation</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>$\det(A) \neq 0$</td><td><strong>Unique solution</strong></td><td>Lines intersect at one point</td></tr>
+                    <tr><td>$\det(A) = 0$</td><td><strong>No unique solution</strong></td><td>Lines are parallel or coincident</td></tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <p><strong>Economic interpretation:</strong> A market system with $\det(A) = 0$ means the equations are dependent — one equation is redundant or the system is inconsistent, so no unique equilibrium exists.</p>
+            </div>
+
+            <h3>4.3 Example: Market System</h3>
+            <p>Consider a wheat market with demand $Q_d = 100 - 2P$ and supply $Q_s = -20 + 4P$. Rewriting in standard form ($Ax = b$):</p>
+            <p>$$\begin{bmatrix} 1 & 2 \\ 1 & -4 \end{bmatrix} \begin{bmatrix} Q \\ P \end{bmatrix} = \begin{bmatrix} 100 \\ -20 \end{bmatrix}$$</p>
+            <p>Determinant:</p>
+            <p>$$\det\begin{bmatrix} 1 & 2 \\ 1 & -4 \end{bmatrix} = 1(-4) - 2(1) = -6 \neq 0$$</p>
+            <p>Since $\det \neq 0$, a unique equilibrium exists.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>5. Matrix Inverse</h2>
+
+            <h3>5.1 Definition</h3>
+            <p>The <strong>inverse</strong> of a square matrix $A$, denoted $A^{-1}$, satisfies:</p>
+            <p>$$A \cdot A^{-1} = A^{-1} \cdot A = I$$</p>
+            <p><strong>Existence condition:</strong> An inverse exists if and only if $\det(A) \neq 0$. Such matrices are called <strong>nonsingular</strong> or <strong>invertible</strong>.</p>
+
+            <h3>5.2 Finding the Inverse</h3>
+            <p><strong>2×2 formula:</strong></p>
+            <p>$$A^{-1} = \frac{1}{\det(A)} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}, \quad \text{where } A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$$</p>
+
+            <p><strong>Example:</strong></p>
+            <p>$$A = \begin{bmatrix} 2 & 1 \\ 3 & 5 \end{bmatrix}, \quad \det(A) = 2(5) - 1(3) = 7$$</p>
+            <p>$$A^{-1} = \frac{1}{7} \begin{bmatrix} 5 & -1 \\ -3 & 2 \end{bmatrix} = \begin{bmatrix} 5/7 & -1/7 \\ -3/7 & 2/7 \end{bmatrix}$$</p>
+
+            <pre><code class="language-r">A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+det(A)       # 7
+solve(A)     # Matrix inverse
+
+# Verify: A %*% A^(-1) should equal the identity matrix
+round(A %*% solve(A), 10)</code></pre>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>6. Solving Linear Systems</h2>
+
+            <h3>6.1 Matrix Form of Linear Systems</h3>
+            <p>The system:</p>
+            <p>$$\begin{aligned} a_{11}x_1 + a_{12}x_2 &= b_1 \\ a_{21}x_1 + a_{22}x_2 &= b_2 \end{aligned}$$</p>
+            <p>can be written compactly as $Ax = b$, where:</p>
+            <p>$$A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}, \quad x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}, \quad b = \begin{bmatrix} b_1 \\ b_2 \end{bmatrix}$$</p>
+
+            <h3>6.2 Solution Methods</h3>
+
+            <h4>Method 1: Matrix Inversion</h4>
+            <p>If $\det(A) \neq 0$, then $x = A^{-1}b$:</p>
+
+            <pre><code class="language-r">A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+b &lt;- c(8, 19)
+
+x &lt;- solve(A, b)   # More efficient than solve(A) %*% b
+x                  # Solution: x1 = 3, x2 = 2</code></pre>
+
+            <h4>Method 2: Cramer's Rule</h4>
+            <p>For $Ax = b$ with $\det(A) \neq 0$:</p>
+            <p>$$x_i = \frac{\det(A_i)}{\det(A)}$$</p>
+            <p>where $A_i$ is matrix $A$ with column $i$ replaced by $b$.</p>
+
+            <p><strong>Example:</strong> Solve $2x_1 + x_2 = 8$ and $3x_1 + 5x_2 = 19$:</p>
+            <p>$$x_1 = \frac{\det\begin{bmatrix} 8 & 1 \\ 19 & 5 \end{bmatrix}}{\det\begin{bmatrix} 2 & 1 \\ 3 & 5 \end{bmatrix}} = \frac{40 - 19}{10 - 3} = \frac{21}{7} = 3$$</p>
+            <p>$$x_2 = \frac{\det\begin{bmatrix} 2 & 8 \\ 3 & 19 \end{bmatrix}}{\det\begin{bmatrix} 2 & 1 \\ 3 & 5 \end{bmatrix}} = \frac{38 - 24}{7} = \frac{14}{7} = 2$$</p>
+
+            <pre><code class="language-r"># Cramer's Rule implementation
+cramers_rule &lt;- function(A, b) {
+  det_A &lt;- det(A)
+  if (abs(det_A) &lt; 1e-10) stop("Matrix is singular — no unique solution")
+
+  n &lt;- length(b)
+  x &lt;- numeric(n)
+
+  for (i in 1:n) {
+    A_i &lt;- A
+    A_i[, i] &lt;- b        # Replace column i with b
+    x[i] &lt;- det(A_i) / det_A
+  }
+  return(x)
+}
+
+A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+b &lt;- c(8, 19)
+cramers_rule(A, b)   # 3, 2</code></pre>
+
+            <h3>6.3 Types of Solutions</h3>
+
+            <table>
+                <thead>
+                    <tr><th>$\det(A)$</th><th>System type</th><th>Number of solutions</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>$\neq 0$</td><td>Consistent, independent</td><td>Unique</td></tr>
+                    <tr><td>$= 0$, consistent</td><td>Dependent</td><td>Infinitely many</td></tr>
+                    <tr><td>$= 0$, inconsistent</td><td>Contradictory</td><td>None</td></tr>
+                </tbody>
+            </table>
+
+            <p><strong>Example of infinitely many solutions:</strong></p>
+            <p>$$\begin{aligned} 2x + y &= 4 \\ x + 0.5y &= 2 \end{aligned}$$</p>
+            <p>The second equation is just half the first — they describe the same line.</p>
+
+            <pre><code class="language-r">A &lt;- matrix(c(2, 1, 1, 0.5), nrow = 2, byrow = TRUE)
+det(A)  # 0 — singular matrix; no unique solution</code></pre>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>7. Economic Applications</h2>
+
+            <h3>7.1 Multi-Market Equilibrium</h3>
+            <p>Consider two related goods (e.g., substitute commodities) with the following demand and supply schedules. Because the goods are substitutes, each market's demand depends on the other good's price:</p>
+
+            <ul>
+                <li><strong>Market 1 — Demand:</strong> $Q_1^d = 10 - 2P_1 + P_2$</li>
+                <li><strong>Market 1 — Supply:</strong> $Q_1^s = -2 + 3P_1$</li>
+                <li><strong>Market 2 — Demand:</strong> $Q_2^d = 15 + P_1 - 3P_2$</li>
+                <li><strong>Market 2 — Supply:</strong> $Q_2^s = -1 + 2P_2$</li>
+            </ul>
+
+            <p>Setting $Q_i^d = Q_i^s$ in each market and rearranging gives a 2×2 system:</p>
+            <p>$$\begin{aligned} 5P_1 - P_2 &= 12 \\ -P_1 + 5P_2 &= 16 \end{aligned}$$</p>
+            <p>In matrix form:</p>
+            <p>$$\begin{bmatrix} 5 & -1 \\ -1 & 5 \end{bmatrix} \begin{bmatrix} P_1 \\ P_2 \end{bmatrix} = \begin{bmatrix} 12 \\ 16 \end{bmatrix}$$</p>
+
+            <pre><code class="language-r">A &lt;- matrix(c(5, -1, -1, 5), nrow = 2, byrow = TRUE)
+b &lt;- c(12, 16)
+
+prices &lt;- solve(A, b)
+cat("P1* =", prices[1], ", P2* =", prices[2])
+# P1* = 3.167, P2* = 3.833</code></pre>
+
+            <h3>7.2 Input-Output Analysis (Leontief Model)</h3>
+            <p>The <strong>Leontief input-output model</strong> describes how industries depend on each other's output as intermediate inputs.</p>
+
+            <p>Let $x_i$ = total output of industry $i$, $a_{ij}$ = units of input from industry $i$ required per unit of output from industry $j$, and $d_i$ = final (external) demand for industry $i$. The balance equation for each industry is:</p>
+            <p>$$x_i = \sum_j a_{ij} x_j + d_i$$</p>
+            <p>In matrix form:</p>
+            <p>$$x = Ax + d \implies (I - A)x = d \implies x = (I - A)^{-1} d$$</p>
+            <p>The matrix $(I - A)^{-1}$ is called the <strong>Leontief inverse</strong>. It captures both the direct and indirect input requirements.</p>
+
+            <pre><code class="language-r"># Two-industry example
+# A[i,j] = input from industry i per unit of output of industry j
+A &lt;- matrix(c(0.2, 0.3, 0.4, 0.1), nrow = 2, byrow = TRUE)
+d &lt;- c(100, 150)   # Final demand
+
+I &lt;- diag(2)
+leontief &lt;- solve(I - A)   # Leontief inverse
+x &lt;- leontief %*% d        # Total output required
+
+cat("Output required: x1 =", x[1], ", x2 =", x[2])</code></pre>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>8. Quadratic Forms (Preview for Optimisation)</h2>
+
+            <h3>8.1 Definition</h3>
+            <p>A <strong>quadratic form</strong> is an expression of the type:</p>
+            <p>$$Q = x'Ax = \sum_i \sum_j a_{ij} x_i x_j$$</p>
+            <p>For the 2×2 case:</p>
+            <p>$$Q = \begin{bmatrix} x_1 & x_2 \end{bmatrix} \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = a_{11}x_1^2 + (a_{12} + a_{21})x_1 x_2 + a_{22}x_2^2$$</p>
+
+            <h3>8.2 Definiteness</h3>
+            <p>The <strong>definiteness</strong> of a quadratic form determines whether an objective function has a maximum or a minimum:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Type</th><th>Condition</th><th>Implication for optimisation</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Positive definite</td><td>$Q &gt; 0$ for all $x \neq 0$</td><td>Function has a minimum</td></tr>
+                    <tr><td>Negative definite</td><td>$Q &lt; 0$ for all $x \neq 0$</td><td>Function has a maximum</td></tr>
+                    <tr><td>Indefinite</td><td>$Q$ can be positive or negative</td><td>Saddle point</td></tr>
+                </tbody>
+            </table>
+
+            <p><strong>Testing with eigenvalues:</strong> A symmetric matrix is positive definite if and only if all its eigenvalues are positive.</p>
+
+            <pre><code class="language-r"># Quadratic form: Q = 2x1² + 3x2² + 2x1x2
+# Symmetric matrix representation (a12 = a21 = 1)
+A &lt;- matrix(c(2, 1, 1, 3), nrow = 2, byrow = TRUE)
+
+# Check eigenvalues
+eigen(A)$values  # Both positive → positive definite (minimum exists)</code></pre>
+        </section>
+
+        <hr>
+
+        <section>
+            <div class="summary-box">
+                <h2>9. Summary</h2>
+
+                <h3>Key Concepts</h3>
+                <ol>
+                    <li><strong>Matrices</strong> represent systems of linear equations in a compact form</li>
+                    <li><strong>Matrix multiplication</strong> uses <code>%*%</code> in R (not <code>*</code>)</li>
+                    <li>A <strong>non-zero determinant</strong> guarantees a unique solution</li>
+                    <li>The <strong>inverse</strong> exists only for nonsingular (invertible) matrices</li>
+                    <li><code>solve(A, b)</code> computes $x$ in $Ax = b$ directly</li>
+                    <li><strong>Cramer's Rule</strong> provides an explicit formula for each unknown</li>
+                    <li>The <strong>Leontief inverse</strong> $(I - A)^{-1}$ gives total output requirements</li>
+                </ol>
+
+                <h3>R Functions Summary</h3>
+                <table>
+                    <thead>
+                        <tr><th>Task</th><th>R function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Create matrix</td><td><code>matrix(data, nrow, ncol, byrow)</code></td></tr>
+                        <tr><td>Dimensions</td><td><code>dim()</code>, <code>nrow()</code>, <code>ncol()</code></td></tr>
+                        <tr><td>Transpose</td><td><code>t(A)</code></td></tr>
+                        <tr><td>Matrix multiplication</td><td><code>A %*% B</code></td></tr>
+                        <tr><td>Determinant</td><td><code>det(A)</code></td></tr>
+                        <tr><td>Inverse</td><td><code>solve(A)</code></td></tr>
+                        <tr><td>Solve $Ax = b$</td><td><code>solve(A, b)</code></td></tr>
+                        <tr><td>Identity matrix</td><td><code>diag(n)</code></td></tr>
+                        <tr><td>Eigenvalues</td><td><code>eigen(A)$values</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>10. Preparation for Next Week</h2>
+            <p><strong>Week 3: Calculus and Functions.</strong> Before class:</p>
+            <ul>
+                <li>Read Chiang &amp; Wainwright, Chapters 6–8</li>
+                <li>Review differentiation rules</li>
+                <li>Practice finding derivatives</li>
+            </ul>
+            <p>Key concepts to preview: partial derivatives, elasticity as a derivative, the total differential, and functions of multiple variables.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>References</h2>
+            <ul class="references">
+                <li>Chiang, A.C. &amp; Wainwright, K. (2005). <em>Fundamental Methods of Mathematical Economics</em>, 4th ed. McGraw-Hill, Chapters 4–5.</li>
+                <li>Melkumian, A. (2011). <em>Mathematical Economics</em>. Chapters on matrices.</li>
+                <li>Jacques, I. (2015). <em>Mathematics for Economics and Business</em>. Linear algebra chapters.</li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

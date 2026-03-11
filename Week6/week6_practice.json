@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "week": 6,
+    "title": "Consumer Theory II: Duality & Welfare",
+    "learning_objectives": [
+      "Derive indirect utility and apply Roy's Identity",
+      "Solve expenditure minimization problems",
+      "Derive expenditure function and apply Shephard's Lemma",
+      "Connect Marshallian and Hicksian demands",
+      "Perform Slutsky decomposition",
+      "Calculate CV and EV welfare measures"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W6-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Indirect Utility",
+      "question": "For U = x₁⁰·³x₂⁰·⁷: (a) Find Marshallian demands. (b) Derive v(p₁,p₂,m). (c) Calculate v when p₁=2, p₂=5, m=100.",
+      "hints": [
+        "x₁ = αm/p₁ for Cobb-Douglas",
+        "Substitute demands into U to get v"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W6-P2",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Roy's Identity",
+      "question": "Given v(p₁,p₂,m) = m²/(4p₁p₂), use Roy's Identity to find Marshallian demands.",
+      "hints": [
+        "Roy's Identity: xᵢ = -(∂v/∂pᵢ)/(∂v/∂m)",
+        "Take partial derivatives carefully"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W6-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Expenditure Minimization",
+      "question": "U = x₁⁰·⁵x₂⁰·⁵. Find minimum expenditure to achieve ū=10 when p₁=4, p₂=1.",
+      "hints": [
+        "Set up Lagrangian for min p·x s.t. U ≥ ū",
+        "Same tangency: MRS = p₁/p₂",
+        "Solve for x^h then calculate expenditure"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W6-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Expenditure Function",
+      "question": "For U = x₁⁰·⁵x₂⁰·⁵: (a) Derive e(p₁,p₂,ū). (b) Verify properties: homogeneous degree 1 in prices, increasing in ū.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W6-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Shephard's Lemma",
+      "question": "Given e(p₁,p₂,ū) = ū·p₁⁰·⁴p₂⁰·⁶, use Shephard's Lemma to find Hicksian demands.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W6-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Duality Verification",
+      "question": "For U = x₁⁰·⁵x₂⁰·⁵, verify: v(p, e(p,ū)) = ū and e(p, v(p,m)) = m.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W6-P7",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Slutsky Decomposition",
+      "question": "U = x₁⁰·⁵x₂⁰·⁵, m=200, p₂=4. Price p₁ rises from 2 to 8. Decompose into substitution and income effects.",
+      "hints": [
+        "Find demands before and after",
+        "Find Hicksian demand at new prices, old utility",
+        "Substitution = x^h - x^m_old; Income = x^m_new - x^h"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W6-P8",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "CV and EV",
+      "question": "U = x₁⁰·⁵x₂⁰·⁵, m=100, p₂=2. Price p₁ increases from 2 to 4. Calculate CV and EV.",
+      "hints": [
+        "CV = e(p¹, u⁰) - m",
+        "EV = m - e(p⁰, u¹)",
+        "Use e = 2ū√(p₁p₂)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W6-P9",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Giffen Goods",
+      "question": "Explain mathematically why Giffen goods must be inferior. Use the Slutsky equation.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W6-P10",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Quasi-Linear Special Case",
+      "question": "For quasi-linear U = x₁ + 2√x₂, show that CV = EV = ΔCS.",
+      "hints": [
+        "Quasi-linear has zero income effect for x₂",
+        "This makes Marshallian = Hicksian for x₂"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W6-P11",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "R Implementation",
+      "question": "Write R functions for: (a) Cobb-Douglas indirect utility, (b) expenditure function, (c) Slutsky decomposition.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W6-P12",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Food Subsidy Evaluation",
+      "question": "Household with U = F⁰·⁶N⁰·⁴ (Food, Non-food), m=1000, pF=10, pN=20. Government subsidizes food to pF=5. Calculate (a) CV of subsidy, (b) cost to government, (c) is subsidy efficient?",
+      "hints": [],
+      "solution": ""
+    }
+  ]
+}

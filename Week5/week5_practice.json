@@ -1,0 +1,149 @@
+{
+  "metadata": {
+    "week": 5,
+    "title": "Consumer Theory I: Utility & Marshallian Demand",
+    "learning_objectives": [
+      "Describe axioms of consumer preferences",
+      "Represent preferences using utility functions",
+      "Calculate and interpret MRS",
+      "Solve utility maximization using Lagrangian",
+      "Derive Marshallian demand functions",
+      "Analyze special cases: Cobb-Douglas, perfect substitutes/complements"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W5-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Indifference Curves",
+      "question": "Sketch indifference curves for: (a) U = x₁⁰·⁵x₂⁰·⁵, (b) U = 2x₁ + 3x₂, (c) U = min{x₁, 2x₂}, (d) U = x₁ + ln(x₂)",
+      "hints": [
+        "Cobb-Douglas: smooth, convex curves",
+        "Perfect substitutes: straight lines",
+        "Perfect complements: L-shaped with kink",
+        "Quasi-linear: parallel shifts vertically"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W5-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "MRS Calculation",
+      "question": "For U = x₁⁰·³x₂⁰·⁷, find MRS at (10, 20). Interpret economically.",
+      "hints": [
+        "MRS = MU₁/MU₂",
+        "MU₁ = ∂U/∂x₁ = 0.3x₁⁻⁰·⁷x₂⁰·⁷",
+        "Simplify the ratio"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W5-P3",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Monotonic Transformations",
+      "question": "Show that U = x₁x₂ and V = ln(x₁) + ln(x₂) represent identical preferences.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W5-P4",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Budget Constraint",
+      "question": "Budget: p₁=4, p₂=5, m=100. (a) Write budget equation. (b) Find intercepts. (c) If p₁ rises to 8, describe change.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W5-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Cobb-Douglas Utility Maximization",
+      "question": "U = x₁⁰·⁴x₂⁰·⁶, prices p₁=2, p₂=3, income m=120. Find optimal bundle, utility, and λ.",
+      "hints": [
+        "Set up Lagrangian",
+        "FOC: MU₁/MU₂ = p₁/p₂",
+        "For Cobb-Douglas: x₁ = αm/p₁"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W5-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Perfect Substitutes",
+      "question": "U = 3x₁ + 4x₂, p₁=6, p₂=10, m=60. Find optimal bundle.",
+      "hints": [
+        "Compare MRS = 3/4 with p₁/p₂ = 6/10 = 0.6",
+        "Buy the good with higher MU per dollar"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W5-P7",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Perfect Complements",
+      "question": "U = min{2x₁, x₂}, p₁=4, p₂=2, m=40. Find optimal bundle.",
+      "hints": [
+        "At optimum: 2x₁ = x₂",
+        "Substitute into budget constraint"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W5-P8",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Quasi-Linear Utility",
+      "question": "U = x₁ + 4√x₂, p₁=1, p₂=4, m=20. Find optimal bundle and verify zero income effect for x₂.",
+      "hints": [
+        "FOC: MU₂/MU₁ = p₂/p₁",
+        "MU₂ = 2/√x₂"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W5-P9",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Comparative Statics",
+      "question": "For Cobb-Douglas U = x₁⁰·⁵x₂⁰·⁵ with m=100: (a) Find demand when p₁=2, p₂=2. (b) Find demand when p₁=4, p₂=2. (c) Calculate price elasticity of x₁.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W5-P10",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "R Implementation",
+      "question": "Write R function to solve Cobb-Douglas utility max numerically using nloptr. Compare with analytical solution.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W5-P11",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Agricultural Application",
+      "question": "Household allocates food budget m=200 between staples (x₁) and meat (x₂). U = x₁⁰·⁷x₂⁰·³, p₁=2, p₂=10. (a) Find demands. (b) Government subsidizes meat: p₂→5. New demands? (c) Income elasticities?",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W5-P12",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "General Utility with SOC",
+      "question": "U = ln(x₁) + 2ln(x₂), p₁=1, p₂=2, m=12. Solve and verify SOC using bordered Hessian.",
+      "hints": [
+        "Lagrangian approach",
+        "For max with one constraint: det(H̄) > 0"
+      ],
+      "solution": ""
+    }
+  ]
+}

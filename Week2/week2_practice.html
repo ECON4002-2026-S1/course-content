@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Practice Problems — Linear Algebra - ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        function copyCode(btn) {
+            const wrapper = btn.closest('.code-wrapper');
+            const code = wrapper.querySelector('code');
+            navigator.clipboard.writeText(code.innerText).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1600);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #8e44ad;
+            --accent-color: #e74c3c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --code-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --table-header-bg: #34495e;
+            --table-header-text: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h1 { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.5rem; font-weight: 700; }
+        .subtitle { font-size: 1.1rem; color: #666; font-weight: 600; }
+
+        h2 {
+            font-size: 1.8rem; color: var(--primary-color);
+            margin-top: 2.5rem; margin-bottom: 1rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 { font-size: 1.4rem; color: var(--secondary-color); margin-top: 2rem; margin-bottom: 0.8rem; }
+        h4 { font-size: 1.1rem; color: var(--text-color); margin-top: 1.5rem; margin-bottom: 0.6rem; font-weight: 600; }
+
+        p { margin-bottom: 1rem; text-align: justify; }
+
+        .instructions-box {
+            background-color: #f3eef7;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .instructions-box h2 { color: var(--secondary-color); border-bottom: none; margin-top: 0; }
+
+        .part-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
+            margin: 2.5rem 0 1.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .problem-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            background-color: #fafafa;
+        }
+
+        .problem-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.25rem;
+        }
+
+        .problem-label {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .difficulty-basic   { background-color: #27ae60; }
+        .difficulty-intermediate { background-color: #f39c12; }
+        .difficulty-advanced { background-color: #e74c3c; }
+
+        .sub-problems { margin-left: 0; list-style: none; }
+        .sub-problems li { margin-bottom: 0.6rem; padding-left: 0.5rem; }
+        .sub-problems li::before { content: attr(data-label) ") "; font-weight: 600; color: var(--secondary-color); }
+
+        .hint-box {
+            background-color: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 0.8rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .hint-box strong { color: #c0392b; }
+
+        .code-wrapper {
+            position: relative;
+            margin: 1.2rem 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.65rem;
+            font-size: 0.78rem;
+            cursor: pointer;
+            opacity: 0.85;
+            transition: opacity 0.2s, background 0.2s;
+            z-index: 10;
+        }
+
+        .copy-btn:hover { opacity: 1; background: #7d3c98; }
+        .copy-btn.copied { background: #27ae60; }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre code { background-color: transparent; padding: 0; }
+
+        ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
+        strong { color: var(--primary-color); font-weight: 600; }
+
+        table {
+            width: 100%; border-collapse: collapse;
+            margin: 1.5rem 0; background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        thead { background-color: var(--table-header-bg); color: var(--table-header-text); }
+        th { padding: 0.75rem 1rem; text-align: left; font-weight: 600; }
+        td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border-color); }
+        tbody tr:hover { background-color: #f8f9fa; }
+
+        hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+
+        .checklist { list-style: none; margin-left: 0.5rem; }
+        .checklist li { margin-bottom: 0.5rem; }
+        .checklist li::before { content: "☐ "; font-size: 1.1rem; }
+
+        .submission-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 1.2rem 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .selfassess-box {
+            background-color: #f0f7f0;
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .selfassess-box h2 { color: #27ae60; border-bottom: none; margin-top: 0; }
+
+        @media print { body { max-width: 100%; padding: 1rem; } pre, .problem-card { page-break-inside: avoid; } }
+        @media (max-width: 768px) { body { padding: 1rem; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Week 2: Practice Problems — Linear Algebra</h1>
+        <p class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics<br>University of Western Australia</p>
+    </header>
+
+    <main>
+        <section class="instructions-box">
+            <h2>Instructions</h2>
+            <p>Complete all problems, showing your work. For computational questions, include both R code and output. Verify analytical solutions using R.</p>
+        </section>
+
+        <!-- ===================== PART A ===================== -->
+        <div class="part-header">Part A: Matrix Operations</div>
+
+        <!-- Problem 1 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-basic">Basic</span> Problem 1: Basic Operations</h3>
+            <p>Given:</p>
+            <p>$$A = \begin{bmatrix} 2 & 1 \\ 3 & 5 \end{bmatrix}, \quad B = \begin{bmatrix} 4 & 0 \\ 1 & 2 \end{bmatrix}, \quad C = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$$</p>
+            <p>Calculate each of the following, first by hand, then verify in R:</p>
+            <ul class="sub-problems">
+                <li data-label="a">$A + B$</li>
+                <li data-label="b">$A - B$</li>
+                <li data-label="c">$3A$</li>
+                <li data-label="d">$AB$ (matrix multiplication)</li>
+                <li data-label="e">$BA$ — does $AB = BA$?</li>
+                <li data-label="f">$C'$ (transpose of $C$)</li>
+                <li data-label="g">What does the result from (e) tell us about matrix multiplication in general?</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+B &lt;- matrix(c(4, 0, 1, 2), nrow = 2, byrow = TRUE)
+C &lt;- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, byrow = TRUE)
+
+# (a)-(c)
+A + B
+A - B
+3 * A
+
+# (d)-(e)
+A %*% B
+B %*% A
+all.equal(A %*% B, B %*% A)  # Should be FALSE
+
+# (f)
+t(C)</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 2 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-basic">Basic</span> Problem 2: Determinants</h3>
+            <p>Calculate the determinant of each matrix, first by hand, then verify in R:</p>
+            <ul class="sub-problems">
+                <li data-label="a">$D_1 = \begin{bmatrix} 3 & 2 \\ 1 & 4 \end{bmatrix}$</li>
+                <li data-label="b">$D_2 = \begin{bmatrix} 6 & 2 \\ 3 & 1 \end{bmatrix}$</li>
+                <li data-label="c">$D_3 = \begin{bmatrix} 1 & 2 & 3 \\ 7 & 0 & 8 \\ 4 & 5 & 6 \end{bmatrix}$</li>
+                <li data-label="d">For which of the matrices above does an inverse exist? Explain why.</li>
+            </ul>
+            <div class="hint-box">
+                <strong>Hint:</strong> For a 2×2 matrix, $\det\begin{bmatrix}a & b \\ c & d\end{bmatrix} = ad - bc$. For the 3×3 case, expand along the first row.
+            </div>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">D1 &lt;- matrix(c(3, 2, 1, 4), nrow = 2, byrow = TRUE)
+D2 &lt;- matrix(c(6, 2, 3, 1), nrow = 2, byrow = TRUE)
+D3 &lt;- matrix(c(1, 2, 3, 7, 0, 8, 4, 5, 6), nrow = 3, byrow = TRUE)
+
+det(D1)   # should be 10
+det(D2)   # should be 0
+det(D3)   # should be 45</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 3 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-intermediate">Intermediate</span> Problem 3: Matrix Inverse</h3>
+            <ul class="sub-problems">
+                <li data-label="a">Find the inverse of $A = \begin{bmatrix} 2 & 1 \\ 3 & 5 \end{bmatrix}$ using the 2×2 formula: $A^{-1} = \dfrac{1}{\det(A)} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$</li>
+                <li data-label="b">Verify your answer by computing $A \cdot A^{-1}$ — it should equal the identity matrix.</li>
+                <li data-label="c">Confirm your result using R's <code>solve()</code> function.</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">A &lt;- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)
+det(A)          # Step 1: compute det(A) = 7
+
+# Step 2: apply the formula manually
+A_inv_manual &lt;- (1/7) * matrix(c(5, -1, -3, 2), nrow = 2, byrow = TRUE)
+
+# Step 3: verify using solve()
+A_inv &lt;- solve(A)
+
+# Step 4: confirm A %*% A^(-1) = I
+round(A %*% A_inv, 10)</code></pre>
+            </div>
+        </div>
+
+        <!-- ===================== PART B ===================== -->
+        <div class="part-header">Part B: Solving Linear Systems</div>
+
+        <!-- Problem 4 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-intermediate">Intermediate</span> Problem 4: Graphical and Algebraic Solutions</h3>
+            <p>For each system below: (i) solve algebraically; (ii) solve using $x = A^{-1}b$; and (iii) classify the solution as unique, infinite, or nonexistent.</p>
+
+            <h4>System A</h4>
+            <p>$$\begin{aligned} 5x + 3y &= 11 \\ 4x + y &= 6 \end{aligned}$$</p>
+
+            <h4>System B</h4>
+            <p>$$\begin{aligned} 2x + y &= 4 \\ x + 0.5y &= 2 \end{aligned}$$</p>
+
+            <h4>System C</h4>
+            <p>$$\begin{aligned} 2x + y &= 6 \\ x + 0.5y &= 2 \end{aligned}$$</p>
+
+            <div class="hint-box">
+                <strong>Hint:</strong> Compute $\det(A)$ first. If $\det = 0$, check whether the equations are consistent (same line) or inconsistent (parallel lines).
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r"># System A
+A1 &lt;- matrix(c(5, 3, 4, 1), nrow = 2, byrow = TRUE)
+b1 &lt;- c(11, 6)
+det(A1)          # Check for unique solution
+solve(A1, b1)    # Solve if det ≠ 0
+
+# System B
+A2 &lt;- matrix(c(2, 1, 1, 0.5), nrow = 2, byrow = TRUE)
+b2 &lt;- c(4, 2)
+det(A2)          # What does this tell you?
+
+# System C
+A3 &lt;- matrix(c(2, 1, 1, 0.5), nrow = 2, byrow = TRUE)
+b3 &lt;- c(6, 2)
+det(A3)          # Same coefficient matrix. Why is the answer different?</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 5 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 5: Cramer's Rule</h3>
+            <p>Use Cramer's Rule to solve:</p>
+            <p>$$\begin{aligned} 2x - 4y + 6z &= 3 \\ -x + 3y + 2z &= 2 \\ 6x - 7y - 2z &= 4 \end{aligned}$$</p>
+            <ul class="sub-problems">
+                <li data-label="a">Write the system in matrix form $Ax = b$.</li>
+                <li data-label="b">Calculate $\det(A)$.</li>
+                <li data-label="c">Calculate $\det(A_x)$, $\det(A_y)$, and $\det(A_z)$, where $A_i$ is $A$ with column $i$ replaced by $b$.</li>
+                <li data-label="d">Find $x$, $y$, and $z$ using Cramer's Rule.</li>
+                <li data-label="e">Verify your solution using R's <code>solve()</code> function.</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">A &lt;- matrix(c(2, -4, 6, -1, 3, 2, 6, -7, -2), nrow = 3, byrow = TRUE)
+b &lt;- c(3, 2, 4)
+
+det_A &lt;- det(A)   # Compute det(A)
+
+# Cramer's Rule: replace each column with b
+A_x &lt;- A; A_x[, 1] &lt;- b
+A_y &lt;- A; A_y[, 2] &lt;- b
+A_z &lt;- A; A_z[, 3] &lt;- b
+
+x &lt;- det(A_x) / det_A
+y &lt;- det(A_y) / det_A
+z &lt;- det(A_z) / det_A
+
+cat("x =", x, "  y =", y, "  z =", z)
+
+# Verify with solve()
+solve(A, b)</code></pre>
+            </div>
+        </div>
+
+        <!-- ===================== PART C ===================== -->
+        <div class="part-header">Part C: Economic Applications</div>
+
+        <!-- Problem 6 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-intermediate">Intermediate</span> Problem 6: Supply and Demand System</h3>
+            <p>The wheat market is described by:</p>
+            <ul>
+                <li>Demand: $Q_d = 100 - 2P$</li>
+                <li>Supply: $Q_s = -20 + 4P$</li>
+            </ul>
+            <ul class="sub-problems">
+                <li data-label="a">Rewrite both equations with quantity on the left-hand side of each equation.</li>
+                <li data-label="b">Write the system in matrix form: $\begin{bmatrix} ? & ? \\ ? & ? \end{bmatrix} \begin{bmatrix} Q \\ P \end{bmatrix} = \begin{bmatrix} ? \\ ? \end{bmatrix}$</li>
+                <li data-label="c">Calculate the determinant. What does it tell us about the equilibrium?</li>
+                <li data-label="d">Solve for the equilibrium price $P^*$ and quantity $Q^*$ using matrix methods.</li>
+                <li data-label="e">Write R code to set up and solve the system, then plot demand and supply with the equilibrium marked.</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r"># Set up coefficient matrix and constant vector
+A &lt;- matrix(c(1, 2, 1, -4), nrow = 2, byrow = TRUE)
+b &lt;- c(100, -20)
+
+det(A)           # Check for unique equilibrium
+eq &lt;- solve(A, b)
+Q_star &lt;- eq[1]
+P_star &lt;- eq[2]
+cat("P* =", P_star, "  Q* =", Q_star)
+
+# Plot demand and supply curves
+P_range &lt;- seq(0, 50, by = 1)
+Qd &lt;- 100 - 2 * P_range
+Qs &lt;- -20 + 4 * P_range
+
+plot(Qd, P_range, type = "l", col = "blue", lwd = 2,
+     xlim = c(-5, 130), xlab = "Quantity", ylab = "Price",
+     main = "Wheat Market Equilibrium")
+lines(Qs, P_range, col = "red", lwd = 2)
+points(Q_star, P_star, pch = 19, cex = 1.8, col = "black")
+legend("topright", legend = c("Demand", "Supply", "Equilibrium"),
+       col = c("blue", "red", "black"), lwd = c(2, 2, NA), pch = c(NA, NA, 19))</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 7 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 7: Two-Market Equilibrium</h3>
+            <p>Consider two related agricultural markets (wheat and corn) where each good's demand depends on both prices, reflecting that they are substitutes:</p>
+            <p><strong>Wheat market:</strong></p>
+            <ul>
+                <li>Demand: $Q_W^d = 80 - 3P_W + P_C$</li>
+                <li>Supply: $Q_W^s = -10 + 2P_W$</li>
+            </ul>
+            <p><strong>Corn market:</strong></p>
+            <ul>
+                <li>Demand: $Q_C^d = 100 + P_W - 4P_C$</li>
+                <li>Supply: $Q_C^s = -20 + 3P_C$</li>
+            </ul>
+            <ul class="sub-problems">
+                <li data-label="a">Write the equilibrium conditions ($Q^d = Q^s$) for each market.</li>
+                <li data-label="b">Rearrange to obtain two equations in two unknowns ($P_W$ and $P_C$).</li>
+                <li data-label="c">Express as a matrix system $Ax = b$.</li>
+                <li data-label="d">Solve for the equilibrium prices $P_W^*$ and $P_C^*$.</li>
+                <li data-label="e">Calculate the equilibrium quantities $Q_W^*$ and $Q_C^*$.</li>
+                <li data-label="f">Economic interpretation: how does an increase in wheat demand affect corn market equilibrium? Consider how the markets interact.</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r"># After rearranging equilibrium conditions:
+# Wheat:  80 - 3Pw + Pc = -10 + 2Pw  →  5Pw - Pc = 90
+# Corn:  100 + Pw - 4Pc = -20 + 3Pc  →  -Pw + 7Pc = 120
+
+A &lt;- matrix(c(5, -1, -1, 7), nrow = 2, byrow = TRUE)
+b &lt;- c(90, 120)
+
+prices &lt;- solve(A, b)
+Pw &lt;- prices[1]
+Pc &lt;- prices[2]
+cat("Pw* =", round(Pw, 2), "  Pc* =", round(Pc, 2))
+
+# Equilibrium quantities
+Qw &lt;- -10 + 2 * Pw
+Qc &lt;- -20 + 3 * Pc
+cat("Qw* =", round(Qw, 2), "  Qc* =", round(Qc, 2))</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 8 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 8: Input-Output Analysis</h3>
+            <p>A simple agricultural economy has two sectors — Crops (C) and Livestock (L) — with the following input-output coefficients:</p>
+            <table>
+                <thead>
+                    <tr><th></th><th>To Crops</th><th>To Livestock</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>From Crops</strong></td><td>0.2</td><td>0.4</td></tr>
+                    <tr><td><strong>From Livestock</strong></td><td>0.1</td><td>0.2</td></tr>
+                </tbody>
+            </table>
+            <p>Final demand: Crops = 80, Livestock = 60.</p>
+            <ul class="sub-problems">
+                <li data-label="a">Write the technology matrix $A$.</li>
+                <li data-label="b">Calculate $(I - A)$.</li>
+                <li data-label="c">Find the Leontief inverse $(I - A)^{-1}$.</li>
+                <li data-label="d">Calculate total output required from each sector: $x = (I - A)^{-1}d$.</li>
+                <li data-label="e">Economic interpretation: if final demand for Crops increases by 10 units, how much additional output is required from each sector?</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">A &lt;- matrix(c(0.2, 0.4, 0.1, 0.2), nrow = 2, byrow = TRUE)
+d &lt;- c(80, 60)
+
+I &lt;- diag(2)
+leontief &lt;- solve(I - A)   # Leontief inverse
+x &lt;- leontief %*% d
+
+cat("Crops total output:", round(x[1], 1))
+cat("Livestock total output:", round(x[2], 1))
+
+# For part (e): increase final demand for crops by 10
+d_new &lt;- c(90, 60)
+x_new &lt;- leontief %*% d_new
+cat("Change in Crops output:", round(x_new[1] - x[1], 2))
+cat("Change in Livestock output:", round(x_new[2] - x[2], 2))</code></pre>
+            </div>
+        </div>
+
+        <!-- ===================== PART D ===================== -->
+        <div class="part-header">Part D: Advanced Problems</div>
+
+        <!-- Problem 9 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 9: Eigenvalues and Stability</h3>
+            <p>For the matrix:</p>
+            <p>$$M = \begin{bmatrix} 0.8 & 0.2 \\ 0.3 & 0.6 \end{bmatrix}$$</p>
+            <ul class="sub-problems">
+                <li data-label="a">Calculate the eigenvalues using R's <code>eigen()</code> function.</li>
+                <li data-label="b">Is this matrix stable for a dynamic system? (A system is stable if all eigenvalues have absolute value $&lt;$ 1.)</li>
+                <li data-label="c">What type of matrix is this? (<em>Hint:</em> check whether each row sums to 1.)</li>
+                <li data-label="d">If this matrix represents transition probabilities between two states, what does stability mean economically?</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">M &lt;- matrix(c(0.8, 0.2, 0.3, 0.6), nrow = 2, byrow = TRUE)
+
+eig &lt;- eigen(M)
+eig$values
+
+# Check stability (all |eigenvalues| < 1)
+all(abs(eig$values) &lt; 1)
+
+# Check row sums
+rowSums(M)</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 10 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 10: Quadratic Forms</h3>
+            <p>Consider the quadratic form:</p>
+            <p>$$Q = 2x_1^2 + 3x_2^2 + 2x_1 x_2$$</p>
+            <ul class="sub-problems">
+                <li data-label="a">Write this in matrix form $Q = x'Ax$ where $A$ is symmetric.</li>
+                <li data-label="b">Find the eigenvalues of $A$.</li>
+                <li data-label="c">Is $A$ positive definite, negative definite, or indefinite?</li>
+                <li data-label="d">What does this tell us about the function $f(x_1, x_2) = 2x_1^2 + 3x_2^2 + 2x_1 x_2$ at the origin?</li>
+            </ul>
+            <div class="hint-box">
+                <strong>Hint:</strong> For a symmetric representation of $2x_1 x_2$, set $a_{12} = a_{21} = 1$ (not 2) since both off-diagonal terms contribute.
+            </div>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r"># Symmetric matrix for Q = 2x1² + 3x2² + 2x1x2
+A &lt;- matrix(c(2, 1, 1, 3), nrow = 2, byrow = TRUE)
+
+eig_vals &lt;- eigen(A)$values
+cat("Eigenvalues:", eig_vals)
+
+if (all(eig_vals &gt; 0)) {
+  cat("Positive definite — function has a minimum at the origin")
+} else if (all(eig_vals &lt; 0)) {
+  cat("Negative definite — function has a maximum at the origin")
+} else {
+  cat("Indefinite — saddle point at the origin")
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- ===================== PART E ===================== -->
+        <div class="part-header">Part E: R Programming Challenges</div>
+
+        <!-- Problem 11 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 11: Market Solver Function</h3>
+            <p>Write an R function called <code>solve_market</code> that:</p>
+            <ul>
+                <li>Takes demand intercept <code>a</code>, demand slope <code>b</code>, supply intercept <code>c</code>, and supply slope <code>d</code> as arguments</li>
+                <li>Forms the coefficient matrix and constant vector</li>
+                <li>Checks whether a unique solution exists (i.e., $\det \neq 0$)</li>
+                <li>Returns the equilibrium price and quantity, or an informative error message if no unique solution exists</li>
+            </ul>
+            <p>Test with: $Q_d = 150 - 5P$, $Q_s = -30 + 10P$.</p>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">solve_market &lt;- function(a, b, c, d) {
+  # System: Q + b*P = a   (demand: Q = a - b*P)
+  #         Q - d*P = c   (supply: Q = c + d*P)
+  A &lt;- matrix(c(1, b, 1, -d), nrow = 2, byrow = TRUE)
+  rhs &lt;- c(a, c)
+
+  if (abs(det(A)) &lt; 1e-10) {
+    return(list(error = "No unique equilibrium — check your supply and demand parameters"))
+  }
+
+  eq &lt;- solve(A, rhs)
+  return(list(Q_star = eq[1], P_star = eq[2]))
+}
+
+# Test: Qd = 150 - 5P, Qs = -30 + 10P
+result &lt;- solve_market(a = 150, b = 5, c = -30, d = 10)
+cat("P* =", result$P_star, "  Q* =", result$Q_star)</code></pre>
+            </div>
+        </div>
+
+        <!-- Problem 12 -->
+        <div class="problem-card">
+            <h3><span class="problem-label difficulty-advanced">Advanced</span> Problem 12: Sensitivity Analysis</h3>
+            <p>Using the two-market model from Problem 7:</p>
+            <ul class="sub-problems">
+                <li data-label="a">Write a function that calculates equilibrium prices given the parameters of the model.</li>
+                <li data-label="b">Perform sensitivity analysis: how does $P_W^*$ change when the corn supply intercept changes from −20 to −10?</li>
+                <li data-label="c">Create a plot showing how $P_W^*$ varies as the corn supply intercept ranges from −30 to 0.</li>
+            </ul>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code class="language-r">two_market_eq &lt;- function(corn_supply_intercept) {
+  # Wheat: 5Pw - Pc = 90
+  # Corn:  -Pw + 7Pc = 120 + corn_supply_intercept + 20
+  #   (the corn equilibrium condition changes with supply intercept)
+  #   Corn: Qc_d = Qc_s → 100 + Pw - 4Pc = corn_supply_intercept + 3Pc
+  #                      → -Pw + 7Pc = 100 - corn_supply_intercept
+  b_corn &lt;- 100 - corn_supply_intercept
+
+  A &lt;- matrix(c(5, -1, -1, 7), nrow = 2, byrow = TRUE)
+  b &lt;- c(90, b_corn)
+
+  prices &lt;- solve(A, b)
+  return(prices[1])  # Return Pw*
+}
+
+# Sensitivity: corn supply intercept ranging from -30 to 0
+intercepts &lt;- seq(-30, 0, by = 1)
+Pw_values &lt;- sapply(intercepts, two_market_eq)
+
+plot(intercepts, Pw_values, type = "l", lwd = 2, col = "darkblue",
+     xlab = "Corn Supply Intercept", ylab = "Wheat Price (Pw*)",
+     main = "Sensitivity of Wheat Equilibrium Price")
+abline(v = -20, lty = 2, col = "grey50")   # Baseline
+abline(v = -10, lty = 2, col = "red")</code></pre>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Submission -->
+        <div class="submission-box">
+            <h3>Submission Guidelines</h3>
+            <ul>
+                <li>Show all hand calculations for Problems 1–5.</li>
+                <li>Include R code and output for all computational problems.</li>
+                <li>Provide economic interpretations where requested.</li>
+                <li><strong>Due:</strong> Before the Week 3 class.</li>
+            </ul>
+        </div>
+
+        <!-- Self-assessment -->
+        <section class="selfassess-box">
+            <h2>Self-Assessment Checklist</h2>
+            <p>Before submitting, confirm that you can:</p>
+            <ul class="checklist">
+                <li>Perform matrix addition, subtraction, and scalar multiplication</li>
+                <li>Correctly multiply matrices (using <code>%*%</code> in R)</li>
+                <li>Calculate 2×2 and 3×3 determinants</li>
+                <li>Find the inverse of a 2×2 matrix</li>
+                <li>Solve linear systems using matrices</li>
+                <li>Apply Cramer's Rule</li>
+                <li>Set up economic problems in matrix form</li>
+                <li>Interpret determinants and singularity in economic terms</li>
+                <li>Use R for matrix computations</li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

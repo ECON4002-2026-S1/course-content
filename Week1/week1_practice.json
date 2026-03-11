@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "week": 1,
+    "title": "Foundations: Economics & R Setup",
+    "learning_objectives": [
+      "Explain the purpose and structure of formal economic analysis",
+      "Set up R and RStudio",
+      "Execute basic R commands",
+      "Create simple economic models in R",
+      "Build and visualize supply-demand models"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W1-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Economic Modeling",
+      "question": "Explain why economists use mathematical models rather than purely verbal analysis. Give two specific advantages.",
+      "hints": [
+        "Think about what mathematics provides that words cannot",
+        "Consider: precision, assumptions, consistency, generalization",
+        "How does math help us quantify effects?"
+      ],
+      "solution": "**Key points:**\n- Precision: Mathematical statements are unambiguous, unlike verbal descriptions\n- Explicit assumptions: All assumptions must be stated formally\n- Logical consistency: Mathematics prevents internal contradictions\n- Generalization: Mathematical results extend beyond specific examples\n- Quantification: We can measure effects numerically\n\n**Example answer:** Economists use mathematical models because they provide precision (mathematical statements have exact meanings) and enable quantification (we can calculate specific magnitudes of effects, such as 'a $1 tax increases price by $0.60')."
+    },
+    {
+      "id": "W1-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Variables in Economic Models",
+      "question": "What is the difference between an exogenous variable and an endogenous variable? Provide an example of each in a supply-demand model.",
+      "hints": [
+        "Exogenous means 'determined outside' the model",
+        "Endogenous means 'determined within' the model",
+        "Which variables do we solve for? Which are given?"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P3a",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "R Basics - Arithmetic",
+      "question": "Predict the output, then verify in R: 3 + 5 * 2",
+      "hints": [
+        "Remember order of operations (PEMDAS/BODMAS)",
+        "Multiplication before addition"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P3b",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "R Basics - Arithmetic",
+      "question": "Predict the output, then verify in R: (3 + 5) * 2",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W1-P3c",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "R Basics - Modulo",
+      "question": "Predict the output, then verify in R: 17 %% 5",
+      "hints": [
+        "%% is the modulo operator (remainder after division)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P3d",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "R Basics - Logarithms",
+      "question": "Predict the output, then verify in R: log(exp(3))",
+      "hints": [
+        "log() is natural logarithm (base e)",
+        "exp() is exponential function",
+        "These are inverse functions"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Vectors",
+      "question": "Create a vector called 'yields' containing wheat yields: 45, 52, 48, 55, 50, 47, 53. Calculate mean, sd, min, max. Count how many are above the mean.",
+      "hints": [
+        "Use c() to create vectors",
+        "Use mean(), sd(), min(), max() for statistics",
+        "Use sum() with logical condition to count"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Functions",
+      "question": "Write a function fahrenheit_to_celsius that converts F to C using C = (5/9)(F-32). Write a profit function with default tax_rate = 0.25.",
+      "hints": [
+        "Use function(arg1, arg2) { ... }",
+        "Default arguments: function(x, y = 10)",
+        "Return values with return() or just put value at end"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Supply and Demand",
+      "question": "Soybean market: Qd = 500 - 10P, Qs = -100 + 20P. Find equilibrium analytically and in R. Calculate price elasticity of demand at equilibrium.",
+      "hints": [
+        "Equilibrium: Qd = Qs, solve for P",
+        "Elasticity formula: ε = (dQ/dP) × (P/Q)",
+        "For linear demand dQ/dP is the coefficient on P"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P7",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Policy Analysis",
+      "question": "With soybean market from P6: (a) Analyze a $25 price floor. (b) Analyze a $3 tax on producers - find new equilibrium, tax burden sharing, and deadweight loss.",
+      "hints": [
+        "Price floor: If P_floor > P*, there's surplus",
+        "Tax shifts supply: new supply is Qs = -100 + 20(P - 3)",
+        "Tax burden: compare price changes for consumers and producers",
+        "DWL = 0.5 × tax × change in quantity"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W1-P10",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Simulation",
+      "question": "Crop yield model: Y = 30 + 0.5R - 0.002R². Find optimal rainfall analytically. Simulate 50 random rainfall values from U(50,150) and calculate average yield.",
+      "hints": [
+        "To maximize: dY/dR = 0",
+        "Use runif(n, min, max) for uniform random numbers",
+        "Apply the yield function to each rainfall value"
+      ],
+      "solution": ""
+    }
+  ]
+}

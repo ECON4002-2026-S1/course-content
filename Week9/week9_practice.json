@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "week": 9,
+    "title": "Market Equilibrium: Prices, Efficiency & Policy",
+    "learning_objectives": [
+      "Aggregate individual demand and supply curves",
+      "Solve for competitive market equilibrium",
+      "Calculate consumer and producer surplus",
+      "Analyze welfare effects of taxes and subsidies",
+      "Calculate deadweight loss",
+      "Determine long-run equilibrium with entry/exit"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W9-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Demand Aggregation",
+      "question": "Two consumers have individual demand curves: Q₁ᵈ = 12 - 2p, Q₂ᵈ = 10 - p. (a) At what price does Consumer 1 drop out? (b) Derive the aggregate demand curve. (c) Calculate Qᵈ at p = 4.",
+      "hints": [
+        "A consumer drops out when their demand becomes zero",
+        "Aggregate by horizontal summation at each price"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W9-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Supply Aggregation",
+      "question": "100 identical wheat farmers each have supply yᵢ = 3p - 6 for p ≥ 2. (a) Shutdown price? (b) Market supply curve? (c) Total supply at p = 5?",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W9-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Market Equilibrium",
+      "question": "Demand: Qᵈ = 22 - 3p. Supply: Qˢ = p - 3 (for p ≥ 3). (a) Find equilibrium. (b) Verify. (c) What happens if p = 7?",
+      "hints": [
+        "Set Qᵈ = Qˢ and solve for p",
+        "At p = 7, compare quantities demanded and supplied"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W9-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Consumer and Producer Surplus",
+      "question": "Using Qᵈ = 22 - 3p, Qˢ = p - 3: (a) Write inverse functions. (b) Calculate CS. (c) Calculate PS. (d) Total welfare?",
+      "hints": [
+        "Inverse demand: solve for p in terms of Q",
+        "CS = area of triangle below demand, above p*"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W9-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Tax Analysis",
+      "question": "Market: Qᵈ = 100 - 5p, Qˢ = 3p - 20. A tax of t = 4 per unit is imposed on sellers. (a) Original equilibrium. (b) New equilibrium. (c) Tax revenue. (d) Deadweight loss.",
+      "hints": [
+        "With tax on sellers: pᵇ = pˢ + t",
+        "DWL = ½ × t × ΔQ"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W9-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Subsidy Analysis",
+      "question": "Market: Qᵈ = 100 - 5p, Qˢ = 3p - 20. Government provides s = 2 subsidy to producers. Find new equilibrium, subsidy cost, ΔCS, ΔPS, and DWL.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W9-P7",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Long-Run Equilibrium with Entry/Exit",
+      "question": "Firm cost: C(y) = 1 + y². Demand: Qᵈ = 22 - 3p. Find (a) MC, AC, efficient scale. (b) LR price. (c) Firm output. (d) Market quantity. (e) Number of firms. (f) Verify zero profit.",
+      "hints": [
+        "min AC occurs where MC = AC",
+        "LR equilibrium: p = min AC, π = 0"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W9-P8",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Short-Run vs Long-Run Dynamics",
+      "question": "Same market as W9-P7 but initially only 5 firms. Each has supply yᵢ = p/2. (a) Find SR equilibrium. (b) Calculate firm profit. (c) Will entry/exit occur? (d) Describe adjustment to LR.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W9-P9",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Agricultural Market: Price Floor",
+      "question": "Barley: Qᵈ = 8 - 0.5p, Qˢ = p - 2 (million tonnes, p in $100/tonne). (a) Free market equilibrium. (b) CS and PS. (c) With price floor at p = 5: quantities? (d) Government purchase cost? (e) DWL?",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W9-P10",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "First Welfare Theorem Violations",
+      "question": "Explain why these situations violate First Welfare Theorem conditions: (a) One company controls 80% of fertilizer. (b) Factory pollutes river. (c) Farmers can't observe seed quality. (d) Contract enforcement takes 6 months.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W9-P11",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Multi-Consumer Aggregation",
+      "question": "Three consumers: Qₐ = 20 - 4p (p ≤ 5), Qᵦ = 15 - 3p (p ≤ 5), Q_c = 8 - p (p ≤ 8). (a) Exit prices for A, B? (b) Aggregate demand function. (c) Graph with kinks.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W9-P12",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "R Implementation",
+      "question": "Write R functions for: (a) Market equilibrium solver. (b) Surplus calculator. (c) Tax analysis. Test with a=100, b=2, c=-20, d=3, t=5.",
+      "hints": [],
+      "solution": ""
+    }
+  ]
+}

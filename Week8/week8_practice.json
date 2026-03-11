@@ -1,0 +1,173 @@
+{
+  "metadata": {
+    "week": 8,
+    "title": "Producer Theory II: Profit Maximization & Industry",
+    "learning_objectives": [
+      "Solve profit maximization problems",
+      "Apply VMP = input price conditions",
+      "Derive supply curves from cost functions",
+      "Determine shutdown conditions",
+      "Analyze long-run competitive equilibrium",
+      "Calculate producer surplus",
+      "Apply Hotelling's Lemma"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W8-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Profit Maximization (Output Choice)",
+      "question": "A firm has cost function C(y) = 50 + 2y + 0.5y². Output price is p = 12. (a) Find the profit-maximizing output. (b) Calculate maximum profit. (c) Verify the second-order condition.",
+      "hints": [
+        "Set p = MC",
+        "MC = dC/dy",
+        "SOC requires MC' > 0"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Value of Marginal Product",
+      "question": "A farm uses labor to produce wheat: Q = 100L^0.5. Wheat price is $8/bushel, wage is $200/day. (a) Derive VMP_L. (b) Find profit-maximizing labor. (c) Calculate output.",
+      "hints": [
+        "VMP_L = p × MP_L",
+        "Set VMP_L = w",
+        "Then find Q at optimal L"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Supply Curve Derivation",
+      "question": "A firm has total cost TC(y) = 100 + 10y + y². (a) Find MC, AVC, and AC. (b) Find the minimum of AVC. (c) Derive the supply function. (d) At what price does profit equal zero?",
+      "hints": [
+        "AVC = VC/y where VC is the variable part",
+        "Minimum AVC where dAVC/dy = 0",
+        "Supply: invert p = MC for y"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Shutdown Decision",
+      "question": "A processing plant has FC = 500 and VC(y) = 20y + 0.1y². Current price is p = 35. (a) Should the plant operate in the short run? (b) What is short-run profit? (c) At what price would it shut down?",
+      "hints": [
+        "Compare p to AVC at optimal output",
+        "Find optimal y from p = MC",
+        "Shutdown when p < min AVC"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Long-Run Equilibrium",
+      "question": "In a competitive industry, each firm has C(y) = y³ - 6y² + 15y. (a) Find AC and MC. (b) Find the efficient scale (min AC). (c) What is the long-run equilibrium price? (d) If market demand is Q^D = 300 - 5p, how many firms operate?",
+      "hints": [
+        "Efficient scale where AC = MC",
+        "LR price = min AC",
+        "Number of firms = Market Q / firm output"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P6",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Hotelling's Lemma",
+      "question": "A firm has profit function π(p,w) = (p-w)²/4. (a) Use Hotelling's Lemma to find supply y^s(p,w). (b) Find labor demand L^d(p,w). (c) Verify by deriving from the production function f(L) = 2√L.",
+      "hints": [
+        "∂π/∂p = y^s",
+        "∂π/∂w = -L^d",
+        "For verification, solve profit max directly"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P7",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Producer Surplus",
+      "question": "A firm has MC(y) = 4 + 2y and faces price p = 20. Fixed costs are FC = 50. (a) Find optimal output and profit. (b) Calculate producer surplus. (c) Verify PS = π + FC.",
+      "hints": [
+        "PS = area between p and MC up to y*",
+        "Or PS = Revenue - VC",
+        "Integrate MC from 0 to y* to get VC"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P8",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Agricultural Supply Response",
+      "question": "A wheat farm has C(y) = 1000 + 50y + 0.5y² (y in tonnes). (a) Derive the supply curve. (b) If wheat price rises from $150 to $200/tonne, by how much does output increase? (c) Calculate the change in profit.",
+      "hints": [
+        "Supply: invert p = MC",
+        "Compare quantities at two prices",
+        "Δπ = change in PS (in short run)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P9",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Entry and Exit",
+      "question": "Explain the adjustment process when (a) demand for a product permanently increases, (b) a new technology reduces costs, (c) an input price rises. For each, describe short-run and long-run effects on price, output, number of firms, and profit.",
+      "hints": [
+        "Short run: existing firms respond along supply",
+        "Long run: entry/exit until π = 0",
+        "Consider shifts in cost curves"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P10",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Two-Input Profit Maximization",
+      "question": "A farm has production f(L,K) = L^0.3 K^0.2 with p = 50, w = 10, r = 20. (a) Write the profit maximization problem. (b) Derive FOCs using VMP conditions. (c) Solve for L*, K*, y*, and π*.",
+      "hints": [
+        "Two FOCs: VMP_L = w, VMP_K = r",
+        "Solve system of two equations",
+        "α + β < 1 ensures interior solution"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P11",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Industry Equilibrium with Heterogeneous Costs",
+      "question": "An industry has two types of farms: 50 efficient farms with C_E(y) = 10 + 2y + 0.5y², and 100 inefficient farms with C_I(y) = 20 + 4y + 0.5y². (a) Derive each type's supply curve. (b) Find industry supply. (c) If market demand is Q = 500 - 10p, find equilibrium price and quantity. (d) Calculate profits for each farm type.",
+      "hints": [
+        "Supply = MC above min AVC for each type",
+        "Sum supplies horizontally",
+        "Solve S = D for equilibrium"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W8-P12",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Ricardian Rent",
+      "question": "Three farms produce wheat with different land quality: Farm A (best): C_A(y)=y², Farm B (medium): C_B(y)=2y², Farm C (marginal): C_C(y)=4y². (a) If wheat price is p=20, find each farm's output and profit. (b) What is the economic rent earned by Farm A? (c) If a land tax equal to rent is imposed on Farm A, does it change output?",
+      "hints": [
+        "Marginal farm earns zero profit",
+        "Rent = profit above marginal farm",
+        "Land tax is a lump sum—doesn't affect MC"
+      ],
+      "solution": ""
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "week": 10,
+  "title": "International Trade and Policy: R Code Implementations",
+  "description": "R implementations for comparative advantage, trade equilibrium, tariff and quota analysis, and welfare calculations",
+  "snippets": [
+    {
+      "id": "W10-CS01",
+      "category": "comparative_advantage",
+      "title": "Comparative Advantage Calculator",
+      "code": "comparative_advantage <- function(country1, country2, labor1, labor2) {\n  # Opportunity costs\n  OC1_c1 <- labor1[1] / labor1[2]  # Country 1's OC of good 1\n  OC1_c2 <- labor2[1] / labor2[2]  # Country 2's OC of good 1\n  OC2_c1 <- labor1[2] / labor1[1]  # Country 1's OC of good 2\n  OC2_c2 <- labor2[2] / labor2[1]  # Country 2's OC of good 2\n  \n  cat('=== Opportunity Costs ===\\n')\n  cat(country1, '- Good1:', round(OC1_c1, 3), ', Good2:', round(OC2_c1, 3), '\\n')\n  cat(country2, '- Good1:', round(OC1_c2, 3), ', Good2:', round(OC2_c2, 3), '\\n\\n')\n  \n  CA_1 <- ifelse(OC1_c1 < OC1_c2, country1, country2)\n  CA_2 <- ifelse(OC2_c1 < OC2_c2, country1, country2)\n  cat('Comparative Advantage:\\n  Good1:', CA_1, '\\n  Good2:', CA_2, '\\n')\n  \n  cat('\\nToT range: between', min(OC1_c1, OC1_c2), 'and', max(OC1_c1, OC1_c2), '\\n')\n}\n\ncomparative_advantage('Australia', 'US', c(20, 40), c(6, 24))",
+      "notes": "Calculates opportunity costs and identifies comparative advantage for 2 countries, 2 goods."
+    },
+    {
+      "id": "W10-CS02",
+      "category": "equilibrium",
+      "title": "Autarky vs Free Trade Equilibrium",
+      "code": "trade_equilibrium <- function(a, b, c, d, p_w) {\n  # Demand: Q = a - bp, Supply: Q = c + dp\n  p_A <- (a - c) / (b + d)\n  Q_A <- a - b * p_A\n  \n  Q_D <- a - b * p_w\n  Q_S <- c + d * p_w\n  M <- Q_D - Q_S\n  \n  cat('=== Trade Analysis ===\\n')\n  cat('Autarky: p =', round(p_A, 2), ', Q =', round(Q_A, 2), '\\n')\n  cat('World price:', p_w, '\\n')\n  cat('Direction:', ifelse(M > 0, 'IMPORT', 'EXPORT'), '\\n')\n  cat('Q_D =', round(Q_D, 2), ', Q_S =', round(Q_S, 2), '\\n')\n  cat('Trade volume:', round(abs(M), 2), '\\n')\n  \n  list(p_A = p_A, Q_D = Q_D, Q_S = Q_S, trade = M)\n}\n\ntrade_equilibrium(120, 2, -30, 3, 24)",
+      "notes": "Compares autarky equilibrium with free trade. Positive M = imports."
+    },
+    {
+      "id": "W10-CS03",
+      "category": "welfare",
+      "title": "Gains from Trade Calculation",
+      "code": "trade_welfare <- function(a, b, c, d, p_w) {\n  eq <- trade_equilibrium(a, b, c, d, p_w)\n  P_d_int <- a/b; P_s_int <- -c/d\n  \n  # Autarky welfare\n  CS_A <- 0.5 * (P_d_int - eq$p_A) * (a - b * eq$p_A)\n  PS_A <- 0.5 * (eq$p_A - P_s_int) * (c + d * eq$p_A)\n  \n  # Free trade welfare\n  CS_T <- 0.5 * (P_d_int - p_w) * eq$Q_D\n  PS_T <- 0.5 * (p_w - P_s_int) * eq$Q_S\n  \n  cat('\\n=== Welfare ===\\n')\n  cat('Autarky: CS =', round(CS_A,1), ', PS =', round(PS_A,1), '\\n')\n  cat('Trade:   CS =', round(CS_T,1), ', PS =', round(PS_T,1), '\\n')\n  cat('Gains from trade:', round((CS_T + PS_T) - (CS_A + PS_A), 1), '\\n')\n  \n  list(gains = (CS_T + PS_T) - (CS_A + PS_A))\n}\n\ntrade_welfare(120, 2, -30, 3, 24)",
+      "notes": "Calculates welfare under autarky vs free trade. Gains from trade always positive."
+    },
+    {
+      "id": "W10-CS04",
+      "category": "tariff",
+      "title": "Small Country Tariff Analysis",
+      "code": "tariff_analysis <- function(a, b, c, d, p_w, t) {\n  # Free trade\n  Q_D_f <- a - b * p_w; Q_S_f <- c + d * p_w\n  M_f <- Q_D_f - Q_S_f\n  \n  # With tariff\n  p_t <- p_w + t\n  Q_D_t <- a - b * p_t; Q_S_t <- c + d * p_t\n  M_t <- max(0, Q_D_t - Q_S_t)\n  \n  # Welfare\n  P_d <- a/b; P_s <- -c/d\n  CS_f <- 0.5*(P_d - p_w)*Q_D_f; CS_t <- 0.5*(P_d - p_t)*Q_D_t\n  PS_f <- 0.5*(p_w - P_s)*Q_S_f; PS_t <- 0.5*(p_t - P_s)*Q_S_t\n  rev <- t * M_t\n  DWL <- (CS_f - CS_t) - (PS_t - PS_f) - rev\n  \n  cat('=== Tariff (t =', t, ') ===\\n')\n  cat('Price: p_w =', p_w, '→ p_t =', p_t, '\\n')\n  cat('Imports:', round(M_f, 1), '→', round(M_t, 1), '\\n')\n  cat('ΔCS =', round(CS_t - CS_f, 1), '\\n')\n  cat('ΔPS =', round(PS_t - PS_f, 1), '\\n')\n  cat('Revenue =', round(rev, 1), '\\n')\n  cat('DWL =', round(DWL, 1), '\\n')\n  \n  list(p_t = p_t, imports = M_t, DWL = DWL)\n}\n\ntariff_analysis(120, 2, -30, 3, 24, 6)",
+      "notes": "Full tariff welfare analysis for small country. DWL = production + consumption distortion."
+    },
+    {
+      "id": "W10-CS05",
+      "category": "tariff",
+      "title": "Visualize Tariff Effects",
+      "code": "plot_tariff <- function(a, b, c, d, p_w, t) {\n  p_t <- p_w + t\n  Q_range <- seq(0, a*1.1, length=200)\n  P_d <- (a - Q_range)/b; P_s <- (Q_range - c)/d\n  P_s[P_s < 0] <- NA\n  \n  Q_D_f <- a - b*p_w; Q_S_f <- c + d*p_w\n  Q_D_t <- a - b*p_t; Q_S_t <- c + d*p_t\n  \n  plot(Q_range, P_d, type='l', col='blue', lwd=2,\n       ylim=c(0, max(na.omit(c(P_d, P_s)))*1.1),\n       xlab='Quantity', ylab='Price', main=paste('Tariff =', t))\n  lines(Q_range, P_s, col='red', lwd=2)\n  abline(h=p_w, col='darkgreen', lwd=2)\n  abline(h=p_t, col='orange', lwd=2, lty=2)\n  \n  # DWL triangles\n  polygon(c(Q_S_f, Q_S_t, Q_S_t), c(p_w, p_w, p_t),\n          col=rgb(1,1,0,0.3), border=NA)\n  polygon(c(Q_D_t, Q_D_f, Q_D_t), c(p_t, p_w, p_w),\n          col=rgb(1,1,0,0.3), border=NA)\n  \n  legend('topright', c('D','S','p_w','p_t','DWL'),\n         col=c('blue','red','darkgreen','orange',rgb(1,1,0,0.5)),\n         lwd=c(2,2,2,2,NA), pch=c(NA,NA,NA,NA,15))\n  grid()\n}\n\nplot_tariff(120, 2, -30, 3, 24, 6)",
+      "notes": "Plots supply/demand with tariff, highlighting DWL triangles."
+    },
+    {
+      "id": "W10-CS06",
+      "category": "quota",
+      "title": "Import Quota Analysis",
+      "code": "quota_analysis <- function(a, b, c, d, p_w, M_bar) {\n  # Free trade baseline\n  Q_D_f <- a - b*p_w; Q_S_f <- c + d*p_w\n  M_f <- Q_D_f - Q_S_f\n  \n  # Quota price: D(p) - S(p) = M_bar\n  p_q <- (a - c - M_bar) / (b + d)\n  Q_D_q <- a - b*p_q; Q_S_q <- c + d*p_q\n  \n  rent <- (p_q - p_w) * M_bar\n  t_equiv <- p_q - p_w\n  \n  cat('=== Quota (M̄ =', M_bar, ') ===\\n')\n  cat('Free trade imports:', round(M_f, 1), '\\n')\n  cat('Domestic price:', round(p_q, 2), '(↑', round(p_q - p_w, 2), ')\\n')\n  cat('Equivalent tariff:', round(t_equiv, 2), '\\n')\n  cat('Quota rent:', round(rent, 1), '\\n')\n  cat('\\nRent allocation matters:\\n')\n  cat('  Auctioned → Government\\n')\n  cat('  Given to importers → Domestic firms\\n')\n  cat('  VER → Foreign exporters (worst for domestic welfare)\\n')\n  \n  list(p_quota = p_q, rent = rent, t_equiv = t_equiv)\n}\n\nquota_analysis(120, 2, -30, 3, 24, 12)",
+      "notes": "Quota creates domestic price premium. Who gets the rent affects national welfare."
+    },
+    {
+      "id": "W10-CS07",
+      "category": "large_country",
+      "title": "Large Country Tariff Analysis",
+      "code": "large_country_tariff <- function(a, b, c, d, X_int, X_sl, t) {\n  # Domestic: D=a-bp, S=c+dp; Foreign export: X*=X_sl*p - X_int\n  \n  # Free trade: (a-c)-(b+d)p = X_sl*p - X_int\n  p_f <- (a - c + X_int) / (b + d + X_sl)\n  M_f <- (a - c) - (b + d) * p_f\n  \n  # With tariff: p_d = p_w + t\n  p_w_new <- (a - c + X_int - (b+d)*t) / (b + d + X_sl)\n  p_d_new <- p_w_new + t\n  M_new <- (a - c) - (b + d) * p_d_new\n  \n  ToT_gain <- (p_f - p_w_new) * M_new\n  \n  cat('=== Large Country Tariff (t =', t, ') ===\\n')\n  cat('Free trade price:', round(p_f, 2), '\\n')\n  cat('With tariff:\\n')\n  cat('  World price:', round(p_w_new, 2), '(↓', round(p_f - p_w_new, 2), ')\\n')\n  cat('  Domestic:', round(p_d_new, 2), '(↑', round(p_d_new - p_f, 2), ')\\n')\n  cat('Tariff incidence:\\n')\n  cat('  Consumers:', round(100*(p_d_new-p_f)/t, 1), '%\\n')\n  cat('  Foreigners:', round(100*(p_f-p_w_new)/t, 1), '%\\n')\n  cat('ToT gain:', round(ToT_gain, 1), '\\n')\n  \n  list(ToT_gain = ToT_gain, p_w = p_w_new, p_d = p_d_new)\n}\n\nlarge_country_tariff(200, 4, -40, 2, 80, 4, 10)",
+      "notes": "Large country can shift tariff burden to foreigners and improve ToT."
+    },
+    {
+      "id": "W10-CS08",
+      "category": "large_country",
+      "title": "Optimal Tariff Calculation",
+      "code": "optimal_tariff <- function(X_slope, p_free, X_free) {\n  # Foreign export supply elasticity\n  epsilon <- X_slope * (p_free / X_free)\n  \n  # Optimal tariff formula\n  t_star <- 1 / (epsilon - 1)\n  \n  cat('=== Optimal Tariff ===\\n')\n  cat('Foreign export supply elasticity: ε =', round(epsilon, 3), '\\n')\n  cat('Optimal tariff (ad valorem):', round(t_star, 3), '\\n')\n  cat('Optimal tariff (specific):', round(t_star * p_free, 2), '\\n')\n  \n  if (epsilon <= 1) {\n    cat('Warning: ε ≤ 1 means infinite optimal tariff\\n')\n  }\n  \n  list(epsilon = epsilon, t_star = t_star)\n}\n\n# Example: X* = 4p - 80, at p=32, X=48\noptimal_tariff(4, 32, 48)",
+      "notes": "t* = 1/(ε-1). Higher foreign supply elasticity → lower optimal tariff."
+    },
+    {
+      "id": "W10-CS09",
+      "category": "analysis",
+      "title": "Excess Demand Function",
+      "code": "excess_demand <- function(a, b, c, d) {\n  p_A <- (a - c) / (b + d)\n  ED <- function(p) (a - c) - (b + d) * p\n  \n  p_range <- seq(0, p_A * 1.5, length = 200)\n  ED_vals <- sapply(p_range, ED)\n  \n  plot(ED_vals, p_range, type = 'l', col = 'blue', lwd = 2,\n       xlab = 'Excess Demand', ylab = 'Price',\n       main = 'Excess Demand Function')\n  abline(v = 0, h = p_A, lty = 2)\n  \n  # Shade import/export regions\n  polygon(c(ED_vals[ED_vals > 0], 0),\n          c(p_range[ED_vals > 0], p_A),\n          col = rgb(0,0,1,0.2), border = NA)\n  polygon(c(ED_vals[ED_vals < 0], 0),\n          c(p_range[ED_vals < 0], p_A),\n          col = rgb(1,0,0,0.2), border = NA)\n  \n  text(max(ED_vals)/2, p_A*0.5, 'Import', col='blue')\n  text(min(ED_vals)/2, p_A*1.25, 'Export', col='red')\n  points(0, p_A, pch=19, cex=1.5)\n  grid()\n  \n  list(ED = ED, p_autarky = p_A)\n}\n\nexcess_demand(120, 2, -30, 3)",
+      "notes": "ED > 0: country imports. ED < 0: country exports. ED = 0 at autarky price."
+    },
+    {
+      "id": "W10-CS10",
+      "category": "analysis",
+      "title": "Policy Comparison: Tariff vs Quota",
+      "code": "compare_tariff_quota <- function(a, b, c, d, p_w, target_reduction) {\n  # Free trade\n  Q_D_f <- a - b*p_w; Q_S_f <- c + d*p_w\n  M_f <- Q_D_f - Q_S_f\n  M_target <- M_f * (1 - target_reduction)\n  \n  # Equivalent tariff\n  t <- (M_f - M_target) / (b + d)\n  \n  # Equivalent quota\n  M_bar <- M_target\n  p_q <- (a - c - M_bar) / (b + d)\n  \n  cat('=== Policy Comparison ===\\n')\n  cat('Reduce imports by', target_reduction*100, '%\\n')\n  cat('Free trade imports:', round(M_f, 1), '→', round(M_target, 1), '\\n\\n')\n  cat('Equivalent tariff: t =', round(t, 2), '\\n')\n  cat('Equivalent quota: M̄ =', round(M_bar, 2), '\\n\\n')\n  \n  cat('Key difference: Quota rent allocation\\n')\n  cat('  Tariff: Revenue =', round(t * M_target, 1), '(to govt)\\n')\n  rent <- (p_q - p_w) * M_bar\n  cat('  Quota rent =', round(rent, 1), '(to holder)\\n')\n}\n\ncompare_tariff_quota(120, 2, -30, 3, 24, 0.5)",
+      "notes": "Tariff and quota can achieve same price/quantity effect. Difference is rent distribution."
+    },
+    {
+      "id": "W10-CS11",
+      "category": "applications",
+      "title": "Australian Agricultural Export Market",
+      "code": "aus_export_market <- function() {\n  # Wheat: D = 15 - 0.5p, S = 2p - 5, Export demand = 25 - p\n  # Equilibrium: S - D = X_demand\n  # (2p-5) - (15-0.5p) = 25 - p → 2.5p - 20 = 25 - p → 3.5p = 45\n  \n  p_trade <- 45 / 3.5\n  Q_D <- 15 - 0.5 * p_trade\n  Q_S <- 2 * p_trade - 5\n  exports <- Q_S - Q_D\n  \n  # Autarky\n  p_A <- (15 - (-5)) / (0.5 + 2)  # = 20/2.5 = 8\n  \n  cat('=== Australian Wheat Exports ===\\n')\n  cat('Autarky price: $', round(p_A, 2), '/tonne\\n')\n  cat('Trade price: $', round(p_trade, 2), '/tonne\\n')\n  cat('Domestic consumption:', round(Q_D, 2), 'M tonnes\\n')\n  cat('Production:', round(Q_S, 2), 'M tonnes\\n')\n  cat('Exports:', round(exports, 2), 'M tonnes\\n')\n  \n  # Welfare\n  CS_A <- 0.5 * (30 - p_A) * (15 - 0.5*p_A)\n  PS_A <- 0.5 * (p_A - 2.5) * (2*p_A - 5)\n  CS_T <- 0.5 * (30 - p_trade) * Q_D\n  PS_T <- 0.5 * (p_trade - 2.5) * Q_S\n  \n  cat('\\nWelfare:\\n')\n  cat('  Autarky: CS =', round(CS_A,1), ', PS =', round(PS_A,1), '\\n')\n  cat('  Trade:   CS =', round(CS_T,1), ', PS =', round(PS_T,1), '\\n')\n  cat('  Gains:', round((CS_T + PS_T) - (CS_A + PS_A), 1), '\\n')\n}\n\naus_export_market()",
+      "notes": "Australian exporters gain from trade; domestic consumers pay higher prices."
+    },
+    {
+      "id": "W10-CS12",
+      "category": "complete",
+      "title": "Complete Trade Analysis Toolkit",
+      "code": "trade_toolkit <- function(a, b, c, d) {\n  list(\n    autarky = function() {\n      p <- (a-c)/(b+d); Q <- a - b*p\n      list(price = p, quantity = Q)\n    },\n    \n    free_trade = function(p_w) {\n      trade_equilibrium(a, b, c, d, p_w)\n    },\n    \n    welfare = function(p_w) {\n      trade_welfare(a, b, c, d, p_w)\n    },\n    \n    tariff = function(p_w, t) {\n      tariff_analysis(a, b, c, d, p_w, t)\n    },\n    \n    quota = function(p_w, M_bar) {\n      quota_analysis(a, b, c, d, p_w, M_bar)\n    },\n    \n    plot_tariff = function(p_w, t) {\n      plot_tariff(a, b, c, d, p_w, t)\n    },\n    \n    excess_demand = function() {\n      excess_demand(a, b, c, d)\n    }\n  )\n}\n\n# Usage\nmkt <- trade_toolkit(120, 2, -30, 3)\nmkt$autarky()\nmkt$tariff(24, 6)",
+      "notes": "Comprehensive toolkit for trade policy analysis."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Small Country Tariff",
+      "template": "# p_domestic = p_world + t\n# Calculate Q_D, Q_S at new price\n# DWL = 0.5 * t * (ΔQ_S + ΔQ_D)"
+    },
+    {
+      "pattern": "Quota Analysis",
+      "template": "# Find p where D(p) - S(p) = M_bar\n# p_q = (a - c - M_bar) / (b + d)\n# Rent = (p_q - p_w) * M_bar"
+    },
+    {
+      "pattern": "Large Country",
+      "template": "# Solve: domestic imports = foreign exports\n# With tariff: p_d = p_w + t\n# Foreign supply responds to p_w, not p_d"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "Negative imports calculated",
+      "cause": "Country is actually an exporter at this price",
+      "fix": "Check if p_w > p_autarky; if so, calculate exports instead"
+    },
+    {
+      "error": "Tariff revenue is zero",
+      "cause": "Prohibitive tariff eliminated all imports",
+      "fix": "Check if p_w + t > autarky price"
+    },
+    {
+      "error": "Quota price below world price",
+      "cause": "Quota larger than free trade imports",
+      "fix": "Quota only binds if M_bar < free trade imports"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "week": 4,
+  "title": "Optimization in R",
+  "description": "R implementations for unconstrained and constrained optimization, Hessians, and bordered Hessians",
+  "snippets": [
+    {
+      "id": "W4-CS01",
+      "category": "single_variable",
+      "title": "Single Variable Optimization with optimize()",
+      "code": "# Profit function: π(Q) = 100Q - 3Q²\nprofit <- function(Q) 100 * Q - 3 * Q^2\n\n# Find maximum (optimize uses interval search)\nresult <- optimize(profit, interval = c(0, 50), maximum = TRUE)\n\ncat(\"Q* =\", result$maximum, \"\\n\")\ncat(\"π* =\", result$objective, \"\\n\")\n\n# Verify with calculus: dπ/dQ = 100 - 6Q = 0 → Q* = 16.67",
+      "output": "Q* = 16.66667\nπ* = 833.3333",
+      "notes": "optimize() is for single-variable problems. Use maximum=TRUE for maximization.",
+      "common_errors": ["Forgetting maximum=TRUE (default is minimization)", "Interval too narrow missing the optimum"]
+    },
+    {
+      "id": "W4-CS02",
+      "category": "single_variable",
+      "title": "FOC and SOC Verification",
+      "code": "# Numerical derivatives for verification\nprofit <- function(Q) 100 * Q - 3 * Q^2\n\n# First derivative (marginal)\nmarginal <- function(Q, h = 1e-6) {\n  (profit(Q + h) - profit(Q - h)) / (2 * h)\n}\n\n# Second derivative\nsecond_deriv <- function(Q, h = 1e-5) {\n  (profit(Q + h) - 2*profit(Q) + profit(Q - h)) / h^2\n}\n\nQ_star <- 100/6  # Analytical solution\n\ncat(\"At Q* =\", round(Q_star, 2), \":\\n\")\ncat(\"FOC: dπ/dQ =\", round(marginal(Q_star), 6), \"(should be ≈ 0)\\n\")\ncat(\"SOC: d²π/dQ² =\", round(second_deriv(Q_star), 2), \"(should be < 0 for max)\\n\")",
+      "notes": "Numerical derivatives verify analytical work. SOC < 0 confirms maximum."
+    },
+    {
+      "id": "W4-CS03",
+      "category": "multivariate",
+      "title": "Multi-Variable Optimization with optim()",
+      "code": "# Profit: π(L,K) = 50L^0.3 K^0.5 - 2L - 3K\n# optim() minimizes, so we minimize negative profit\n\nneg_profit <- function(x) {\n  L <- x[1]\n  K <- x[2]\n  -(50 * L^0.3 * K^0.5 - 2*L - 3*K)\n}\n\n# Starting point matters for convergence\nresult <- optim(\n  par = c(10, 10),      # Initial guess\n  fn = neg_profit,\n  method = \"BFGS\",       # Quasi-Newton method\n  control = list(maxit = 1000)\n)\n\nL_star <- result$par[1]\nK_star <- result$par[2]\nprofit_star <- -result$value\n\ncat(\"Optimal inputs: L* =\", round(L_star, 2), \", K* =\", round(K_star, 2), \"\\n\")\ncat(\"Maximum profit: π* =\", round(profit_star, 2))",
+      "notes": "optim() minimizes by default. For maximization, minimize the negative.",
+      "common_errors": ["Using wrong sign (minimizing instead of maximizing)", "Poor starting values causing convergence to local optimum"]
+    },
+    {
+      "id": "W4-CS04",
+      "category": "multivariate",
+      "title": "Computing the Gradient Numerically",
+      "code": "# Numerical gradient (vector of partial derivatives)\ngradient <- function(f, x, h = 1e-6) {\n  n <- length(x)\n  grad <- numeric(n)\n  for (i in 1:n) {\n    x_plus <- x_minus <- x\n    x_plus[i] <- x[i] + h\n    x_minus[i] <- x[i] - h\n    grad[i] <- (f(x_plus) - f(x_minus)) / (2 * h)\n  }\n  return(grad)\n}\n\n# Example: f(x,y) = x² + 2xy + 3y²\nf <- function(x) x[1]^2 + 2*x[1]*x[2] + 3*x[2]^2\n\n# Gradient at (1, 1)\ngrad <- gradient(f, c(1, 1))\ncat(\"∇f(1,1) =\", grad, \"\\n\")\ncat(\"Analytical: (2x + 2y, 2x + 6y) = (4, 8)\")",
+      "notes": "Gradient = 0 is the FOC for multivariate optimization."
+    },
+    {
+      "id": "W4-CS05",
+      "category": "hessian",
+      "title": "Computing the Hessian Matrix",
+      "code": "# Numerical Hessian (matrix of second derivatives)\nhessian <- function(f, x, h = 1e-5) {\n  n <- length(x)\n  H <- matrix(0, n, n)\n  for (i in 1:n) {\n    for (j in 1:n) {\n      x_pp <- x_pm <- x_mp <- x_mm <- x\n      x_pp[i] <- x_pp[i] + h; x_pp[j] <- x_pp[j] + h\n      x_pm[i] <- x_pm[i] + h; x_pm[j] <- x_pm[j] - h\n      x_mp[i] <- x_mp[i] - h; x_mp[j] <- x_mp[j] + h\n      x_mm[i] <- x_mm[i] - h; x_mm[j] <- x_mm[j] - h\n      H[i, j] <- (f(x_pp) - f(x_pm) - f(x_mp) + f(x_mm)) / (4 * h^2)\n    }\n  }\n  return(H)\n}\n\n# Example\nf <- function(x) -2*x[1]^2 - 3*x[2]^2 + 4*x[1]*x[2]\nH <- hessian(f, c(1, 1))\ncat(\"Hessian:\\n\")\nprint(round(H, 2))",
+      "output": "Hessian:\n     [,1] [,2]\n[1,]   -4    4\n[2,]    4   -6"
+    },
+    {
+      "id": "W4-CS06",
+      "category": "hessian",
+      "title": "Checking Definiteness",
+      "code": "# Check definiteness using eigenvalues\ncheck_definiteness <- function(H) {\n  eig <- eigen(H)$values\n  cat(\"Eigenvalues:\", round(eig, 4), \"\\n\")\n  \n  if (all(eig > 0)) {\n    return(\"Positive definite → MINIMUM\")\n  } else if (all(eig < 0)) {\n    return(\"Negative definite → MAXIMUM\")\n  } else if (all(eig >= 0)) {\n    return(\"Positive semi-definite\")\n  } else if (all(eig <= 0)) {\n    return(\"Negative semi-definite\")\n  } else {\n    return(\"Indefinite → SADDLE POINT\")\n  }\n}\n\n# Alternative: Check leading principal minors\ncheck_minors <- function(H) {\n  n <- nrow(H)\n  minors <- numeric(n)\n  for (k in 1:n) {\n    minors[k] <- det(H[1:k, 1:k])\n  }\n  cat(\"Leading principal minors:\", round(minors, 4), \"\\n\")\n  \n  # Positive definite: all minors > 0\n  # Negative definite: alternating signs starting with -\n  return(minors)\n}\n\n# Test\nH <- matrix(c(-4, 4, 4, -6), nrow = 2)\ncat(check_definiteness(H), \"\\n\")\ncheck_minors(H)",
+      "notes": "For 2×2: Neg def if H₁₁ < 0 and det(H) > 0. Pos def if H₁₁ > 0 and det(H) > 0."
+    },
+    {
+      "id": "W4-CS07",
+      "category": "constrained",
+      "title": "Constrained Optimization with nloptr",
+      "code": "library(nloptr)\n\n# Minimize cost C = 3L + 4K\n# Subject to: 2L^0.5 K^0.5 = 160\n\ncost <- function(x) {\n  L <- x[1]; K <- x[2]\n  return(3*L + 4*K)\n}\n\n# Equality constraint (must equal zero)\nproduction_constraint <- function(x) {\n  L <- x[1]; K <- x[2]\n  return(2 * L^0.5 * K^0.5 - 160)\n}\n\nresult <- nloptr(\n  x0 = c(50, 50),          # Starting point\n  eval_f = cost,           # Objective function\n  eval_g_eq = production_constraint,  # Equality constraint\n  lb = c(0, 0),            # Lower bounds (non-negativity)\n  opts = list(\n    algorithm = \"NLOPT_LN_COBYLA\",\n    xtol_rel = 1e-8,\n    maxeval = 1000\n  )\n)\n\ncat(\"L* =\", round(result$solution[1], 2), \"\\n\")\ncat(\"K* =\", round(result$solution[2], 2), \"\\n\")\ncat(\"Min cost =\", round(result$objective, 2))",
+      "output": "L* = 92.38\nK* = 69.28\nMin cost = 554.26",
+      "notes": "nloptr handles equality and inequality constraints. COBYLA is derivative-free."
+    },
+    {
+      "id": "W4-CS08",
+      "category": "constrained",
+      "title": "Utility Maximization Example",
+      "code": "library(nloptr)\n\n# Maximize u = x^0.4 y^0.6 subject to 2x + 3y = 120\n\n# We minimize negative utility\nneg_utility <- function(x) {\n  -(x[1]^0.4 * x[2]^0.6)\n}\n\nbudget_constraint <- function(x) {\n  2*x[1] + 3*x[2] - 120\n}\n\nresult <- nloptr(\n  x0 = c(20, 20),\n  eval_f = neg_utility,\n  eval_g_eq = budget_constraint,\n  lb = c(0.001, 0.001),  # Avoid zero (log issues)\n  opts = list(algorithm = \"NLOPT_LN_COBYLA\", xtol_rel = 1e-8)\n)\n\nx_star <- result$solution\ncat(\"Optimal bundle: x* =\", round(x_star[1], 2), \n    \", y* =\", round(x_star[2], 2), \"\\n\")\ncat(\"Max utility:\", round(-result$objective, 4), \"\\n\")\n\n# Verify with Cobb-Douglas formula\nalpha <- 0.4; m <- 120; p1 <- 2; p2 <- 3\ncat(\"\\nAnalytical (Cobb-Douglas):\\n\")\ncat(\"x* = αm/p₁ =\", alpha * m / p1, \"\\n\")\ncat(\"y* = (1-α)m/p₂ =\", (1-alpha) * m / p2)",
+      "notes": "Cobb-Douglas demands: x* = αm/p₁, y* = (1-α)m/p₂"
+    },
+    {
+      "id": "W4-CS09",
+      "category": "bordered_hessian",
+      "title": "Constructing the Bordered Hessian",
+      "code": "# Bordered Hessian for constrained optimization\n# Structure: [0, g_x, g_y; g_x, L_xx, L_xy; g_y, L_xy, L_yy]\n\nbordered_hessian <- function(g_grad, L_hess) {\n  # g_grad: gradient of constraint [g_x, g_y]\n  # L_hess: Hessian of Lagrangian (2x2)\n  \n  n <- length(g_grad)\n  H_bar <- matrix(0, n + 1, n + 1)\n  \n  # First row/column: constraint gradient\n  H_bar[1, 1] <- 0\n  H_bar[1, 2:(n+1)] <- g_grad\n  H_bar[2:(n+1), 1] <- g_grad\n  \n  # Lower-right: Lagrangian Hessian\n  H_bar[2:(n+1), 2:(n+1)] <- L_hess\n  \n  return(H_bar)\n}\n\n# Example: max u = x^0.5 y^0.5 s.t. 2x + y = 60\n# At optimum (x*, y*) = (15, 30)\n\n# Constraint gradient\ng_grad <- c(2, 1)  # g = 2x + y\n\n# Lagrangian second derivatives (need λ* first)\n# From FOC: λ* = 0.5 * x^(-0.5) * y^0.5 / 2 = 0.177\nlambda <- 0.177\nx_star <- 15; y_star <- 30\n\nL_xx <- -0.25 * x_star^(-1.5) * y_star^0.5\nL_yy <- -0.25 * x_star^0.5 * y_star^(-1.5)\nL_xy <- 0.25 * x_star^(-0.5) * y_star^(-0.5)\n\nL_hess <- matrix(c(L_xx, L_xy, L_xy, L_yy), nrow = 2)\n\nH_bar <- bordered_hessian(g_grad, L_hess)\ncat(\"Bordered Hessian:\\n\")\nprint(round(H_bar, 4))\ncat(\"\\nDeterminant:\", round(det(H_bar), 4))\ncat(\"\\nFor MAX with 1 constraint, 2 vars: need det > 0\")",
+      "notes": "Bordered Hessian includes constraint info. Sign condition differs from regular Hessian."
+    },
+    {
+      "id": "W4-CS10",
+      "category": "bordered_hessian",
+      "title": "Complete Bordered Hessian Check",
+      "code": "# Full function to verify constrained SOC\ncheck_constrained_SOC <- function(f, g, x_star, lambda_star, type = \"max\") {\n  h <- 1e-5\n  n <- length(x_star)\n  \n  # Compute gradient of constraint\n  g_grad <- numeric(n)\n  for (i in 1:n) {\n    x_plus <- x_minus <- x_star\n    x_plus[i] <- x_plus[i] + h\n    x_minus[i] <- x_minus[i] - h\n    g_grad[i] <- (g(x_plus) - g(x_minus)) / (2 * h)\n  }\n  \n  # Lagrangian: L = f + λ(c - g)\n  # For our convention, Hessian of L = Hessian of f - λ * Hessian of g\n  # But if g is linear, Hessian of g = 0, so H_L = H_f\n  \n  # Compute Hessian of Lagrangian numerically\n  L <- function(x) f(x) - lambda_star * g(x)\n  \n  H_L <- matrix(0, n, n)\n  for (i in 1:n) {\n    for (j in 1:n) {\n      x_pp <- x_pm <- x_mp <- x_mm <- x_star\n      x_pp[i] <- x_pp[i] + h; x_pp[j] <- x_pp[j] + h\n      x_pm[i] <- x_pm[i] + h; x_pm[j] <- x_pm[j] - h\n      x_mp[i] <- x_mp[i] - h; x_mp[j] <- x_mp[j] + h\n      x_mm[i] <- x_mm[i] - h; x_mm[j] <- x_mm[j] - h\n      H_L[i, j] <- (L(x_pp) - L(x_pm) - L(x_mp) + L(x_mm)) / (4 * h^2)\n    }\n  }\n  \n  # Construct bordered Hessian\n  H_bar <- matrix(0, n + 1, n + 1)\n  H_bar[1, 1] <- 0\n  H_bar[1, 2:(n+1)] <- g_grad\n  H_bar[2:(n+1), 1] <- g_grad\n  H_bar[2:(n+1), 2:(n+1)] <- H_L\n  \n  det_H_bar <- det(H_bar)\n  \n  cat(\"Constraint gradient:\", round(g_grad, 4), \"\\n\")\n  cat(\"Lagrangian Hessian:\\n\")\n  print(round(H_L, 6))\n  cat(\"\\nBordered Hessian:\\n\")\n  print(round(H_bar, 6))\n  cat(\"\\nDeterminant:\", round(det_H_bar, 6), \"\\n\")\n  \n  # Check condition (1 constraint, 2 variables)\n  if (type == \"max\" && det_H_bar > 0) {\n    cat(\"✓ SOC satisfied for MAXIMUM\\n\")\n  } else if (type == \"min\" && det_H_bar < 0) {\n    cat(\"✓ SOC satisfied for MINIMUM\\n\")\n  } else {\n    cat(\"✗ SOC NOT satisfied\\n\")\n  }\n  \n  return(list(H_bar = H_bar, det = det_H_bar))\n}\n\n# Example usage\nf <- function(x) x[1]^0.5 * x[2]^0.5  # Utility\ng <- function(x) 2*x[1] + x[2] - 60   # Budget constraint = 0\n\nresult <- check_constrained_SOC(f, g, c(15, 30), lambda_star = 0.177, type = \"max\")",
+      "notes": "This function automates the bordered Hessian construction and SOC check."
+    },
+    {
+      "id": "W4-CS11",
+      "category": "linear_programming",
+      "title": "Linear Programming with lpSolve",
+      "code": "library(lpSolve)\n\n# Maximize: 50x + 80y\n# Subject to: x + y ≤ 100 (land)\n#             2x + 3y ≤ 240 (water)\n#             x, y ≥ 0\n\nf.obj <- c(50, 80)  # Objective coefficients\n\nf.con <- matrix(c(\n  1, 1,    # Land constraint\n  2, 3     # Water constraint\n), nrow = 2, byrow = TRUE)\n\nf.dir <- c(\"<=\", \"<=\")\nf.rhs <- c(100, 240)\n\nresult <- lp(\"max\", f.obj, f.con, f.dir, f.rhs)\n\ncat(\"Optimal allocation:\\n\")\ncat(\"  x (crop 1) =\", result$solution[1], \"\\n\")\ncat(\"  y (crop 2) =\", result$solution[2], \"\\n\")\ncat(\"Maximum profit: $\", result$objval, \"\\n\")\n\n# Check which constraints are binding\nland_used <- sum(f.con[1,] * result$solution)\nwater_used <- sum(f.con[2,] * result$solution)\ncat(\"\\nResource usage:\\n\")\ncat(\"  Land:\", land_used, \"/\", f.rhs[1], \n    ifelse(abs(land_used - f.rhs[1]) < 0.01, \"(BINDING)\", \"(slack)\"), \"\\n\")\ncat(\"  Water:\", water_used, \"/\", f.rhs[2],\n    ifelse(abs(water_used - f.rhs[2]) < 0.01, \"(BINDING)\", \"(slack)\"), \"\\n\")",
+      "notes": "lpSolve handles linear optimization. Shadow prices from lp(..., compute.sens=TRUE)."
+    },
+    {
+      "id": "W4-CS12",
+      "category": "linear_programming",
+      "title": "Shadow Prices in LP",
+      "code": "library(lpSolve)\n\n# Same problem with sensitivity analysis\nf.obj <- c(50, 80)\nf.con <- matrix(c(1, 1, 2, 3), nrow = 2, byrow = TRUE)\nf.dir <- c(\"<=\", \"<=\")\nf.rhs <- c(100, 240)\n\n# Get shadow prices\nresult <- lp(\"max\", f.obj, f.con, f.dir, f.rhs, compute.sens = TRUE)\n\ncat(\"Optimal solution: x =\", result$solution, \"\\n\")\ncat(\"Objective value:\", result$objval, \"\\n\\n\")\n\n# Shadow prices (dual values)\ncat(\"Shadow prices interpretation:\\n\")\ncat(\"  Land:\", result$duals[1], \n    \"(marginal value of extra hectare)\\n\")\ncat(\"  Water:\", round(result$duals[2], 2),\n    \"(marginal value of extra water unit)\\n\")\n\n# Verify by perturbing RHS\nrhs_perturbed <- c(101, 240)  # Add 1 hectare of land\nresult_new <- lp(\"max\", f.obj, f.con, f.dir, rhs_perturbed)\ncat(\"\\nVerification (add 1 hectare):\\n\")\ncat(\"  New profit:\", result_new$objval, \"\\n\")\ncat(\"  Increase:\", result_new$objval - result$objval, \n    \"(should ≈ shadow price of land)\\n\")",
+      "notes": "Shadow price = marginal value of relaxing constraint by 1 unit."
+    },
+    {
+      "id": "W4-CS13",
+      "category": "visualization",
+      "title": "Plotting Optimization Landscape",
+      "code": "# Visualize 2D optimization problem\n# f(x,y) = -(x-3)² - (y-2)² (maximum at (3,2))\n\nf <- function(x, y) -(x - 3)^2 - (y - 2)^2\n\n# Create grid\nx_seq <- seq(0, 6, length = 50)\ny_seq <- seq(0, 4, length = 50)\nz <- outer(x_seq, y_seq, f)\n\n# Contour plot\ncontour(x_seq, y_seq, z, nlevels = 15,\n        xlab = \"x\", ylab = \"y\",\n        main = \"Contour Plot of f(x,y)\")\n\n# Mark optimum\npoints(3, 2, pch = 19, col = \"red\", cex = 1.5)\ntext(3, 2.3, \"Maximum\", col = \"red\")\n\n# Add constraint line: x + y = 4\nabline(a = 4, b = -1, col = \"blue\", lwd = 2, lty = 2)\ntext(0.5, 3.5, \"Constraint: x + y = 4\", col = \"blue\")\n\n# Constrained optimum (approximately)\npoints(2.33, 1.67, pch = 17, col = \"green\", cex = 1.5)\ntext(2.33, 1.3, \"Constrained\\noptimum\", col = \"green\", cex = 0.8)",
+      "notes": "Visualization helps understand constrained optimization geometry."
+    },
+    {
+      "id": "W4-CS14",
+      "category": "applications",
+      "title": "Agricultural Cost Minimization",
+      "code": "# Farm cost minimization\n# Minimize C = wL + rK + pF (labor, capital, fertilizer)\n# Subject to Q = A * L^a * K^b * F^c = Q_target\n\nfarm_cost_min <- function(w, r, pF, A, a, b, c, Q_target) {\n  library(nloptr)\n  \n  # Cost function\n  cost <- function(x) {\n    L <- x[1]; K <- x[2]; F <- x[3]\n    w * L + r * K + pF * F\n  }\n  \n  # Production constraint\n  production <- function(x) {\n    L <- x[1]; K <- x[2]; F <- x[3]\n    A * L^a * K^b * F^c - Q_target\n  }\n  \n  result <- nloptr(\n    x0 = c(10, 10, 10),\n    eval_f = cost,\n    eval_g_eq = production,\n    lb = c(0.01, 0.01, 0.01),\n    opts = list(algorithm = \"NLOPT_LN_COBYLA\", xtol_rel = 1e-8)\n  )\n  \n  L_star <- result$solution[1]\n  K_star <- result$solution[2]\n  F_star <- result$solution[3]\n  C_star <- result$objective\n  \n  cat(\"=== Farm Cost Minimization ===\", \"\\n\")\n  cat(\"Target output:\", Q_target, \"\\n\")\n  cat(\"Optimal inputs:\\n\")\n  cat(\"  Labor:\", round(L_star, 2), \"units\\n\")\n  cat(\"  Capital:\", round(K_star, 2), \"units\\n\")\n  cat(\"  Fertilizer:\", round(F_star, 2), \"units\\n\")\n  cat(\"Minimum cost: $\", round(C_star, 2), \"\\n\")\n  \n  # Marginal cost (shadow price approximation)\n  result2 <- nloptr(\n    x0 = c(10, 10, 10),\n    eval_f = cost,\n    eval_g_eq = function(x) A * x[1]^a * x[2]^b * x[3]^c - (Q_target + 1),\n    lb = c(0.01, 0.01, 0.01),\n    opts = list(algorithm = \"NLOPT_LN_COBYLA\", xtol_rel = 1e-8)\n  )\n  \n  MC <- result2$objective - C_star\n  cat(\"Marginal cost (λ*):\", round(MC, 2), \"\\n\")\n  \n  return(list(L = L_star, K = K_star, F = F_star, C = C_star, MC = MC))\n}\n\n# Example\nfarm_cost_min(w = 15, r = 20, pF = 5, A = 2, a = 0.3, b = 0.4, c = 0.3, Q_target = 100)",
+      "notes": "This function solves a general 3-input cost minimization problem."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Single Variable Max",
+      "template": "result <- optimize(f, interval = c(low, high), maximum = TRUE)\nx_star <- result$maximum"
+    },
+    {
+      "pattern": "Multi-Variable with optim()",
+      "template": "# Minimize negative for maximization\nresult <- optim(par = c(x0), fn = function(x) -f(x), method = 'BFGS')\nx_star <- result$par"
+    },
+    {
+      "pattern": "Constrained with nloptr",
+      "template": "result <- nloptr(x0 = c(...), eval_f = objective, eval_g_eq = constraint,\n                 opts = list(algorithm = 'NLOPT_LN_COBYLA'))"
+    },
+    {
+      "pattern": "Check SOC",
+      "template": "H <- hessian(f, x_star)\neig <- eigen(H)$values\nif (all(eig < 0)) 'Maximum' else if (all(eig > 0)) 'Minimum' else 'Saddle'"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "function cannot be evaluated at initial parameters",
+      "cause": "Starting point is outside domain (e.g., negative input to log)",
+      "fix": "Use bounds (lb parameter) or better starting point"
+    },
+    {
+      "error": "convergence to wrong point",
+      "cause": "Local vs global optimum, or poor starting point",
+      "fix": "Try multiple starting points; check if function is globally concave/convex"
+    },
+    {
+      "error": "NaN or Inf in Hessian",
+      "cause": "Evaluating at boundary where derivatives undefined",
+      "fix": "Add small epsilon to avoid exact zeros; use interior point"
+    },
+    {
+      "error": "lpSolve returns 0 for solution",
+      "cause": "Infeasible problem or unbounded",
+      "fix": "Check if constraints are compatible; verify problem setup"
+    }
+  ]
+}

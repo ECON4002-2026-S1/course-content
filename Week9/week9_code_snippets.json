@@ -1,0 +1,136 @@
+{
+  "week": 9,
+  "title": "Market Equilibrium: R Code Implementations",
+  "description": "R implementations for market equilibrium, welfare analysis, tax/subsidy effects, and long-run dynamics",
+  "snippets": [
+    {
+      "id": "W9-CS01",
+      "category": "equilibrium",
+      "title": "Market Equilibrium Solver",
+      "code": "# Find market equilibrium for linear supply and demand\n# Demand: Q = a - b*p, Supply: Q = c + d*p\n\nmarket_equilibrium <- function(a, b, c, d) {\n  p_star <- (a - c) / (b + d)\n  Q_star <- a - b * p_star\n  \n  cat('=== Market Equilibrium ===\\n')\n  cat('Demand: Q =', a, '-', b, '* p\\n')\n  cat('Supply: Q =', c, '+', d, '* p\\n\\n')\n  cat('Equilibrium: p* =', round(p_star, 3), ', Q* =', round(Q_star, 3), '\\n')\n  \n  return(list(price = p_star, quantity = Q_star))\n}\n\n# Example\neq <- market_equilibrium(a = 100, b = 2, c = -20, d = 3)",
+      "notes": "Solves D(p) = S(p) for linear curves. Handles c < 0 for positive supply intercept."
+    },
+    {
+      "id": "W9-CS02",
+      "category": "equilibrium",
+      "title": "Graphical Equilibrium",
+      "code": "plot_equilibrium <- function(a, b, c, d) {\n  eq <- market_equilibrium(a, b, c, d)\n  \n  p_max <- max(a/b, -c/d) * 1.1\n  p_range <- seq(0, p_max, length = 200)\n  Q_demand <- pmax(0, a - b * p_range)\n  Q_supply <- pmax(0, c + d * p_range)\n  Q_max <- max(Q_demand, Q_supply)\n  \n  plot(Q_demand, p_range, type = 'l', col = 'blue', lwd = 2,\n       xlim = c(0, Q_max*1.1), ylim = c(0, p_max),\n       xlab = 'Quantity', ylab = 'Price', main = 'Market Equilibrium')\n  lines(Q_supply, p_range, col = 'red', lwd = 2)\n  points(eq$quantity, eq$price, pch = 19, cex = 2, col = 'green')\n  abline(h = eq$price, v = eq$quantity, lty = 2, col = 'gray')\n  legend('topright', c('Demand', 'Supply'), col = c('blue', 'red'), lwd = 2)\n  grid()\n}\n\nplot_equilibrium(100, 2, -20, 3)",
+      "notes": "Plots supply and demand with equilibrium point highlighted."
+    },
+    {
+      "id": "W9-CS03",
+      "category": "surplus",
+      "title": "Consumer and Producer Surplus",
+      "code": "calc_surplus <- function(a, b, c, d) {\n  eq <- market_equilibrium(a, b, c, d)\n  \n  P_d_int <- a / b      # Demand price intercept\n  P_s_int <- -c / d     # Supply price intercept\n  \n  CS <- 0.5 * (P_d_int - eq$price) * eq$quantity\n  PS <- 0.5 * (eq$price - P_s_int) * eq$quantity\n  W <- CS + PS\n  \n  cat('\\n=== Welfare Analysis ===\\n')\n  cat('Consumer Surplus: CS =', round(CS, 2), '\\n')\n  cat('Producer Surplus: PS =', round(PS, 2), '\\n')\n  cat('Total Welfare: W =', round(W, 2), '\\n')\n  \n  return(list(CS = CS, PS = PS, W = W))\n}\n\nsurplus <- calc_surplus(100, 2, -20, 3)",
+      "notes": "CS = triangle below demand, above p*. PS = triangle above supply, below p*."
+    },
+    {
+      "id": "W9-CS04",
+      "category": "surplus",
+      "title": "Visualize Surplus Areas",
+      "code": "plot_surplus <- function(a, b, c, d) {\n  eq <- market_equilibrium(a, b, c, d)\n  P_d_int <- a/b; P_s_int <- -c/d\n  \n  Q_range <- seq(0, eq$quantity * 1.3, length = 200)\n  P_d <- P_d_int - Q_range/b\n  P_s <- P_s_int + Q_range/d\n  \n  plot(NULL, xlim = c(0, max(Q_range)), ylim = c(0, P_d_int*1.1),\n       xlab = 'Quantity', ylab = 'Price', main = 'CS and PS')\n  \n  # Shade CS\n  Q_cs <- seq(0, eq$quantity, length = 100)\n  polygon(c(Q_cs, rev(Q_cs)), \n          c(P_d_int - Q_cs/b, rep(eq$price, 100)),\n          col = rgb(0,0,1,0.3), border = NA)\n  \n  # Shade PS\n  polygon(c(Q_cs, rev(Q_cs)),\n          c(rep(eq$price, 100), rev(P_s_int + Q_cs/d)),\n          col = rgb(1,0,0,0.3), border = NA)\n  \n  lines(Q_range, P_d, col = 'blue', lwd = 2)\n  lines(Q_range, P_s, col = 'red', lwd = 2)\n  points(eq$quantity, eq$price, pch = 19, cex = 1.5)\n  legend('topright', c('CS', 'PS'), fill = c(rgb(0,0,1,0.3), rgb(1,0,0,0.3)))\n  grid()\n}\n\nplot_surplus(100, 2, -20, 3)",
+      "notes": "Shaded areas show CS (blue) and PS (red) at equilibrium."
+    },
+    {
+      "id": "W9-CS05",
+      "category": "tax",
+      "title": "Per-Unit Tax Analysis",
+      "code": "tax_analysis <- function(a, b, c, d, t) {\n  orig <- market_equilibrium(a, b, c, d)\n  orig_s <- calc_surplus(a, b, c, d)\n  \n  # With tax: p_buyer = p_seller + t\n  p_buyer <- (a - c + d*t) / (b + d)\n  p_seller <- p_buyer - t\n  Q_tax <- a - b * p_buyer\n  \n  revenue <- t * Q_tax\n  DWL <- 0.5 * t * (orig$quantity - Q_tax)\n  \n  # New surpluses\n  P_d_int <- a/b; P_s_int <- -c/d\n  CS_new <- 0.5 * (P_d_int - p_buyer) * Q_tax\n  PS_new <- 0.5 * (p_seller - P_s_int) * Q_tax\n  \n  cat('\\n=== Tax Analysis (t =', t, ') ===\\n')\n  cat('Before: p* =', round(orig$price,2), ', Q* =', round(orig$quantity,2), '\\n')\n  cat('After: p_b =', round(p_buyer,2), ', p_s =', round(p_seller,2), '\\n')\n  cat('       Q =', round(Q_tax,2), '\\n\\n')\n  cat('ΔCS =', round(CS_new - orig_s$CS, 2), '\\n')\n  cat('ΔPS =', round(PS_new - orig_s$PS, 2), '\\n')\n  cat('Tax Revenue =', round(revenue, 2), '\\n')\n  cat('DWL =', round(DWL, 2), '\\n')\n  \n  return(list(p_b = p_buyer, p_s = p_seller, Q = Q_tax,\n              revenue = revenue, DWL = DWL))\n}\n\ntax_analysis(100, 2, -20, 3, t = 10)",
+      "notes": "Tax creates wedge between buyer and seller prices. DWL = ½ × t × ΔQ."
+    },
+    {
+      "id": "W9-CS06",
+      "category": "tax",
+      "title": "Visualize Tax Effects",
+      "code": "plot_tax <- function(a, b, c, d, t) {\n  orig <- market_equilibrium(a, b, c, d)\n  tax <- tax_analysis(a, b, c, d, t)\n  \n  P_d_int <- a/b; P_s_int <- -c/d\n  Q_max <- orig$quantity * 1.3\n  Q_range <- seq(0, Q_max, length = 200)\n  \n  P_d <- P_d_int - Q_range/b\n  P_s <- P_s_int + Q_range/d\n  P_s_tax <- P_s_int + t + Q_range/d\n  \n  plot(NULL, xlim = c(0, Q_max), ylim = c(0, P_d_int*1.1),\n       xlab = 'Quantity', ylab = 'Price',\n       main = paste('Tax Effect (t =', t, ')'))\n  \n  # DWL triangle\n  polygon(c(tax$Q, orig$quantity, tax$Q),\n          c(tax$p_b, orig$price, tax$p_s),\n          col = rgb(1,1,0,0.5), border = NA)\n  \n  lines(Q_range, P_d, col = 'blue', lwd = 2)\n  lines(Q_range, P_s, col = 'red', lwd = 2)\n  lines(Q_range, P_s_tax, col = 'red', lwd = 2, lty = 2)\n  \n  segments(tax$Q, tax$p_s, tax$Q, tax$p_b, col = 'darkgreen', lwd = 3)\n  points(orig$quantity, orig$price, pch = 19)\n  \n  legend('topright', c('D', 'S', 'S+tax', 'DWL'),\n         col = c('blue', 'red', 'red', rgb(1,1,0,0.5)),\n         lwd = c(2,2,2,NA), lty = c(1,1,2,NA), pch = c(NA,NA,NA,15))\n  grid()\n}\n\nplot_tax(100, 2, -20, 3, t = 10)",
+      "notes": "Yellow triangle shows deadweight loss from tax."
+    },
+    {
+      "id": "W9-CS07",
+      "category": "subsidy",
+      "title": "Per-Unit Subsidy Analysis",
+      "code": "subsidy_analysis <- function(a, b, c, d, s) {\n  orig <- market_equilibrium(a, b, c, d)\n  orig_s <- calc_surplus(a, b, c, d)\n  \n  # With subsidy: p_seller = p_buyer + s\n  p_buyer <- (a - c - d*s) / (b + d)\n  p_seller <- p_buyer + s\n  Q_sub <- a - b * p_buyer\n  \n  cost <- s * Q_sub\n  \n  P_d_int <- a/b; P_s_int <- -c/d\n  CS_new <- 0.5 * (P_d_int - p_buyer) * Q_sub\n  PS_new <- 0.5 * (p_seller - P_s_int) * Q_sub\n  \n  delta_W <- (CS_new - orig_s$CS) + (PS_new - orig_s$PS) - cost\n  \n  cat('\\n=== Subsidy Analysis (s =', s, ') ===\\n')\n  cat('Before: p* =', round(orig$price,2), ', Q* =', round(orig$quantity,2), '\\n')\n  cat('After: p_buyer =', round(p_buyer,2), ', p_seller =', round(p_seller,2), '\\n')\n  cat('       Q =', round(Q_sub,2), '\\n\\n')\n  cat('ΔCS =', round(CS_new - orig_s$CS, 2), '(gain)\\n')\n  cat('ΔPS =', round(PS_new - orig_s$PS, 2), '(gain)\\n')\n  cat('Subsidy cost =', round(cost, 2), '\\n')\n  cat('Net welfare (DWL) =', round(delta_W, 2), '\\n')\n  \n  return(list(p_b = p_buyer, p_s = p_seller, Q = Q_sub,\n              cost = cost, DWL = -delta_W))\n}\n\nsubsidy_analysis(100, 2, -20, 3, s = 5)",
+      "notes": "Subsidy increases quantity traded but creates DWL from 'excess' trades."
+    },
+    {
+      "id": "W9-CS08",
+      "category": "long_run",
+      "title": "Long-Run Equilibrium with Entry/Exit",
+      "code": "LR_equilibrium <- function(TC_fn, demand_fn, y_range = seq(0.01, 50, 0.01)) {\n  AC <- function(y) TC_fn(y) / y\n  AC_vals <- sapply(y_range, AC)\n  \n  min_idx <- which.min(AC_vals)\n  y_eff <- y_range[min_idx]\n  p_LR <- AC_vals[min_idx]\n  \n  Q_LR <- demand_fn(p_LR)\n  n_firms <- Q_LR / y_eff\n  profit <- p_LR * y_eff - TC_fn(y_eff)\n  \n  cat('=== Long-Run Equilibrium ===\\n')\n  cat('LR Price: p =', round(p_LR, 3), '\\n')\n  cat('Firm output: y* =', round(y_eff, 3), '\\n')\n  cat('Market Q:', round(Q_LR, 2), '\\n')\n  cat('# Firms:', round(n_firms, 1), '\\n')\n  cat('Profit: π =', round(profit, 6), '≈ 0\\n')\n  \n  return(list(price = p_LR, y = y_eff, Q = Q_LR, n = n_firms))\n}\n\n# Example: C(y) = 1 + y^2\nTC <- function(y) 1 + y^2\ndemand <- function(p) max(0, 22 - 3*p)\n\nlr <- LR_equilibrium(TC, demand)",
+      "notes": "LR: p = min AC, π = 0, n adjusts to clear market."
+    },
+    {
+      "id": "W9-CS09",
+      "category": "long_run",
+      "title": "Entry/Exit Dynamics Simulation",
+      "code": "simulate_entry_exit <- function(TC_fn, demand_fn, n_init, periods = 25) {\n  y_range <- seq(0.1, 10, 0.01)\n  AC <- function(y) TC_fn(y)/y\n  y_eff <- y_range[which.min(sapply(y_range, AC))]\n  p_LR <- AC(y_eff)\n  n_LR <- demand_fn(p_LR) / y_eff\n  \n  n <- n_init\n  hist <- data.frame(t = 0, n = n, p = NA, profit = NA)\n  \n  for (t in 1:periods) {\n    excess <- function(p) demand_fn(p) - n * (p/2)\n    p_eq <- tryCatch(uniroot(excess, c(0.1, 50))$root, error = function(e) p_LR)\n    y <- p_eq / 2\n    profit <- p_eq * y - TC_fn(y)\n    \n    if (profit > 0.1) n <- n + max(1, round(profit))\n    else if (profit < -0.1) n <- max(1, n - max(1, round(abs(profit))))\n    \n    hist <- rbind(hist, data.frame(t=t, n=n, p=p_eq, profit=profit))\n  }\n  \n  par(mfrow = c(1, 3))\n  plot(hist$t, hist$n, type='b', col='blue', main='# Firms', xlab='t', ylab='n')\n  abline(h = n_LR, lty=2, col='red')\n  plot(hist$t[-1], hist$p[-1], type='b', col='red', main='Price', xlab='t', ylab='p')\n  abline(h = p_LR, lty=2, col='blue')\n  plot(hist$t[-1], hist$profit[-1], type='b', col='green', main='Profit', xlab='t', ylab='π')\n  abline(h = 0, lty=2)\n  par(mfrow = c(1, 1))\n  \n  return(hist)\n}\n\nTC <- function(y) 1 + y^2\ndemand <- function(p) max(0, 22 - 3*p)\nhist <- simulate_entry_exit(TC, demand, n_init = 5)",
+      "notes": "Simulates convergence to LR equilibrium from arbitrary starting point."
+    },
+    {
+      "id": "W9-CS10",
+      "category": "aggregation",
+      "title": "Demand Aggregation",
+      "code": "aggregate_demand <- function(demands, p_range = seq(0, 20, 0.1)) {\n  Q_total <- numeric(length(p_range))\n  for (i in seq_along(p_range)) {\n    Q_total[i] <- sum(sapply(demands, function(d) max(0, d(p_range[i]))))\n  }\n  \n  plot(Q_total, p_range, type='l', col='blue', lwd=2,\n       xlab='Quantity', ylab='Price', main='Aggregate Demand')\n  \n  colors <- rainbow(length(demands), alpha=0.5)\n  for (j in seq_along(demands)) {\n    Q_j <- sapply(p_range, function(p) max(0, demands[[j]](p)))\n    lines(Q_j, p_range, col=colors[j], lty=2)\n  }\n  \n  legend('topright', c('Aggregate', paste('D', 1:length(demands))),\n         col=c('blue', colors), lwd=c(2, rep(1, length(demands))))\n  grid()\n  \n  return(data.frame(p = p_range, Q = Q_total))\n}\n\nd1 <- function(p) 12 - 2*p\nd2 <- function(p) 10 - p\nd3 <- function(p) 8 - 0.5*p\n\nagg <- aggregate_demand(list(d1, d2, d3))",
+      "notes": "Horizontal aggregation: sum quantities at each price."
+    },
+    {
+      "id": "W9-CS11",
+      "category": "aggregation",
+      "title": "Supply Aggregation",
+      "code": "aggregate_supply <- function(supplies, n_firms = NULL, p_range = seq(0, 20, 0.1)) {\n  Q_total <- numeric(length(p_range))\n  \n  for (i in seq_along(p_range)) {\n    if (!is.null(n_firms)) {\n      # Identical firms\n      Q_total[i] <- n_firms * max(0, supplies[[1]](p_range[i]))\n    } else {\n      # Different firms\n      Q_total[i] <- sum(sapply(supplies, function(s) max(0, s(p_range[i]))))\n    }\n  }\n  \n  plot(Q_total, p_range, type='l', col='red', lwd=2,\n       xlab='Quantity', ylab='Price', main='Industry Supply')\n  grid()\n  \n  return(data.frame(p = p_range, Q = Q_total))\n}\n\n# 50 identical firms each with y = 2p - 4\nfirm_supply <- function(p) if(p >= 2) 2*p - 4 else 0\nindustry <- aggregate_supply(list(firm_supply), n_firms = 50)",
+      "notes": "Industry supply = n × firm supply for identical firms."
+    },
+    {
+      "id": "W9-CS12",
+      "category": "policy",
+      "title": "Price Floor Analysis",
+      "code": "price_floor_analysis <- function(a, b, c, d, p_floor) {\n  eq <- market_equilibrium(a, b, c, d)\n  \n  cat('=== Price Floor Analysis ===\\n')\n  cat('Free market: p* =', round(eq$price, 2), '\\n\\n')\n  \n  if (p_floor <= eq$price) {\n    cat('Floor (', p_floor, ') below p* — NOT BINDING\\n')\n    return(NULL)\n  }\n  \n  Q_d <- max(0, a - b * p_floor)\n  Q_s <- max(0, c + d * p_floor)\n  surplus <- Q_s - Q_d\n  \n  cat('At floor p =', p_floor, ':\\n')\n  cat('  Quantity demanded:', round(Q_d, 2), '\\n')\n  cat('  Quantity supplied:', round(Q_s, 2), '\\n')\n  cat('  Excess supply:', round(surplus, 2), '\\n\\n')\n  \n  if (surplus > 0) {\n    gov_cost <- p_floor * surplus\n    cat('If govt buys surplus: cost =', round(gov_cost, 2), '\\n')\n  }\n  \n  return(list(Q_d = Q_d, Q_s = Q_s, surplus = surplus))\n}\n\nprice_floor_analysis(100, 2, -20, 3, p_floor = 30)",
+      "notes": "Price floor above equilibrium creates surplus. Govt may need to purchase excess."
+    },
+    {
+      "id": "W9-CS13",
+      "category": "policy",
+      "title": "Price Ceiling Analysis",
+      "code": "price_ceiling_analysis <- function(a, b, c, d, p_ceil) {\n  eq <- market_equilibrium(a, b, c, d)\n  \n  cat('=== Price Ceiling Analysis ===\\n')\n  cat('Free market: p* =', round(eq$price, 2), '\\n\\n')\n  \n  if (p_ceil >= eq$price) {\n    cat('Ceiling (', p_ceil, ') above p* — NOT BINDING\\n')\n    return(NULL)\n  }\n  \n  Q_d <- max(0, a - b * p_ceil)\n  Q_s <- max(0, c + d * p_ceil)\n  shortage <- Q_d - Q_s\n  \n  cat('At ceiling p =', p_ceil, ':\\n')\n  cat('  Quantity demanded:', round(Q_d, 2), '\\n')\n  cat('  Quantity supplied:', round(Q_s, 2), '\\n')\n  cat('  Shortage:', round(shortage, 2), '\\n\\n')\n  \n  # DWL\n  DWL <- 0.5 * (eq$price - p_ceil) * (eq$quantity - Q_s)\n  cat('Deadweight loss:', round(DWL, 2), '\\n')\n  \n  return(list(Q_d = Q_d, Q_s = Q_s, shortage = shortage, DWL = DWL))\n}\n\nprice_ceiling_analysis(100, 2, -20, 3, p_ceil = 15)",
+      "notes": "Price ceiling below equilibrium creates shortage and requires rationing."
+    },
+    {
+      "id": "W9-CS14",
+      "category": "complete",
+      "title": "Complete Market Analysis Toolkit",
+      "code": "market_toolkit <- function(a, b, c, d) {\n  list(\n    equilibrium = function() market_equilibrium(a, b, c, d),\n    surplus = function() calc_surplus(a, b, c, d),\n    tax = function(t) tax_analysis(a, b, c, d, t),\n    subsidy = function(s) subsidy_analysis(a, b, c, d, s),\n    floor = function(pf) price_floor_analysis(a, b, c, d, pf),\n    ceiling = function(pc) price_ceiling_analysis(a, b, c, d, pc),\n    plot = function() plot_surplus(a, b, c, d)\n  )\n}\n\n# Usage\nmkt <- market_toolkit(a = 100, b = 2, c = -20, d = 3)\nmkt$equilibrium()\nmkt$surplus()\nmkt$tax(10)\nmkt$plot()",
+      "notes": "Comprehensive toolkit for market equilibrium analysis."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Market Equilibrium",
+      "template": "# Solve D(p) = S(p)\n# For linear: p* = (a - c)/(b + d)\n# Q* = a - b*p*"
+    },
+    {
+      "pattern": "Tax Analysis",
+      "template": "# p_buyer = p_seller + t\n# New eq: (a - c + d*t)/(b + d)\n# DWL = ½ × t × ΔQ"
+    },
+    {
+      "pattern": "Long-Run Equilibrium",
+      "template": "# 1. Find min AC (where MC = AC)\n# 2. p_LR = min AC\n# 3. n = Q_LR / y_efficient"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "Negative equilibrium price",
+      "cause": "Demand intercept < supply intercept",
+      "fix": "Check parameter signs; c should be negative for standard upward supply"
+    },
+    {
+      "error": "Price floor not binding",
+      "cause": "Floor set below equilibrium",
+      "fix": "Floor only binds if p_floor > p*"
+    },
+    {
+      "error": "Zero DWL from tax",
+      "cause": "Perfectly elastic/inelastic curves",
+      "fix": "Check that both b > 0 and d > 0"
+    }
+  ]
+}

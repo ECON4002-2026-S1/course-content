@@ -1,0 +1,135 @@
+{
+  "week": 12,
+  "title": "Decision Making Under Uncertainty: R Code Implementations",
+  "description": "R implementations for expected utility, certainty equivalents, risk premiums, insurance demand, and value of information",
+  "snippets": [
+    {
+      "id": "W12-CS01",
+      "category": "expected_utility",
+      "title": "Expected Value Calculator",
+      "code": "expected_value <- function(outcomes, probs) {\n  if (abs(sum(probs) - 1) > 1e-6) stop('Probabilities must sum to 1')\n  EV <- sum(probs * outcomes)\n  cat('E[X] =', paste(probs, '*', outcomes, collapse=' + '), '=', EV, '\\n')\n  return(EV)\n}\n\n# Farmer fertilizer example\nEV <- expected_value(outcomes = c(450, 50), probs = c(0.5, 0.5))",
+      "notes": "Basic expected value calculation. Validates that probabilities sum to 1."
+    },
+    {
+      "id": "W12-CS02",
+      "category": "expected_utility",
+      "title": "Expected Utility Analysis",
+      "code": "eu_analysis <- function(outcomes, probs, u_fn, u_inv) {\n  EV <- sum(probs * outcomes)\n  utilities <- sapply(outcomes, u_fn)\n  EU <- sum(probs * utilities)\n  CE <- u_inv(EU)\n  RP <- EV - CE\n  \n  cat('=== Expected Utility Analysis ===\\n')\n  cat('Outcomes:', outcomes, '\\n')\n  cat('Probabilities:', probs, '\\n')\n  cat('Utilities:', round(utilities, 2), '\\n')\n  cat('EV:', round(EV, 2), '\\n')\n  cat('EU:', round(EU, 2), '\\n')\n  cat('CE:', round(CE, 2), '\\n')\n  cat('RP:', round(RP, 2), '\\n')\n  \n  list(EV = EV, EU = EU, CE = CE, RP = RP)\n}\n\n# Square root utility\nu_sqrt <- function(x) 10 * sqrt(x)\nu_sqrt_inv <- function(u) (u/10)^2\n\nresult <- eu_analysis(c(450, 50), c(0.5, 0.5), u_sqrt, u_sqrt_inv)",
+      "notes": "Complete EU analysis with CE and RP. Requires utility and inverse utility functions."
+    },
+    {
+      "id": "W12-CS03",
+      "category": "utility_functions",
+      "title": "Common Utility Functions Library",
+      "code": "# Square root utility (CRRA, γ = 0.5)\nu_sqrt <- function(x, a = 1) a * sqrt(x)\nu_sqrt_inv <- function(u, a = 1) (u/a)^2\n\n# Logarithmic utility (CRRA, γ → 0)\nu_log <- function(x) log(x)\nu_log_inv <- function(u) exp(u)\n\n# Exponential/CARA utility\nu_cara <- function(x, a = 0.001) -exp(-a * x)\nu_cara_inv <- function(u, a = 0.001) -log(-u) / a\n\n# Power utility (CRRA)\nu_power <- function(x, gamma = 0.5) {\n  if (gamma == 1) return(log(x))\n  x^(1 - gamma) / (1 - gamma)\n}\nu_power_inv <- function(u, gamma = 0.5) {\n  if (gamma == 1) return(exp(u))\n  (u * (1 - gamma))^(1/(1 - gamma))\n}\n\n# Linear utility (risk neutral)\nu_linear <- function(x, a = 1, b = 0) a * x + b\nu_linear_inv <- function(u, a = 1, b = 0) (u - b) / a",
+      "notes": "Library of common utility functions and their inverses. Use for EU calculations."
+    },
+    {
+      "id": "W12-CS04",
+      "category": "risk_measures",
+      "title": "Arrow-Pratt Risk Aversion Measures",
+      "code": "# Numerical derivatives\nnum_deriv <- function(f, x, h = 1e-6) (f(x+h) - f(x-h)) / (2*h)\nnum_deriv2 <- function(f, x, h = 1e-4) (f(x+h) - 2*f(x) + f(x-h)) / (h^2)\n\n# Arrow-Pratt measures\nara <- function(u_fn, x) {\n  u1 <- num_deriv(u_fn, x)\n  u2 <- num_deriv2(u_fn, x)\n  -u2 / u1\n}\n\nrra <- function(u_fn, x) {\n  x * ara(u_fn, x)\n}\n\n# Example: compare risk aversion across wealth levels\nwealth_levels <- c(10000, 50000, 100000, 500000)\n\ncat('\\n=== Logarithmic utility: u(x) = ln(x) ===\\n')\nfor (w in wealth_levels) {\n  cat(sprintf('W = $%d: ARA = %.6f, RRA = %.2f\\n', \n              w, ara(u_log, w), rra(u_log, w)))\n}\n\ncat('\\n=== CARA utility: u(x) = -exp(-0.0001x) ===\\n')\nu_cara_ex <- function(x) -exp(-0.0001 * x)\nfor (w in wealth_levels) {\n  cat(sprintf('W = $%d: ARA = %.6f, RRA = %.2f\\n', \n              w, ara(u_cara_ex, w), rra(u_cara_ex, w)))\n}",
+      "notes": "Calculates Arrow-Pratt absolute and relative risk aversion numerically."
+    },
+    {
+      "id": "W12-CS05",
+      "category": "visualization",
+      "title": "Plot Expected Utility Diagram",
+      "code": "plot_eu_diagram <- function(outcomes, probs, u_fn, title = 'Expected Utility') {\n  x_range <- seq(0.1, max(outcomes) * 1.2, length = 300)\n  u_vals <- sapply(x_range, u_fn)\n  \n  EU <- sum(probs * sapply(outcomes, u_fn))\n  EV <- sum(probs * outcomes)\n  \n  # Find CE (numerical search)\n  CE <- uniroot(function(x) u_fn(x) - EU, c(0.1, max(outcomes)))$root\n  RP <- EV - CE\n  \n  plot(x_range, u_vals, type = 'l', lwd = 2, col = 'black',\n       xlab = 'Outcome ($)', ylab = 'Utility',\n       main = title, xlim = c(0, max(x_range)))\n  \n  # Chord (linear interpolation)\n  segments(outcomes[1], u_fn(outcomes[1]),\n           outcomes[2], u_fn(outcomes[2]),\n           col = 'blue', lwd = 2, lty = 2)\n  \n  # Mark outcomes\n  points(outcomes, sapply(outcomes, u_fn), pch = 19, col = 'red', cex = 1.5)\n  text(outcomes, sapply(outcomes, u_fn), \n       labels = paste0('u(', outcomes, ')'), pos = c(2, 4), cex = 0.8)\n  \n  # EU line\n  abline(h = EU, col = 'green', lty = 3, lwd = 1.5)\n  text(max(x_range) * 0.9, EU, paste('EU =', round(EU, 1)), pos = 3, col = 'green')\n  \n  # CE and EV\n  abline(v = CE, col = 'orange', lty = 3)\n  abline(v = EV, col = 'purple', lty = 3)\n  \n  # Risk premium bracket\n  arrows(CE, EU * 0.5, EV, EU * 0.5, code = 3, length = 0.1, col = 'brown')\n  text((CE + EV)/2, EU * 0.45, paste('RP =', round(RP, 0)), col = 'brown')\n  \n  legend('topleft', \n         c('u(x)', 'Chord', 'EU', 'CE', 'EV'),\n         col = c('black', 'blue', 'green', 'orange', 'purple'),\n         lty = c(1, 2, 3, 3, 3), lwd = c(2, 2, 1.5, 1, 1))\n  \n  grid()\n  list(EU = EU, CE = CE, EV = EV, RP = RP)\n}\n\n# Example\nu_sqrt <- function(x) 10 * sqrt(x)\nplot_eu_diagram(c(50, 450), c(0.5, 0.5), u_sqrt, 'Fertilizer Decision')",
+      "notes": "Creates textbook-style EU diagram with chord, CE, EV, and RP labeled."
+    },
+    {
+      "id": "W12-CS06",
+      "category": "visualization",
+      "title": "Compare Risk Attitudes",
+      "code": "compare_risk_attitudes <- function(x_max = 1000) {\n  x <- seq(1, x_max, length = 200)\n  \n  # Normalize utilities to [0, 1] for comparison\n  u_averse <- sqrt(x) / sqrt(x_max)\n  u_neutral <- x / x_max\n  u_loving <- (x / x_max)^2\n  \n  plot(x, u_neutral, type = 'l', lwd = 2, col = 'green',\n       xlab = 'Outcome', ylab = 'Utility (normalized)',\n       main = 'Risk Attitudes: Utility Function Shapes')\n  lines(x, u_averse, lwd = 2, col = 'blue')\n  lines(x, u_loving, lwd = 2, col = 'red')\n  \n  # Mark a fair gamble\n  x_low <- 200; x_high <- 800; p <- 0.5\n  EV <- p * x_low + (1-p) * x_high\n  \n  points(c(x_low, x_high, EV), c(sqrt(x_low)/sqrt(x_max), sqrt(x_high)/sqrt(x_max), \n         (p*sqrt(x_low) + (1-p)*sqrt(x_high))/sqrt(x_max)), \n         pch = 19, col = 'blue')\n  \n  legend('bottomright', \n         c('Risk Neutral (linear)', 'Risk Averse (concave)', 'Risk Loving (convex)'),\n         col = c('green', 'blue', 'red'), lwd = 2)\n  grid()\n}\n\ncompare_risk_attitudes()",
+      "notes": "Visual comparison of risk averse, neutral, and loving utility functions."
+    },
+    {
+      "id": "W12-CS07",
+      "category": "insurance",
+      "title": "Insurance Demand Analysis",
+      "code": "insurance_analysis <- function(W0, loss, p_loss, u_fn, u_inv, coverage = 'full') {\n  # Outcomes without insurance\n  W_no_loss <- W0\n  W_loss <- W0 - loss\n  \n  EU_no_ins <- (1 - p_loss) * u_fn(W_no_loss) + p_loss * u_fn(W_loss)\n  CE_no_ins <- u_inv(EU_no_ins)\n  \n  # Fair premium\n  P_fair <- p_loss * loss\n  \n  # With full insurance at fair premium\n  W_insured <- W0 - P_fair\n  EU_fair_ins <- u_fn(W_insured)\n  \n  # Maximum premium (solves u(W0 - P_max) = EU_no_ins)\n  P_max <- W0 - CE_no_ins\n  loading_max <- P_max / P_fair\n  \n  cat('=== Insurance Analysis ===\\n')\n  cat('Initial wealth:', W0, '\\n')\n  cat('Potential loss:', loss, 'with probability', p_loss, '\\n')\n  cat('\\nWithout insurance:\\n')\n  cat('  EU:', round(EU_no_ins, 4), '\\n')\n  cat('  CE:', round(CE_no_ins, 2), '\\n')\n  cat('\\nFair premium:', round(P_fair, 2), '\\n')\n  cat('With fair insurance: EU =', round(EU_fair_ins, 4), '\\n')\n  cat('\\nMax premium willing to pay:', round(P_max, 2), '\\n')\n  cat('Maximum loading:', round((loading_max - 1) * 100, 1), '% above fair\\n')\n  cat('Risk premium (welfare gain):', round(P_max - P_fair, 2), '\\n')\n  \n  list(EU_no_ins = EU_no_ins, CE_no_ins = CE_no_ins,\n       P_fair = P_fair, P_max = P_max,\n       loading_max = loading_max)\n}\n\n# Sheep farmer example\ninsurance_analysis(W0 = 200000, loss = 150000, p_loss = 0.05, u_log, u_log_inv)",
+      "notes": "Complete insurance demand analysis including fair premium and maximum WTP."
+    },
+    {
+      "id": "W12-CS08",
+      "category": "insurance",
+      "title": "Plot Insurance Demand Curve",
+      "code": "plot_insurance_demand <- function(W0, loss, p_loss, u_fn, u_inv) {\n  # Calculate EU without insurance\n  EU_no_ins <- (1 - p_loss) * u_fn(W0) + p_loss * u_fn(W0 - loss)\n  CE_no_ins <- u_inv(EU_no_ins)\n  \n  P_fair <- p_loss * loss\n  P_max <- W0 - CE_no_ins\n  \n  # Premium range\n  P_range <- seq(0, P_max * 1.2, length = 100)\n  \n  # EU with insurance at each premium\n  EU_ins <- sapply(P_range, function(P) u_fn(W0 - P))\n  \n  # Demand: buy if EU_ins >= EU_no_ins\n  demand <- ifelse(EU_ins >= EU_no_ins, 1, 0)\n  \n  par(mfrow = c(1, 2))\n  \n  # Plot 1: EU comparison\n  plot(P_range, EU_ins, type = 'l', lwd = 2, col = 'blue',\n       xlab = 'Premium ($)', ylab = 'Expected Utility',\n       main = 'EU: Insured vs Uninsured')\n  abline(h = EU_no_ins, col = 'red', lty = 2, lwd = 2)\n  abline(v = P_max, col = 'orange', lty = 3)\n  abline(v = P_fair, col = 'green', lty = 3)\n  legend('topright', c('EU(insured)', 'EU(uninsured)', 'Max P', 'Fair P'),\n         col = c('blue', 'red', 'orange', 'green'), lty = c(1, 2, 3, 3), lwd = 2)\n  \n  # Plot 2: Demand curve (step function)\n  plot(P_range, demand, type = 's', lwd = 2, col = 'darkgreen',\n       xlab = 'Premium ($)', ylab = 'Insurance Purchased (0/1)',\n       main = 'Insurance Demand', ylim = c(-0.1, 1.1))\n  abline(v = P_max, col = 'orange', lty = 2)\n  text(P_max, 0.5, paste('Max P =', round(P_max, 0)), pos = 2)\n  \n  par(mfrow = c(1, 1))\n  list(P_fair = P_fair, P_max = P_max)\n}\n\nplot_insurance_demand(200000, 150000, 0.05, u_log, u_log_inv)",
+      "notes": "Visualizes insurance demand as function of premium."
+    },
+    {
+      "id": "W12-CS09",
+      "category": "value_of_info",
+      "title": "Value of Perfect Information",
+      "code": "value_of_info <- function(states, probs, actions, payoffs, u_fn, u_inv) {\n  # payoffs: matrix[states, actions]\n  n_states <- length(states)\n  n_actions <- length(actions)\n  \n  # 1. Without information: EU for each action\n  EU_actions <- numeric(n_actions)\n  for (a in 1:n_actions) {\n    EU_actions[a] <- sum(probs * sapply(payoffs[, a], u_fn))\n  }\n  \n  best_action_no_info <- which.max(EU_actions)\n  EU_no_info <- max(EU_actions)\n  CE_no_info <- u_inv(EU_no_info)\n  \n  # 2. With perfect information: optimal action in each state\n  EU_per_state <- numeric(n_states)\n  optimal_actions <- character(n_states)\n  for (s in 1:n_states) {\n    utilities <- sapply(payoffs[s, ], u_fn)\n    best_a <- which.max(utilities)\n    EU_per_state[s] <- utilities[best_a]\n    optimal_actions[s] <- actions[best_a]\n  }\n  \n  EU_with_info <- sum(probs * EU_per_state)\n  CE_with_info <- u_inv(EU_with_info)\n  \n  VPI <- CE_with_info - CE_no_info\n  \n  cat('=== Value of Perfect Information ===\\n')\n  cat('\\nWithout info: Best action =', actions[best_action_no_info], '\\n')\n  cat('  EU =', round(EU_no_info, 2), ', CE =', round(CE_no_info, 2), '\\n')\n  cat('\\nWith perfect info:\\n')\n  for (s in 1:n_states) {\n    cat('  If', states[s], ': choose', optimal_actions[s], '\\n')\n  }\n  cat('  EU =', round(EU_with_info, 2), ', CE =', round(CE_with_info, 2), '\\n')\n  cat('\\nValue of Perfect Information: $', round(VPI, 2), '\\n')\n  \n  list(VPI = VPI, CE_no_info = CE_no_info, CE_with_info = CE_with_info)\n}\n\n# Frost protection example\nstates <- c('Frost', 'No Frost')\nprobs <- c(0.2, 0.8)\nactions <- c('Protect', 'No Protect')\n# payoffs[state, action]: wealth outcomes\npayoffs <- matrix(c(\n  95000, 60000,    # Frost: protect vs no protect\n  95000, 100000    # No Frost: protect vs no protect\n), nrow = 2, byrow = TRUE)\n\nvalue_of_info(states, probs, actions, payoffs, u_sqrt, u_sqrt_inv)",
+      "notes": "Calculates VPI by comparing optimal decisions with/without state information."
+    },
+    {
+      "id": "W12-CS10",
+      "category": "value_of_info",
+      "title": "Value of Imperfect Information with Bayes",
+      "code": "value_imperfect_info <- function(prior_probs, signal_accuracy, payoffs, actions, u_fn, u_inv) {\n  # signal_accuracy: matrix[true_state, signal]\n  # e.g., signal_accuracy[1,1] = P(signal_frost | frost)\n  \n  n_states <- 2  # Simplified for binary case\n  n_signals <- 2\n  \n  # Marginal probability of each signal\n  P_signal <- colSums(signal_accuracy * prior_probs)\n  \n  # Posterior probabilities: P(state | signal) using Bayes\n  posterior <- matrix(0, n_states, n_signals)\n  for (sig in 1:n_signals) {\n    for (s in 1:n_states) {\n      posterior[s, sig] <- signal_accuracy[s, sig] * prior_probs[s] / P_signal[sig]\n    }\n  }\n  \n  cat('Signal probabilities:', round(P_signal, 3), '\\n')\n  cat('Posterior P(frost|signal):', round(posterior[1,], 3), '\\n')\n  \n  # Optimal action given each signal\n  EU_given_signal <- matrix(0, n_signals, length(actions))\n  for (sig in 1:n_signals) {\n    for (a in 1:length(actions)) {\n      EU_given_signal[sig, a] <- sum(posterior[, sig] * sapply(payoffs[, a], u_fn))\n    }\n  }\n  \n  best_action_signal <- apply(EU_given_signal, 1, which.max)\n  EU_best_signal <- apply(EU_given_signal, 1, max)\n  \n  # Expected EU with imperfect info\n  EU_imperfect <- sum(P_signal * EU_best_signal)\n  CE_imperfect <- u_inv(EU_imperfect)\n  \n  cat('\\nOptimal actions given signals:', actions[best_action_signal], '\\n')\n  cat('EU with imperfect info:', round(EU_imperfect, 2), '\\n')\n  cat('CE with imperfect info:', round(CE_imperfect, 2), '\\n')\n  \n  list(EU = EU_imperfect, CE = CE_imperfect, \n       P_signal = P_signal, posterior = posterior)\n}\n\n# Imperfect frost forecast\nprior_probs <- c(0.2, 0.8)  # P(frost), P(no frost)\nsignal_accuracy <- matrix(c(\n  0.80, 0.20,  # P(predict frost | frost), P(predict no frost | frost)\n  0.10, 0.90   # P(predict frost | no frost), P(predict no frost | no frost)\n), nrow = 2, byrow = TRUE)\n\npayoffs <- matrix(c(95000, 60000, 95000, 100000), nrow = 2, byrow = TRUE)\n\nresult <- value_imperfect_info(prior_probs, signal_accuracy, payoffs, \n                               c('Protect', 'No Protect'), u_sqrt, u_sqrt_inv)",
+      "notes": "Calculates value of imperfect information using Bayesian updating."
+    },
+    {
+      "id": "W12-CS11",
+      "category": "portfolio",
+      "title": "Mean-Variance Portfolio Optimization",
+      "code": "mv_portfolio <- function(returns, std_devs, corr, risk_aversion, total_area = 100) {\n  # Two-asset portfolio optimization\n  # returns: expected return per unit\n  # std_devs: standard deviation per unit\n  # corr: correlation between assets\n  \n  E1 <- returns[1]; E2 <- returns[2]\n  s1 <- std_devs[1]; s2 <- std_devs[2]\n  \n  # Grid search for optimal allocation\n  w_range <- seq(0, total_area, by = 1)\n  results <- data.frame(w1 = w_range)\n  results$w2 <- total_area - w_range\n  \n  results$E_R <- w_range * E1 + (total_area - w_range) * E2\n  results$Var_R <- w_range^2 * s1^2 + (total_area - w_range)^2 * s2^2 + \n                   2 * w_range * (total_area - w_range) * corr * s1 * s2\n  results$U <- results$E_R - (risk_aversion / 2) * results$Var_R\n  \n  optimal <- results[which.max(results$U), ]\n  \n  cat('=== Mean-Variance Portfolio ===\\n')\n  cat('Asset 1: E =', E1, ', σ =', s1, '\\n')\n  cat('Asset 2: E =', E2, ', σ =', s2, '\\n')\n  cat('Correlation:', corr, '\\n')\n  cat('Risk aversion A:', risk_aversion, '\\n')\n  cat('\\nOptimal allocation:\\n')\n  cat('  Asset 1:', optimal$w1, 'units\\n')\n  cat('  Asset 2:', optimal$w2, 'units\\n')\n  cat('  E[R]:', round(optimal$E_R, 0), '\\n')\n  cat('  Var[R]:', round(optimal$Var_R, 0), '\\n')\n  cat('  Utility:', round(optimal$U, 2), '\\n')\n  \n  # Plot efficient frontier\n  plot(sqrt(results$Var_R), results$E_R, type = 'l', lwd = 2, col = 'blue',\n       xlab = 'Portfolio Std Dev', ylab = 'Expected Return',\n       main = 'Portfolio Frontier')\n  points(sqrt(optimal$Var_R), optimal$E_R, pch = 19, col = 'red', cex = 2)\n  \n  list(optimal = optimal, all_portfolios = results)\n}\n\nmv_portfolio(returns = c(400, 500), std_devs = c(150, 300), \n             corr = 0.2, risk_aversion = 0.002)",
+      "notes": "Two-asset portfolio optimization using mean-variance framework."
+    },
+    {
+      "id": "W12-CS12",
+      "category": "complete",
+      "title": "Complete Uncertainty Toolkit",
+      "code": "# Source all utility functions first\nu_sqrt <- function(x) sqrt(x)\nu_sqrt_inv <- function(u) u^2\nu_log <- function(x) log(x)\nu_log_inv <- function(u) exp(u)\n\n# Unified toolkit\nuncertainty_toolkit <- function(u_fn = u_sqrt, u_inv = u_sqrt_inv) {\n  list(\n    eu_analysis = function(outcomes, probs) {\n      eu_analysis(outcomes, probs, u_fn, u_inv)\n    },\n    \n    plot_eu = function(outcomes, probs, title = 'EU Analysis') {\n      plot_eu_diagram(outcomes, probs, u_fn, title)\n    },\n    \n    insurance = function(W0, loss, p_loss) {\n      insurance_analysis(W0, loss, p_loss, u_fn, u_inv)\n    },\n    \n    vpi = function(states, probs, actions, payoffs) {\n      value_of_info(states, probs, actions, payoffs, u_fn, u_inv)\n    },\n    \n    risk_aversion = function(x) {\n      list(ARA = ara(u_fn, x), RRA = rra(u_fn, x))\n    }\n  )\n}\n\n# Usage\ntoolkit <- uncertainty_toolkit(u_log, u_log_inv)\ntoolkit$eu_analysis(c(50, 450), c(0.5, 0.5))\ntoolkit$insurance(100000, 50000, 0.1)",
+      "notes": "Unified toolkit for all uncertainty calculations with specified utility function."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Expected Utility",
+      "template": "EU <- sum(probs * sapply(outcomes, u_fn))"
+    },
+    {
+      "pattern": "Certainty Equivalent",
+      "template": "CE <- u_inv(EU)  # where u_inv is the inverse utility function"
+    },
+    {
+      "pattern": "Risk Premium",
+      "template": "RP <- sum(probs * outcomes) - CE"
+    },
+    {
+      "pattern": "Fair Insurance Premium",
+      "template": "P_fair <- prob_loss * loss_amount"
+    },
+    {
+      "pattern": "Maximum Insurance Premium",
+      "template": "P_max <- W0 - u_inv(EU_uninsured)"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "Negative utility with sqrt or log",
+      "cause": "Attempting sqrt or log of negative number",
+      "fix": "Ensure all wealth outcomes are positive; check for losses exceeding wealth"
+    },
+    {
+      "error": "CE > EV for risk averse agent",
+      "cause": "Wrong utility function or inverse function",
+      "fix": "Verify u_fn is concave and u_inv is the correct inverse"
+    },
+    {
+      "error": "Probabilities don't sum to 1",
+      "cause": "Input error or rounding",
+      "fix": "Normalize: probs <- probs / sum(probs)"
+    },
+    {
+      "error": "VPI is negative",
+      "cause": "Information should never have negative value",
+      "fix": "Check payoff matrix orientation and calculation logic"
+    }
+  ]
+}

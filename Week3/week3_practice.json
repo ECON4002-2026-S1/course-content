@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "week": 3,
+    "title": "Calculus & Functions",
+    "learning_objectives": [
+      "Differentiate economic functions",
+      "Calculate partial derivatives",
+      "Compute and interpret elasticities",
+      "Apply chain and product rules",
+      "Work with Cobb-Douglas and other functional forms",
+      "Implement numerical differentiation in R"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W3-P1a",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Basic Derivatives",
+      "question": "Find the derivative of f(x) = 5x⁴ - 3x² + 7x - 12",
+      "hints": [
+        "Apply power rule to each term",
+        "d/dx(xⁿ) = n·x^(n-1)",
+        "Derivative of constant is 0"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P1d",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Product Rule",
+      "question": "Find the derivative of p(x) = x² · eˣ",
+      "hints": [
+        "Product rule: (fg)' = f'g + fg'",
+        "Let f = x², g = eˣ",
+        "Remember: d/dx(eˣ) = eˣ"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P1f",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Chain Rule",
+      "question": "Find the derivative of r(x) = (3x² + 2)⁴",
+      "hints": [
+        "Chain rule: d/dx[f(g(x))] = f'(g(x))·g'(x)",
+        "Outer function: u⁴, inner function: 3x² + 2",
+        "Derivative of outer: 4u³, derivative of inner: 6x"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P2a",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Marginal Revenue",
+      "question": "TR(Q) = 100Q - 2Q². Find MR, where MR = 0, and interpret.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W3-P3b",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Partial Derivatives - Cobb-Douglas",
+      "question": "For g(L,K) = 50L^0.4·K^0.6, find all first and second-order partial derivatives.",
+      "hints": [
+        "Treat other variable as constant",
+        "∂/∂L(L^α) = αL^(α-1)",
+        "For cross-partial, differentiate ∂g/∂L with respect to K"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Price Elasticity",
+      "question": "For Q = 200 - 4P, calculate elasticity at P = 10, 25, 40. Find unit elastic price.",
+      "hints": [
+        "ε = (dQ/dP)·(P/Q)",
+        "For linear demand, dQ/dP is constant",
+        "Unit elastic when |ε| = 1"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P6",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Log-Linear Demand",
+      "question": "ln(Q) = 5.2 - 0.8·ln(P) + 0.5·ln(M). Find price and income elasticities. Interpret.",
+      "hints": [
+        "In log-log models, coefficients ARE elasticities",
+        "d(ln Q)/d(ln P) = price elasticity",
+        "Income elasticity > 1 means luxury good"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P8",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Cobb-Douglas Production",
+      "question": "Q = 10L^0.4·K^0.6. At L=100, K=200: find output, MPs, MRTS, returns to scale.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W3-P9a",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Growth Rates",
+      "question": "Y(t) = 100e^(0.03t). What is the growth rate? How long to double?",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W3-P10",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Isoquant and MRTS",
+      "question": "For Q = L^0.5·K^0.5: derive MRTS, calculate at L=25, K=100.",
+      "hints": [
+        "Total differential: dQ = (∂Q/∂L)dL + (∂Q/∂K)dK",
+        "On isoquant: dQ = 0",
+        "Solve for dK/dL"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W3-P12",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Numerical Differentiation in R",
+      "question": "Create numerical_derivative and elasticity functions in R. Test on f(x)=x³ and Q=500P^(-0.8).",
+      "hints": [],
+      "solution": ""
+    }
+  ]
+}

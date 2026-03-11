@@ -1,0 +1,136 @@
+{
+  "week": 3,
+  "title": "Calculus & Functions in R",
+  "description": "Numerical differentiation, elasticity, Cobb-Douglas, and growth rates",
+  "snippets": [
+    {
+      "id": "W3-CS01",
+      "category": "differentiation",
+      "title": "Numerical Derivative",
+      "code": "numerical_derivative <- function(f, x, h = 1e-6) {\n  (f(x + h) - f(x - h)) / (2 * h)\n}\n\n# Test: f(x) = x³, f'(x) = 3x²\nf <- function(x) x^3\nnumerical_derivative(f, x = 2)  # 12",
+      "notes": "Central difference formula is more accurate than forward difference."
+    },
+    {
+      "id": "W3-CS02",
+      "category": "differentiation",
+      "title": "Partial Derivatives",
+      "code": "partial_x <- function(f, x, y, h = 1e-6) {\n  (f(x + h, y) - f(x - h, y)) / (2 * h)\n}\n\npartial_y <- function(f, x, y, h = 1e-6) {\n  (f(x, y + h) - f(x, y - h)) / (2 * h)\n}\n\n# f(x,y) = 3x² + 2xy\nf <- function(x, y) 3*x^2 + 2*x*y\npartial_x(f, 1, 2)  # 6(1) + 2(2) = 10",
+      "notes": "Hold other variables constant when taking partial derivative."
+    },
+    {
+      "id": "W3-CS03",
+      "category": "differentiation",
+      "title": "Gradient Vector",
+      "code": "gradient <- function(f, x, h = 1e-6) {\n  n <- length(x)\n  grad <- numeric(n)\n  for (i in 1:n) {\n    x_plus <- x_minus <- x\n    x_plus[i] <- x[i] + h\n    x_minus[i] <- x[i] - h\n    grad[i] <- (f(x_plus) - f(x_minus)) / (2 * h)\n  }\n  return(grad)\n}\n\nf <- function(x) x[1]^2 + 3*x[1]*x[2]\ngradient(f, c(1, 2))  # [2+6, 3] = [8, 3]",
+      "notes": "Gradient is vector of all partial derivatives. Zero gradient → critical point."
+    },
+    {
+      "id": "W3-CS04",
+      "category": "elasticity",
+      "title": "Point Elasticity",
+      "code": "elasticity <- function(demand_fn, P, h = 1e-6) {\n  Q <- demand_fn(P)\n  dQ_dP <- (demand_fn(P + h) - demand_fn(P - h)) / (2 * h)\n  return(dQ_dP * P / Q)\n}\n\ndemand <- function(P) 200 - 4*P\nelasticity(demand, 25)  # -1.0 (unit elastic)",
+      "notes": "ε = (dQ/dP)·(P/Q). Negative for demand. |ε|>1 is elastic."
+    },
+    {
+      "id": "W3-CS05",
+      "category": "elasticity",
+      "title": "Constant Elasticity Demand",
+      "code": "# Q = a·P^b has constant elasticity = b\ndemand_ce <- function(P) 100 * P^(-0.8)\n\n# Verify at multiple prices\nfor (P in c(5, 10, 20)) {\n  e <- elasticity(demand_ce, P)\n  cat('P =', P, ': ε =', round(e, 3), '\\n')\n}\n# All give -0.8",
+      "notes": "Log-log specification: ln Q = ln a + b·ln P → elasticity = b (constant)."
+    },
+    {
+      "id": "W3-CS06",
+      "category": "cost",
+      "title": "Cost Functions",
+      "code": "total_cost <- function(Q, F = 100, a = 20, b = 0.5) {\n  F + a*Q + b*Q^2\n}\n\nmarginal_cost <- function(Q, a = 20, b = 0.5) {\n  a + 2*b*Q\n}\n\naverage_cost <- function(Q, F = 100, a = 20, b = 0.5) {\n  total_cost(Q, F, a, b) / Q\n}\n\n# MC intersects AC at minimum AC\nQ_min_AC <- sqrt(F / b)  # √(100/0.5) = 14.14",
+      "notes": "MC = dTC/dQ. AC minimized where MC = AC."
+    },
+    {
+      "id": "W3-CS07",
+      "category": "revenue",
+      "title": "Revenue and Marginal Revenue",
+      "code": "# P = 100 - 2Q (inverse demand)\ntotal_revenue <- function(Q) Q * (100 - 2*Q)\nmarginal_revenue <- function(Q) 100 - 4*Q\n\n# Revenue max where MR = 0\nQ_max_rev <- 100 / 4  # 25\n\nplot(0:50, total_revenue(0:50), type = 'l')\nabline(v = Q_max_rev, lty = 2)",
+      "notes": "MR = dTR/dQ. For linear demand P = a - bQ, MR = a - 2bQ."
+    },
+    {
+      "id": "W3-CS08",
+      "category": "production",
+      "title": "Cobb-Douglas Production",
+      "code": "cobb_douglas <- function(L, K, A = 10, alpha = 0.3, beta = 0.7) {\n  A * L^alpha * K^beta\n}\n\nMP_L <- function(L, K, A = 10, alpha = 0.3, beta = 0.7) {\n  alpha * cobb_douglas(L, K, A, alpha, beta) / L\n}\n\nMP_K <- function(L, K, A = 10, alpha = 0.3, beta = 0.7) {\n  beta * cobb_douglas(L, K, A, alpha, beta) / K\n}\n\n# Test\ncobb_douglas(100, 50)  # Output\nMP_L(100, 50)          # Marginal product of L",
+      "notes": "MP_L = α·Q/L (constant share of APL). Output elasticity = α."
+    },
+    {
+      "id": "W3-CS09",
+      "category": "production",
+      "title": "MRTS",
+      "code": "# MRTS = -MP_L/MP_K = -(α/β)·(K/L)\nMRTS <- function(L, K, alpha = 0.3, beta = 0.7) {\n  -(alpha/beta) * (K/L)\n}\n\n# At L=100, K=50\nMRTS(100, 50)  # -(0.3/0.7)·(50/100) = -0.214\n\n# Interpretation: Can give up 0.214 K per extra L",
+      "notes": "MRTS is slope of isoquant. Diminishes as L/K rises (convex isoquants)."
+    },
+    {
+      "id": "W3-CS10",
+      "category": "production",
+      "title": "Returns to Scale",
+      "code": "# Scale all inputs by t, check output scaling\ntest_RTS <- function(t, L = 100, K = 50, alpha = 0.3, beta = 0.7) {\n  Q1 <- cobb_douglas(L, K, alpha = alpha, beta = beta)\n  Q2 <- cobb_douglas(t*L, t*K, alpha = alpha, beta = beta)\n  return(Q2 / Q1)\n}\n\nt <- 2\nratio <- test_RTS(t)\ncat('If t =', t, ', output scales by', ratio, '\\n')\ncat('RTS:', ifelse(ratio == t, 'CRS', \n                   ifelse(ratio > t, 'IRS', 'DRS')))",
+      "notes": "For CD: Q(tL,tK) = t^(α+β)·Q. α+β=1→CRS, >1→IRS, <1→DRS."
+    },
+    {
+      "id": "W3-CS11",
+      "category": "production",
+      "title": "Isoquant Plotting",
+      "code": "# For Q = A·L^α·K^β, K = (Q/(A·L^α))^(1/β)\nisoquant <- function(L, Q_target, A = 10, alpha = 0.3, beta = 0.7) {\n  (Q_target / (A * L^alpha))^(1/beta)\n}\n\nL_range <- 10:200\nplot(L_range, isoquant(L_range, 100), type = 'l',\n     xlab = 'L', ylab = 'K', main = 'Isoquant Q = 100')",
+      "notes": "Isoquant shows all (L,K) combinations producing same Q."
+    },
+    {
+      "id": "W3-CS12",
+      "category": "growth",
+      "title": "Continuous Growth",
+      "code": "# Y(t) = Y₀·e^(gt)\ncontinuous_growth <- function(Y0, g, t) Y0 * exp(g * t)\n\n# 3% growth for 20 years\nY <- continuous_growth(100, 0.03, 0:20)\nplot(0:20, Y, type = 'l', main = 'Growth at 3%')\n\n# Doubling time\nT_double <- log(2) / 0.03  # 23.1 years",
+      "notes": "Growth rate g = d(ln Y)/dt. Rule of 70: doubling time ≈ 70/g%."
+    },
+    {
+      "id": "W3-CS13",
+      "category": "growth",
+      "title": "Log Difference as Growth Rate",
+      "code": "# For small changes: % change ≈ Δ ln(Y)\nY <- c(100, 103, 106.09)\n\n# Standard growth rate\ngrowth_std <- diff(Y) / head(Y, -1)\n\n# Log difference\ngrowth_log <- diff(log(Y))\n\ncbind(Standard = growth_std, Log = growth_log)\n# Nearly identical for small changes",
+      "notes": "Log differences additive: ln(Y2/Y1) = ln Y2 - ln Y1."
+    },
+    {
+      "id": "W3-CS14",
+      "category": "symbolic",
+      "title": "Symbolic Differentiation",
+      "code": "# R's built-in D() for symbolic derivatives\nexpr <- expression(3*x^2 + 2*x + 5)\nD(expr, 'x')  # Returns: 3 * (2 * x) + 2\n\n# Product rule automatically applied\nexpr2 <- expression(x^2 * exp(x))\nD(expr2, 'x')",
+      "notes": "D() returns expression. For functions, use Deriv package."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Elasticity at Point",
+      "template": "elasticity <- function(f, x) {\n  h <- 1e-6\n  df_dx <- (f(x+h) - f(x-h)) / (2*h)\n  df_dx * x / f(x)\n}"
+    },
+    {
+      "pattern": "Marginal Product",
+      "template": "MP_L <- function(L, K) {\n  alpha * production(L, K) / L\n}"
+    },
+    {
+      "pattern": "Profit Maximization",
+      "template": "profit <- function(Q) TR(Q) - TC(Q)\nresult <- optimize(profit, c(0, 100), maximum = TRUE)\nQ_star <- result$maximum"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "NaN or Inf in derivative",
+      "cause": "Function undefined at point (e.g., log(0), 1/0)",
+      "fix": "Check domain; use pmax to ensure positive values"
+    },
+    {
+      "error": "Wrong elasticity sign",
+      "cause": "Forgot that demand elasticity is negative",
+      "fix": "Price elasticity of demand should be ≤ 0"
+    },
+    {
+      "error": "Output elasticity not constant",
+      "cause": "Not using true Cobb-Douglas form",
+      "fix": "For CD, output elasticity = exponent (always)"
+    }
+  ]
+}

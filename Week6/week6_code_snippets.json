@@ -1,0 +1,136 @@
+{
+  "week": 6,
+  "title": "Consumer Theory II: Duality & Welfare R Code",
+  "description": "R implementations for indirect utility, expenditure functions, Slutsky decomposition, and welfare measures",
+  "snippets": [
+    {
+      "id": "W6-CS01",
+      "category": "indirect_utility",
+      "title": "Indirect Utility Function",
+      "code": "# Cobb-Douglas indirect utility\nindirect_utility_CD <- function(p1, p2, m, alpha = 0.5) {\n  k <- alpha^alpha * (1-alpha)^(1-alpha)\n  v <- k * m / (p1^alpha * p2^(1-alpha))\n  return(v)\n}\n\n# Test\nv <- indirect_utility_CD(p1 = 2, p2 = 3, m = 120, alpha = 0.4)\ncat('Indirect utility:', round(v, 3))",
+      "notes": "v(p,m) = k·m/(p₁^α p₂^(1-α)) where k = α^α(1-α)^(1-α)"
+    },
+    {
+      "id": "W6-CS02",
+      "category": "indirect_utility",
+      "title": "Roy's Identity Verification",
+      "code": "# Verify Roy's Identity numerically\nroys_identity <- function(v_fn, p1, p2, m, h = 1e-6) {\n  # Numerical partial derivatives\n  dv_dp1 <- (v_fn(p1 + h, p2, m) - v_fn(p1 - h, p2, m)) / (2 * h)\n  dv_dp2 <- (v_fn(p1, p2 + h, m) - v_fn(p1, p2 - h, m)) / (2 * h)\n  dv_dm <- (v_fn(p1, p2, m + h) - v_fn(p1, p2, m - h)) / (2 * h)\n  \n  x1 <- -dv_dp1 / dv_dm\n  x2 <- -dv_dp2 / dv_dm\n  return(c(x1 = x1, x2 = x2))\n}\n\n# Compare with direct calculation\np1 <- 2; p2 <- 3; m <- 120; alpha <- 0.4\nx_roy <- roys_identity(function(p1, p2, m) indirect_utility_CD(p1, p2, m, alpha), \n                        p1, p2, m)\nx_direct <- c(x1 = alpha * m / p1, x2 = (1-alpha) * m / p2)\n\ncat('From Roy:', round(x_roy, 3), '\\n')\ncat('Direct:', round(x_direct, 3))",
+      "notes": "Roy's Identity: xᵢᵐ = -(∂v/∂pᵢ)/(∂v/∂m)"
+    },
+    {
+      "id": "W6-CS03",
+      "category": "expenditure",
+      "title": "Expenditure Function",
+      "code": "# Cobb-Douglas expenditure function\nexpenditure_CD <- function(p1, p2, u, alpha = 0.5) {\n  k <- alpha^alpha * (1-alpha)^(1-alpha)\n  e <- u / k * p1^alpha * p2^(1-alpha)\n  return(e)\n}\n\n# Test: What does it cost to achieve u=20 at p1=2, p2=3?\ne <- expenditure_CD(p1 = 2, p2 = 3, u = 20, alpha = 0.5)\ncat('Minimum expenditure:', round(e, 2))",
+      "notes": "e(p,ū) = (ū/k)·p₁^α p₂^(1-α). Inverse of indirect utility."
+    },
+    {
+      "id": "W6-CS04",
+      "category": "expenditure",
+      "title": "Verify Duality: v and e are Inverses",
+      "code": "# Verify: v(p, e(p,u)) = u and e(p, v(p,m)) = m\nalpha <- 0.5\np1 <- 2; p2 <- 3; m <- 100; u <- 15\n\n# Test 1: v(p, e(p,u)) = u\ne_val <- expenditure_CD(p1, p2, u, alpha)\nv_of_e <- indirect_utility_CD(p1, p2, e_val, alpha)\ncat('u =', u, ', v(p, e(p,u)) =', round(v_of_e, 4), '\\n')\n\n# Test 2: e(p, v(p,m)) = m\nv_val <- indirect_utility_CD(p1, p2, m, alpha)\ne_of_v <- expenditure_CD(p1, p2, v_val, alpha)\ncat('m =', m, ', e(p, v(p,m)) =', round(e_of_v, 4))",
+      "notes": "v and e are inverses with respect to their second arguments."
+    },
+    {
+      "id": "W6-CS05",
+      "category": "hicksian",
+      "title": "Hicksian Demand Functions",
+      "code": "# Cobb-Douglas Hicksian demand\nhicksian_CD <- function(p1, p2, u, alpha = 0.5) {\n  x1_h <- u * (alpha * p2 / ((1-alpha) * p1))^(1-alpha)\n  x2_h <- u * ((1-alpha) * p1 / (alpha * p2))^alpha\n  return(c(x1 = x1_h, x2 = x2_h))\n}\n\n# Test\nx_h <- hicksian_CD(p1 = 2, p2 = 3, u = 20, alpha = 0.5)\ncat('Hicksian demands at u=20:', round(x_h, 3))",
+      "notes": "Hicksian demand holds utility constant (compensated demand)."
+    },
+    {
+      "id": "W6-CS06",
+      "category": "hicksian",
+      "title": "Shephard's Lemma Verification",
+      "code": "# Verify Shephard's Lemma: x^h_i = ∂e/∂p_i\nshephards_lemma <- function(e_fn, p1, p2, u, h = 1e-6) {\n  de_dp1 <- (e_fn(p1 + h, p2, u) - e_fn(p1 - h, p2, u)) / (2 * h)\n  de_dp2 <- (e_fn(p1, p2 + h, u) - e_fn(p1, p2 - h, u)) / (2 * h)\n  return(c(x1 = de_dp1, x2 = de_dp2))\n}\n\n# Compare\nalpha <- 0.5; p1 <- 2; p2 <- 3; u <- 20\nx_shephard <- shephards_lemma(\n  function(p1, p2, u) expenditure_CD(p1, p2, u, alpha), p1, p2, u)\nx_hicksian <- hicksian_CD(p1, p2, u, alpha)\n\ncat('From Shephard:', round(x_shephard, 3), '\\n')\ncat('Hicksian:', round(x_hicksian, 3))",
+      "notes": "Shephard's Lemma: derivative of e w.r.t. price = Hicksian demand."
+    },
+    {
+      "id": "W6-CS07",
+      "category": "slutsky",
+      "title": "Slutsky Decomposition",
+      "code": "slutsky_decomposition <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  # Original demands and utility\n  x_old <- c(alpha * m / p1_old, (1-alpha) * m / p2)\n  u_old <- indirect_utility_CD(p1_old, p2, m, alpha)\n  \n  # New Marshallian demands\n  x_new <- c(alpha * m / p1_new, (1-alpha) * m / p2)\n  \n  # Hicksian at new prices, old utility\n  x_hicks <- hicksian_CD(p1_new, p2, u_old, alpha)\n  \n  # Decomposition for x1\n  total <- x_new[1] - x_old[1]\n  substitution <- x_hicks[1] - x_old[1]\n  income <- total - substitution\n  \n  cat('=== Slutsky Decomposition ===\\n')\n  cat('Price change: p1 from', p1_old, 'to', p1_new, '\\n\\n')\n  cat('Original x1:', round(x_old[1], 3), '\\n')\n  cat('New x1:', round(x_new[1], 3), '\\n')\n  cat('Hicksian x1:', round(x_hicks[1], 3), '\\n\\n')\n  cat('Total effect:', round(total, 3), '\\n')\n  cat('Substitution effect:', round(substitution, 3), '\\n')\n  cat('Income effect:', round(income, 3), '\\n')\n  cat('Check (S + I = T):', round(substitution + income, 3), '\\n')\n  \n  return(list(total = total, substitution = substitution, income = income))\n}\n\n# Example: p1 increases from 2 to 4\nslutsky_decomposition(p1_old = 2, p1_new = 4, p2 = 2, m = 100, alpha = 0.5)",
+      "notes": "Total = Substitution + Income. Substitution always ≤ 0 for own-price."
+    },
+    {
+      "id": "W6-CS08",
+      "category": "slutsky",
+      "title": "Visualize Slutsky Decomposition",
+      "code": "plot_slutsky <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  # Calculate all points\n  x_A <- c(alpha * m / p1_old, (1-alpha) * m / p2)  # Original\n  u_old <- indirect_utility_CD(p1_old, p2, m, alpha)\n  x_C <- c(alpha * m / p1_new, (1-alpha) * m / p2)  # New\n  x_B <- hicksian_CD(p1_new, p2, u_old, alpha)       # Compensated\n  \n  # Plot setup\n  x1_max <- max(x_A[1], x_B[1], x_C[1]) * 1.3\n  x2_max <- max(x_A[2], x_B[2], x_C[2]) * 1.3\n  \n  plot(NULL, xlim = c(0, x1_max), ylim = c(0, x2_max),\n       xlab = expression(x[1]), ylab = expression(x[2]),\n       main = 'Slutsky Decomposition')\n  \n  # Budget lines\n  abline(a = m/p2, b = -p1_old/p2, col = 'blue', lwd = 2)   # Original\n  abline(a = m/p2, b = -p1_new/p2, col = 'red', lwd = 2)    # New\n  # Compensated budget (through B with new slope)\n  comp_income <- expenditure_CD(p1_new, p2, u_old, alpha)\n  abline(a = comp_income/p2, b = -p1_new/p2, col = 'orange', lwd = 2, lty = 2)\n  \n  # Indifference curves\n  x1_seq <- seq(0.1, x1_max, length = 200)\n  for (u in c(u_old, indirect_utility_CD(p1_new, p2, m, alpha))) {\n    x2_seq <- (u / x1_seq^alpha)^(1/(1-alpha))\n    x2_seq[x2_seq > x2_max] <- NA\n    lines(x1_seq, x2_seq, col = 'gray', lwd = 1)\n  }\n  \n  # Points\n  points(x_A[1], x_A[2], pch = 19, cex = 1.5, col = 'blue')\n  points(x_B[1], x_B[2], pch = 19, cex = 1.5, col = 'orange')\n  points(x_C[1], x_C[2], pch = 19, cex = 1.5, col = 'red')\n  \n  text(x_A[1], x_A[2], 'A', pos = 4)\n  text(x_B[1], x_B[2], 'B', pos = 4)\n  text(x_C[1], x_C[2], 'C', pos = 4)\n  \n  legend('topright', c('Original budget', 'New budget', 'Compensated', 'A: Original', 'B: Substitution', 'C: Final'),\n         col = c('blue', 'red', 'orange', 'blue', 'orange', 'red'),\n         lty = c(1, 1, 2, NA, NA, NA), pch = c(NA, NA, NA, 19, 19, 19))\n  grid()\n}\n\nplot_slutsky(p1_old = 2, p1_new = 4, p2 = 2, m = 100, alpha = 0.5)",
+      "notes": "A→B: substitution (along IC). B→C: income (between ICs)."
+    },
+    {
+      "id": "W6-CS09",
+      "category": "welfare",
+      "title": "Compensating Variation",
+      "code": "# CV = e(p_new, u_old) - m\n# Income needed to compensate for price change\n\ncompensating_variation <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  u_old <- indirect_utility_CD(p1_old, p2, m, alpha)\n  e_new <- expenditure_CD(p1_new, p2, u_old, alpha)\n  CV <- e_new - m\n  return(CV)\n}\n\n# Example: p1 rises from 2 to 4\nCV <- compensating_variation(p1_old = 2, p1_new = 4, p2 = 2, m = 100, alpha = 0.5)\ncat('CV:', round(CV, 2), '\\n')\ncat('Interpretation: Consumer needs $', round(CV, 2), ' extra to maintain original utility')",
+      "notes": "CV uses OLD utility as reference, NEW prices for evaluation."
+    },
+    {
+      "id": "W6-CS10",
+      "category": "welfare",
+      "title": "Equivalent Variation",
+      "code": "# EV = m - e(p_old, u_new)\n# Income change at old prices equivalent to price change\n\nequivalent_variation <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  u_new <- indirect_utility_CD(p1_new, p2, m, alpha)\n  e_old <- expenditure_CD(p1_old, p2, u_new, alpha)\n  EV <- m - e_old\n  return(EV)\n}\n\n# Example\nEV <- equivalent_variation(p1_old = 2, p1_new = 4, p2 = 2, m = 100, alpha = 0.5)\ncat('EV:', round(EV, 2), '\\n')\ncat('Interpretation: Losing $', round(EV, 2), ' at old prices would be equivalent')",
+      "notes": "EV uses NEW utility as reference, OLD prices for evaluation."
+    },
+    {
+      "id": "W6-CS11",
+      "category": "welfare",
+      "title": "Complete Welfare Analysis",
+      "code": "welfare_analysis <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  # Utilities\n  u_old <- indirect_utility_CD(p1_old, p2, m, alpha)\n  u_new <- indirect_utility_CD(p1_new, p2, m, alpha)\n  \n  # Welfare measures\n  CV <- compensating_variation(p1_old, p1_new, p2, m, alpha)\n  EV <- equivalent_variation(p1_old, p1_new, p2, m, alpha)\n  \n  # Consumer surplus change (approximation using Marshallian demand)\n  # For Cobb-Douglas: CS = α·m·ln(p_old/p_new) approximately\n  delta_CS_approx <- alpha * m * log(p1_old / p1_new)\n  \n  cat('=== Welfare Analysis ===\\n')\n  cat('Price change: p1 from', p1_old, 'to', p1_new, '\\n\\n')\n  cat('Old utility:', round(u_old, 3), '\\n')\n  cat('New utility:', round(u_new, 3), '\\n')\n  cat('Utility change:', round(u_new - u_old, 3), '\\n\\n')\n  cat('CV:', round(CV, 2), '\\n')\n  cat('EV:', round(EV, 2), '\\n')\n  cat('ΔCS (approx):', round(delta_CS_approx, 2), '\\n\\n')\n  \n  if (p1_new > p1_old) {\n    cat('Price increase: CV > EV (consumer worse off)\\n')\n  } else {\n    cat('Price decrease: EV > CV (consumer better off)\\n')\n  }\n  \n  return(list(u_old = u_old, u_new = u_new, CV = CV, EV = EV))\n}\n\nwelfare_analysis(p1_old = 2, p1_new = 4, p2 = 2, m = 100, alpha = 0.5)",
+      "notes": "For price increases: CV > ΔCS > EV (different reference utilities)."
+    },
+    {
+      "id": "W6-CS12",
+      "category": "complete",
+      "title": "Complete Duality Toolkit",
+      "code": "# All consumer duality functions in one object\nCD_duality <- function(alpha = 0.5) {\n  k <- alpha^alpha * (1-alpha)^(1-alpha)\n  \n  list(\n    # Indirect utility function\n    v = function(p1, p2, m) k * m / (p1^alpha * p2^(1-alpha)),\n    \n    # Expenditure function\n    e = function(p1, p2, u) u / k * p1^alpha * p2^(1-alpha),\n    \n    # Marshallian demand\n    x_m = function(p1, p2, m) {\n      c(x1 = alpha * m / p1, x2 = (1-alpha) * m / p2)\n    },\n    \n    # Hicksian demand\n    x_h = function(p1, p2, u) {\n      c(x1 = u * (alpha * p2 / ((1-alpha) * p1))^(1-alpha),\n        x2 = u * ((1-alpha) * p1 / (alpha * p2))^alpha)\n    },\n    \n    # CV and EV\n    CV = function(p1_old, p1_new, p2, m) {\n      u_old <- k * m / (p1_old^alpha * p2^(1-alpha))\n      e_new <- u_old / k * p1_new^alpha * p2^(1-alpha)\n      e_new - m\n    },\n    \n    EV = function(p1_old, p1_new, p2, m) {\n      u_new <- k * m / (p1_new^alpha * p2^(1-alpha))\n      e_old <- u_new / k * p1_old^alpha * p2^(1-alpha)\n      m - e_old\n    }\n  )\n}\n\n# Usage\nfns <- CD_duality(alpha = 0.4)\ncat('v(2,3,120) =', fns$v(2, 3, 120), '\\n')\ncat('e(2,3,25) =', fns$e(2, 3, 25), '\\n')\ncat('x_m(2,3,120) =', fns$x_m(2, 3, 120), '\\n')\ncat('CV for p1: 2→4 =', fns$CV(2, 4, 3, 120))",
+      "notes": "Comprehensive toolkit for all duality-related computations."
+    },
+    {
+      "id": "W6-CS13",
+      "category": "demand_curves",
+      "title": "Plot Marshallian vs Hicksian Demand",
+      "code": "plot_marshallian_hicksian <- function(p2, m, u_ref, alpha = 0.5) {\n  p1_range <- seq(0.5, 10, by = 0.1)\n  \n  # Marshallian demand (holds income constant)\n  x1_marshallian <- alpha * m / p1_range\n  \n  # Hicksian demand (holds utility constant)\n  x1_hicksian <- u_ref * (alpha * p2 / ((1-alpha) * p1_range))^(1-alpha)\n  \n  plot(x1_marshallian, p1_range, type = 'l', col = 'blue', lwd = 2,\n       xlab = expression(x[1]), ylab = expression(p[1]),\n       main = 'Marshallian vs Hicksian Demand',\n       xlim = c(0, max(x1_marshallian) * 1.1))\n  lines(x1_hicksian, p1_range, col = 'red', lwd = 2, lty = 2)\n  \n  legend('topright', c('Marshallian (income const)', 'Hicksian (utility const)'),\n         col = c('blue', 'red'), lty = c(1, 2), lwd = 2)\n  grid()\n}\n\n# Reference utility at p1=2\nu_ref <- indirect_utility_CD(2, 3, 120, 0.5)\nplot_marshallian_hicksian(p2 = 3, m = 120, u_ref = u_ref, alpha = 0.5)",
+      "notes": "Hicksian steeper (no income effect). They cross at reference point."
+    },
+    {
+      "id": "W6-CS14",
+      "category": "numerical",
+      "title": "Numerical Expenditure Minimization",
+      "code": "library(nloptr)\n\nexpenditure_min_numerical <- function(U_fn, p1, p2, u_target) {\n  # Objective: minimize p1*x1 + p2*x2\n  eval_f <- function(x) p1 * x[1] + p2 * x[2]\n  eval_grad_f <- function(x) c(p1, p2)\n  \n  # Constraint: U(x) >= u_target → U(x) - u_target >= 0\n  eval_g_ineq <- function(x) u_target - U_fn(x[1], x[2])\n  eval_jac_g_ineq <- function(x) {\n    h <- 1e-6\n    c(-(U_fn(x[1]+h, x[2]) - U_fn(x[1]-h, x[2]))/(2*h),\n      -(U_fn(x[1], x[2]+h) - U_fn(x[1], x[2]-h))/(2*h))\n  }\n  \n  result <- nloptr(\n    x0 = c(u_target, u_target),\n    eval_f = eval_f,\n    eval_grad_f = eval_grad_f,\n    eval_g_ineq = eval_g_ineq,\n    eval_jac_g_ineq = eval_jac_g_ineq,\n    lb = c(0.001, 0.001),\n    opts = list(algorithm = 'NLOPT_LD_MMA', xtol_rel = 1e-8)\n  )\n  \n  return(list(x_h = result$solution, expenditure = result$objective))\n}\n\n# Test with Cobb-Douglas\nU_CD <- function(x1, x2) x1^0.5 * x2^0.5\nresult <- expenditure_min_numerical(U_CD, p1 = 2, p2 = 3, u_target = 20)\ncat('Hicksian demands:', round(result$x_h, 3), '\\n')\ncat('Min expenditure:', round(result$expenditure, 2))",
+      "notes": "Numerical solver for any utility function (not just Cobb-Douglas)."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Duality Functions",
+      "template": "v = function(p1, p2, m) {...}\ne = function(p1, p2, u) {...}\n# Verify: v(p, e(p,u)) = u"
+    },
+    {
+      "pattern": "Slutsky Decomposition",
+      "template": "total = x_new - x_old\nsubstitution = x_hicksian - x_old\nincome = total - substitution"
+    },
+    {
+      "pattern": "Welfare Measures",
+      "template": "CV = e(p_new, u_old) - m\nEV = m - e(p_old, u_new)"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "CV and EV have wrong signs",
+      "cause": "Confused which utility/prices to use",
+      "fix": "CV: old utility, new prices. EV: new utility, old prices."
+    },
+    {
+      "error": "Slutsky doesn't sum correctly",
+      "cause": "Wrong formula or sign error",
+      "fix": "Total = Substitution + Income. Check reference utility for Hicksian."
+    },
+    {
+      "error": "v and e not inverse",
+      "cause": "Formula error in one function",
+      "fix": "Must have v(p, e(p,u)) = u and e(p, v(p,m)) = m exactly."
+    }
+  ]
+}

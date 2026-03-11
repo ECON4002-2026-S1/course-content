@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "week": 12,
+    "title": "Decision Making Under Uncertainty",
+    "learning_objectives": [
+      "Calculate expected value and expected utility",
+      "Determine certainty equivalents and risk premiums",
+      "Classify decision makers by risk attitude",
+      "Analyze insurance demand decisions",
+      "Calculate the value of information",
+      "Apply risk concepts to agricultural decisions"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W12-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Expected Value Calculation",
+      "question": "A canola farmer faces uncertain prices at harvest. The distribution of prices is: $520/t with probability 0.3, $480/t with probability 0.5, $400/t with probability 0.2. The farmer expects to harvest 200 tonnes. Calculate: (a) Expected price, (b) Expected revenue, (c) Variance of revenue.",
+      "hints": [
+        "E[P] = Σ pᵢ × Pᵢ",
+        "Revenue = Price × Quantity",
+        "Var(R) = Σ pᵢ × (Rᵢ - E[R])²"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W12-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Expected Utility with Square Root",
+      "question": "A decision maker has utility function u(x) = √x and faces a lottery: win $10,000 with probability 0.4, win $2,500 with probability 0.6. Calculate: (a) Expected value, (b) Expected utility, (c) Certainty equivalent, (d) Risk premium.",
+      "hints": [
+        "EU = Σ pᵢ × u(xᵢ)",
+        "CE: solve u(CE) = EU",
+        "RP = EV - CE"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W12-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Expected Utility with Logarithmic Function",
+      "question": "An investor with utility u(W) = ln(W) and current wealth $50,000 considers an investment: gain $30,000 with probability 0.5, lose $10,000 with probability 0.5. (a) Should they invest? (b) What is the maximum they would pay for this opportunity?",
+      "hints": [
+        "Compare EU(invest) vs EU(no invest)",
+        "EU(invest) = 0.5×ln(80,000) + 0.5×ln(40,000)",
+        "Maximum payment: solve for P where EU(invest with cost P) = EU(no invest)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W12-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Risk Attitudes from Utility Function",
+      "question": "For each utility function, determine risk attitude and calculate ARA and RRA: (a) u(x) = x², (b) u(x) = -e^(-0.001x), (c) u(x) = x^0.5, (d) u(x) = 100 + 5x.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W12-P5",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Fair Gamble Analysis",
+      "question": "A farmer with wealth $100,000 and utility u(W) = √W is offered a bet: win $44,000 with probability 0.5, lose $36,000 with probability 0.5. (a) Is this a fair bet? (b) Will the farmer accept? (c) What is the risk premium for this gamble?",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W12-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Insurance Demand",
+      "question": "A sheep farmer has a flock worth $200,000. There is a 5% chance of disease causing $150,000 loss. With u(W) = ln(W): (a) Calculate EU without insurance. (b) What is the fair premium? (c) Will the farmer buy at fair premium? (d) What is maximum premium they would pay?",
+      "hints": [
+        "Fair premium = expected loss",
+        "With full insurance, wealth is certain",
+        "Max premium: EU(insured) = EU(uninsured)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W12-P7",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Value of Perfect Information",
+      "question": "A fruit grower must decide whether to apply expensive frost protection ($5,000 cost). Without protection, frost causes $40,000 damage. Frost probability is 0.2. With u(W) = √W and initial wealth $100,000, calculate: (a) Optimal decision without forecast, (b) Value of perfect frost forecast.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W12-P8",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Crop Choice Under Risk",
+      "question": "A farmer allocates 100 ha between wheat and lentils. Returns per ha: Wheat (E=400, σ=150), Lentils (E=500, σ=300). Correlation ρ=0.2. Using mean-variance framework with risk aversion A=0.002: (a) Write portfolio expected return and variance. (b) Find optimal wheat allocation.",
+      "hints": [
+        "E[Rp] = w×E[Rw] + (100-w)×E[RL]",
+        "Var(Rp) = w²σw² + (100-w)²σL² + 2w(100-w)ρσwσL",
+        "Max E[Rp] - (A/2)Var(Rp)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W12-P9",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "St. Petersburg Paradox",
+      "question": "Explain the St. Petersburg Paradox and how expected utility theory resolves it. If u(x) = ln(x), what is the certainty equivalent for the St. Petersburg game?",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W12-P10",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Water Allocation Under Uncertainty",
+      "question": "A water manager allocates between irrigation (I) and environment (E). Inflow is H (high, prob 0.6) or L (low, prob 0.4). Benefits: B_I(I) = 100√I, B_E(E) = 80√E. Available water: 100 ML (high), 40 ML (low). Find state-contingent optimal allocation and expected total benefits.",
+      "hints": [
+        "In each state, max B_I + B_E subject to I + E ≤ Available",
+        "Use Lagrangian or equal marginal benefits"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W12-P11",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Imperfect Information Value",
+      "question": "Using the frost example (W12-P7), suppose a forecast correctly predicts frost 80% of the time when frost occurs, and correctly predicts no frost 90% of the time when no frost occurs. Prior frost probability is 0.2. (a) Calculate posterior probabilities using Bayes' rule. (b) Find expected utility with imperfect forecast. (c) Calculate value of imperfect information.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W12-P12",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "R Implementation",
+      "question": "Write R code to: (a) Calculate EU, CE, and RP for any lottery and utility function, (b) Plot utility function with EU graphical interpretation, (c) Calculate insurance demand curve.",
+      "hints": [],
+      "solution": ""
+    }
+  ]
+}

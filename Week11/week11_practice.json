@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "week": 11,
+    "title": "Welfare Economics: Measuring Economic Well-Being",
+    "learning_objectives": [
+      "Calculate consumer and producer surplus",
+      "Analyze welfare effects of price controls",
+      "Apply the fundamental welfare theorems",
+      "Calculate CV and EV for exact welfare measurement",
+      "Compare approximate and exact welfare measures",
+      "Evaluate agricultural policy effects"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W11-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Consumer Surplus from Table",
+      "question": "WTP per unit: 1st=$50, 2nd=$40, 3rd=$30, 4th=$20, 5th=$10. Price=$25. Find units purchased and CS.",
+      "hints": [
+        "Consumer buys units where WTP ≥ price",
+        "CS = sum of (WTP - price) for each unit purchased"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W11-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Producer Surplus from Table",
+      "question": "Min price per unit: 1st=$8, 2nd=$12, 3rd=$16, 4th=$20, 5th=$24. Market price=$18. Find units supplied and PS.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Market Equilibrium Welfare",
+      "question": "Demand: Qᵈ = 7 - p, Supply: Qˢ = p - 1. Find equilibrium, CS, PS, and verify welfare maximum.",
+      "hints": [
+        "Equilibrium: Qᵈ = Qˢ",
+        "CS = ½ × base × height (triangle under demand)",
+        "Test Q = 2 and Q = 4 to verify maximum"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W11-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Price Ceiling Analysis",
+      "question": "Market: Qᵈ = 7 - p, Qˢ = p - 1. Price ceiling pᶜ = 2. Full welfare analysis.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Price Floor Analysis",
+      "question": "Market: Qᵈ = 7 - p, Qˢ = p - 1. Price floor pᶠ = 5. Welfare analysis with government purchase.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Inelastic Supply Price Ceiling",
+      "question": "Demand: Qᵈ = 10 - p, Supply: Qˢ = 4 (inelastic). Price ceiling pᶜ = 4. Show DWL = 0.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P7",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "CV and EV Calculation - Price Decrease",
+      "question": "U = x₁x₂, m = 100, p₂ = 5. Price falls: p₁⁰ = 10 → p₁¹ = 5. Calculate CV, EV, ΔCS.",
+      "hints": [
+        "For U = x₁x₂: demands are x₁ = m/(2p₁), x₂ = m/(2p₂)",
+        "Expenditure function: e(p₁,p₂,u) = 2√(u·p₁·p₂)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W11-P8",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "CV and EV - Price Increase",
+      "question": "Same utility U = x₁x₂, m = 100, p₂ = 5. Price RISES: p₁⁰ = 5 → p₁¹ = 10. Calculate CV, EV, ΔCS.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P9",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Welfare Theorems",
+      "question": "State and apply the two fundamental welfare theorems.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P10",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Agricultural Price Support",
+      "question": "Wheat: Qᵈ = 100 - 2p, Qˢ = 3p - 50. Price floor pᶠ = 35 with government purchase.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P11",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Comparing Welfare Measures",
+      "question": "U = x^0.5 y^0.5, m = 200, pᵧ = 1. Price falls: pₓ = 4 → pₓ = 1. Compare CV, ΔCS, EV.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W11-P12",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "R Implementation",
+      "question": "Write R functions for welfare calculations. Test with Pᵈ = 10 - Q, Pˢ = 2 + Q, ceiling pᶜ = 4.",
+      "hints": [],
+      "solution": ""
+    }
+  ]
+}

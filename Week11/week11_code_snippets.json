@@ -1,0 +1,122 @@
+{
+  "week": 11,
+  "title": "Welfare Economics: R Code Implementations",
+  "description": "R implementations for consumer/producer surplus, price controls, CV and EV calculations",
+  "snippets": [
+    {
+      "id": "W11-CS01",
+      "category": "surplus",
+      "title": "Consumer Surplus Calculation",
+      "code": "consumer_surplus <- function(a, b, p_star, Q_star = NULL) {\n  if (is.null(Q_star)) Q_star <- (a - p_star) / b\n  CS <- 0.5 * (a - p_star) * Q_star\n  cat('CS = ½ ×', (a - p_star), '×', Q_star, '=', CS, '\\n')\n  return(CS)\n}\n\n# Example: Inverse demand P = 10 - Q, price = 6\nCS <- consumer_surplus(a = 10, b = 1, p_star = 6)",
+      "notes": "For linear inverse demand P = a - bQ. CS is triangle below demand, above price."
+    },
+    {
+      "id": "W11-CS02",
+      "category": "surplus",
+      "title": "Producer Surplus Calculation",
+      "code": "producer_surplus <- function(c, d, p_star, Q_star = NULL) {\n  if (is.null(Q_star)) Q_star <- (p_star - c) / d\n  PS <- 0.5 * (p_star - c) * Q_star\n  cat('PS = ½ ×', (p_star - c), '×', Q_star, '=', PS, '\\n')\n  return(PS)\n}\n\n# Example: Inverse supply P = 2 + Q, price = 6\nPS <- producer_surplus(c = 2, d = 1, p_star = 6)",
+      "notes": "For linear inverse supply P = c + dQ. PS is triangle above supply, below price."
+    },
+    {
+      "id": "W11-CS03",
+      "category": "equilibrium",
+      "title": "Market Equilibrium Welfare",
+      "code": "market_welfare <- function(a, b, c, d) {\n  Q_star <- (a - c) / (b + d)\n  p_star <- a - b * Q_star\n  \n  CS <- 0.5 * (a - p_star) * Q_star\n  PS <- 0.5 * (p_star - c) * Q_star\n  W <- CS + PS\n  \n  cat('Equilibrium: p* =', round(p_star, 2), ', Q* =', round(Q_star, 2), '\\n')\n  cat('CS =', round(CS, 2), ', PS =', round(PS, 2), ', W =', round(W, 2), '\\n')\n  \n  list(p = p_star, Q = Q_star, CS = CS, PS = PS, W = W)\n}\n\neq <- market_welfare(a = 7, b = 1, c = 1, d = 1)",
+      "notes": "Complete welfare analysis at competitive equilibrium."
+    },
+    {
+      "id": "W11-CS04",
+      "category": "visualization",
+      "title": "Plot CS and PS",
+      "code": "plot_welfare <- function(a, b, c, d) {\n  eq <- market_welfare(a, b, c, d)\n  Q_range <- seq(0, eq$Q * 1.5, length = 200)\n  P_d <- a - b * Q_range; P_s <- c + d * Q_range\n  \n  plot(Q_range, P_d, type='l', col='blue', lwd=2,\n       ylim=c(0, a*1.1), xlab='Q', ylab='P', main='Welfare')\n  lines(Q_range, P_s, col='red', lwd=2)\n  \n  Q_cs <- seq(0, eq$Q, length=100)\n  polygon(c(Q_cs, rev(Q_cs)), c(a - b*Q_cs, rep(eq$p, 100)),\n          col=rgb(0,0,1,0.3), border=NA)\n  polygon(c(Q_cs, rev(Q_cs)), c(rep(eq$p, 100), rev(c + d*Q_cs)),\n          col=rgb(1,0,0,0.3), border=NA)\n  \n  points(eq$Q, eq$p, pch=19, cex=1.5)\n  legend('topright', c('D','S','CS','PS'),\n         col=c('blue','red',rgb(0,0,1,0.3),rgb(1,0,0,0.3)),\n         lwd=c(2,2,NA,NA), pch=c(NA,NA,15,15))\n  grid()\n}\n\nplot_welfare(7, 1, 1, 1)",
+      "notes": "Visualizes CS (blue) and PS (red) as shaded areas."
+    },
+    {
+      "id": "W11-CS05",
+      "category": "price_controls",
+      "title": "Price Ceiling Analysis",
+      "code": "price_ceiling <- function(a, b, c, d, p_ceil) {\n  eq <- market_welfare(a, b, c, d)\n  if (p_ceil >= eq$p) { cat('Ceiling not binding\\n'); return(NULL) }\n  \n  Q_d <- (a - p_ceil)/b; Q_s <- (p_ceil - c)/d\n  Q_traded <- min(Q_d, Q_s)\n  \n  P_d_at_Q <- a - b * Q_traded\n  CS_new <- 0.5*(a - P_d_at_Q)*Q_traded + (P_d_at_Q - p_ceil)*Q_traded\n  PS_new <- 0.5*(p_ceil - c)*Q_traded\n  DWL <- eq$W - (CS_new + PS_new)\n  \n  cat('=== Price Ceiling (p^c =', p_ceil, ') ===\\n')\n  cat('Q_traded:', round(Q_traded,2), ', Shortage:', round(Q_d-Q_s,2), '\\n')\n  cat('CS:', round(CS_new,2), ', PS:', round(PS_new,2), '\\n')\n  cat('DWL:', round(DWL,2), '\\n')\n  \n  list(Q=Q_traded, shortage=Q_d-Q_s, CS=CS_new, PS=PS_new, DWL=DWL)\n}\n\nprice_ceiling(7, 1, 1, 1, p_ceil = 2)",
+      "notes": "Analyzes welfare effects of binding price ceiling. Returns shortage and DWL."
+    },
+    {
+      "id": "W11-CS06",
+      "category": "price_controls",
+      "title": "Price Floor Analysis",
+      "code": "price_floor <- function(a, b, c, d, p_floor) {\n  eq <- market_welfare(a, b, c, d)\n  if (p_floor <= eq$p) { cat('Floor not binding\\n'); return(NULL) }\n  \n  Q_d <- (a - p_floor)/b; Q_s <- (p_floor - c)/d\n  Q_traded <- Q_d  # Demand is short side\n  surplus <- Q_s - Q_d\n  \n  CS_new <- 0.5*(a - p_floor)*Q_traded\n  PS_new <- 0.5*(p_floor - c)*Q_traded\n  DWL <- eq$W - (CS_new + PS_new)\n  gov_cost <- p_floor * surplus\n  \n  cat('=== Price Floor (p^f =', p_floor, ') ===\\n')\n  cat('Q_traded:', round(Q_traded,2), ', Surplus:', round(surplus,2), '\\n')\n  cat('Govt purchase cost:', round(gov_cost,2), '\\n')\n  cat('DWL:', round(DWL,2), '\\n')\n  \n  list(Q=Q_traded, surplus=surplus, gov_cost=gov_cost, DWL=DWL)\n}\n\nprice_floor(7, 1, 1, 1, p_floor = 5)",
+      "notes": "Analyzes price floor. Includes government purchase cost if surplus is bought."
+    },
+    {
+      "id": "W11-CS07",
+      "category": "price_controls",
+      "title": "Visualize Price Ceiling",
+      "code": "plot_ceiling <- function(a, b, c, d, p_ceil) {\n  eq <- market_welfare(a, b, c, d)\n  Q_max <- max(eq$Q, (a-p_ceil)/b)*1.3\n  Q_range <- seq(0, Q_max, length=200)\n  \n  plot(Q_range, a-b*Q_range, type='l', col='blue', lwd=2,\n       ylim=c(0,a*1.1), xlab='Q', ylab='P', main=paste('Ceiling p=',p_ceil))\n  lines(Q_range, c+d*Q_range, col='red', lwd=2)\n  abline(h=p_ceil, col='darkgreen', lwd=2, lty=2)\n  \n  Q_s <- (p_ceil-c)/d\n  polygon(c(Q_s, eq$Q, Q_s), c(p_ceil, eq$p, a-b*Q_s),\n          col=rgb(1,1,0,0.5), border='orange', lwd=2)\n  \n  legend('topright', c('D','S','Ceiling','DWL'),\n         col=c('blue','red','darkgreen',rgb(1,1,0,0.5)),\n         lwd=c(2,2,2,NA), pch=c(NA,NA,NA,15))\n  grid()\n}\n\nplot_ceiling(7, 1, 1, 1, p_ceil = 2)",
+      "notes": "Shows DWL triangle from price ceiling."
+    },
+    {
+      "id": "W11-CS08",
+      "category": "cv_ev",
+      "title": "CV and EV for Cobb-Douglas",
+      "code": "cv_ev_cd <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  # Optimal bundles\n  x1_old <- alpha*m/p1_old; x2_old <- (1-alpha)*m/p2\n  x1_new <- alpha*m/p1_new; x2_new <- (1-alpha)*m/p2\n  \n  # Utility levels\n  u_old <- x1_old^alpha * x2_old^(1-alpha)\n  u_new <- x1_new^alpha * x2_new^(1-alpha)\n  \n  # Expenditure function: e = (u/k) * p1^α * p2^(1-α)\n  k <- alpha^alpha * (1-alpha)^(1-alpha)\n  e_fn <- function(p1, p2, u) (u/k) * p1^alpha * p2^(1-alpha)\n  \n  CV <- e_fn(p1_new, p2, u_old) - m\n  EV <- e_fn(p1_old, p2, u_new) - m\n  CS <- alpha * m * log(p1_old / p1_new)\n  \n  cat('=== CV and EV ===\\n')\n  cat('u_old:', round(u_old,2), ', u_new:', round(u_new,2), '\\n')\n  cat('CV:', round(CV,2), ', ΔCS:', round(CS,2), ', EV:', round(EV,2), '\\n')\n  \n  list(CV=CV, EV=EV, CS=CS)\n}\n\ncv_ev_cd(10, 5, 5, 100, 0.5)",
+      "notes": "Calculates CV, EV, and ΔCS for Cobb-Douglas. For price decrease: |CV| < ΔCS < EV."
+    },
+    {
+      "id": "W11-CS09",
+      "category": "cv_ev",
+      "title": "CV and EV for U = x₁x₂",
+      "code": "cv_ev_product <- function(p1_old, p1_new, p2, m) {\n  # For U = x1*x2, demands are x1 = m/(2p1), x2 = m/(2p2)\n  x1_old <- m/(2*p1_old); x2_old <- m/(2*p2)\n  x1_new <- m/(2*p1_new); x2_new <- m/(2*p2)\n  \n  u_old <- x1_old * x2_old\n  u_new <- x1_new * x2_new\n  \n  # Expenditure: e(p1,p2,u) = 2*sqrt(u*p1*p2)\n  e_fn <- function(p1, p2, u) 2*sqrt(u*p1*p2)\n  \n  CV <- e_fn(p1_new, p2, u_old) - m\n  EV <- e_fn(p1_old, p2, u_new) - m\n  \n  cat('Old bundle: (', x1_old, ',', x2_old, '), U =', u_old, '\\n')\n  cat('New bundle: (', x1_new, ',', x2_new, '), U =', u_new, '\\n')\n  cat('CV =', round(CV, 2), '\\n')\n  cat('EV =', round(EV, 2), '\\n')\n  \n  list(CV=CV, EV=EV, u_old=u_old, u_new=u_new)\n}\n\ncv_ev_product(10, 5, 5, 100)",
+      "notes": "For multiplicative utility U = x₁x₂. Used in lecture example."
+    },
+    {
+      "id": "W11-CS10",
+      "category": "cv_ev",
+      "title": "Visualize CV and EV",
+      "code": "plot_cv_ev <- function(p1_old, p1_new, p2, m, alpha = 0.5) {\n  x1_old <- alpha*m/p1_old; x2_old <- (1-alpha)*m/p2\n  x1_new <- alpha*m/p1_new; x2_new <- (1-alpha)*m/p2\n  \n  u_old <- x1_old^alpha * x2_old^(1-alpha)\n  u_new <- x1_new^alpha * x2_new^(1-alpha)\n  \n  x1_max <- max(x1_old, x1_new)*1.5\n  x1_range <- seq(0.1, x1_max, length=200)\n  \n  IC_old <- (u_old/x1_range^alpha)^(1/(1-alpha))\n  IC_new <- (u_new/x1_range^alpha)^(1/(1-alpha))\n  BL_old <- (m - p1_old*x1_range)/p2\n  BL_new <- (m - p1_new*x1_range)/p2\n  \n  plot(x1_range, IC_old, type='l', col='blue', lwd=2,\n       xlim=c(0,x1_max), ylim=c(0,max(x2_old,x2_new)*1.5),\n       xlab=expression(x[1]), ylab=expression(x[2]), main='CV vs EV')\n  lines(x1_range, IC_new, col='red', lwd=2)\n  lines(x1_range, pmax(0,BL_old), col='blue', lty=2)\n  lines(x1_range, pmax(0,BL_new), col='red', lty=2)\n  \n  points(x1_old, x2_old, pch=19, cex=1.5, col='blue')\n  points(x1_new, x2_new, pch=19, cex=1.5, col='red')\n  legend('topright', c('IC(u⁰)','IC(u¹)','BL old','BL new'),\n         col=c('blue','red','blue','red'), lwd=2, lty=c(1,1,2,2))\n  grid()\n}\n\nplot_cv_ev(10, 5, 5, 100, 0.5)",
+      "notes": "Shows indifference curves and budget lines for CV/EV analysis."
+    },
+    {
+      "id": "W11-CS11",
+      "category": "discrete",
+      "title": "Welfare from Discrete Data",
+      "code": "welfare_discrete <- function(wtp, wta, price) {\n  # wtp: consumer willingness to pay per unit\n  # wta: producer min acceptable price per unit\n  \n  units_bought <- sum(wtp >= price)\n  CS <- sum(pmax(0, wtp - price))\n  \n  units_sold <- sum(wta <= price)\n  PS <- sum(pmax(0, price - wta))\n  \n  cat('Price:', price, '\\n')\n  cat('Units traded:', min(units_bought, units_sold), '\\n')\n  cat('CS:', CS, ', PS:', PS, ', W:', CS+PS, '\\n')\n  \n  list(CS=CS, PS=PS, W=CS+PS)\n}\n\n# Example from lecture table\nwtp <- c(50, 40, 30, 20, 10)\nwta <- c(8, 12, 16, 20, 24)\nwelfare_discrete(wtp, wta, price = 25)",
+      "notes": "For discrete WTP/WTA data. Sums surplus for each unit."
+    },
+    {
+      "id": "W11-CS12",
+      "category": "complete",
+      "title": "Complete Welfare Toolkit",
+      "code": "welfare_toolkit <- function(a, b, c, d) {\n  list(\n    equilibrium = function() market_welfare(a, b, c, d),\n    ceiling = function(p) price_ceiling(a, b, c, d, p),\n    floor = function(p) price_floor(a, b, c, d, p),\n    plot = function() plot_welfare(a, b, c, d),\n    plot_ceiling = function(p) plot_ceiling(a, b, c, d, p)\n  )\n}\n\n# Usage\nmkt <- welfare_toolkit(10, 1, 2, 1)\nmkt$equilibrium()\nmkt$ceiling(4)\nmkt$plot()",
+      "notes": "Unified interface for all welfare calculations on a given market."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Consumer Surplus",
+      "template": "# For inverse demand P = a - bQ\nCS <- 0.5 * (a - p_star) * Q_star"
+    },
+    {
+      "pattern": "CV for Cobb-Douglas",
+      "template": "# CV = e(p_new, u_old) - m\n# e(p1,p2,u) = (u/k) * p1^α * p2^(1-α)\n# k = α^α * (1-α)^(1-α)"
+    },
+    {
+      "pattern": "DWL from Ceiling",
+      "template": "# DWL = W_free - W_ceiling\n# W_ceiling = CS_ceiling + PS_ceiling"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "Negative consumer surplus",
+      "cause": "Price above demand intercept",
+      "fix": "Check that p_star < a (demand intercept)"
+    },
+    {
+      "error": "Price control not binding",
+      "cause": "Ceiling above or floor below equilibrium",
+      "fix": "Check that p_ceil < p* or p_floor > p*"
+    },
+    {
+      "error": "CV and EV have unexpected signs",
+      "cause": "Sign convention varies by price direction",
+      "fix": "For price decrease: CV < 0 (would pay), EV > 0 (income equivalent)"
+    }
+  ]
+}

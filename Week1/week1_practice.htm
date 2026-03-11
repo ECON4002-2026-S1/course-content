@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Practice Problems - ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$',  right: '$',  display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            document.querySelectorAll('pre code[class*="language-"]').forEach(codeEl => {
+                const pre = codeEl.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copy';
+                wrapper.insertBefore(btn, pre);
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                        btn.textContent = 'Copied!';
+                        btn.style.background = '#27ae60';
+                        setTimeout(() => {
+                            btn.textContent = 'Copy';
+                            btn.style.background = '';
+                        }, 1600);
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #8e44ad;
+            --accent-color: #e74c3c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --code-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --problem-bg: #f9f8fd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .instructions {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .problem-section {
+            background-color: var(--problem-bg);
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .problem-section h2 {
+            color: var(--secondary-color);
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        .problem {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .problem:last-child {
+            border-bottom: none;
+        }
+
+        .problem-number {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .checklist {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .checklist h2 {
+            color: #4caf50;
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        .checklist ul {
+            list-style-type: none;
+        }
+
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 1.2em;
+            margin-right: 0.5rem;
+        }
+
+        .submission {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 1rem;
+            }
+            
+            .problem-section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .problem-section {
+                padding: 1rem;
+            }
+        }
+
+        .code-wrapper {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #8e44ad;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.65rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            z-index: 1;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover { background: #6c3483; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Week 1: Practice Problems</h1>
+        <p class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics</p>
+    </header>
+
+    <main>
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <p>Complete all problems. Show your work for analytical questions and include R code for computational questions. You may use the AI tutor for guidance, but ensure you understand the solutions.</p>
+        </div>
+
+        <section class="problem-section">
+            <h2>Part A: Conceptual Questions</h2>
+
+            <div class="problem">
+                <span class="problem-number">Problem 1</span>
+                <h3>Economic Modeling</h3>
+                
+                <p><strong>a)</strong> Explain why economists use mathematical models rather than purely verbal analysis. Give two specific advantages.</p>
+
+                <p><strong>b)</strong> What is the difference between an <em>exogenous</em> variable and an <em>endogenous</em> variable in an economic model? Provide an example of each in a supply-demand model.</p>
+
+                <p><strong>c)</strong> Consider the statement: "A good economic model should include every real-world detail." Do you agree or disagree? Explain.</p>
+            </div>
+
+            <div class="problem">
+                <span class="problem-number">Problem 2</span>
+                <h3>Course Connections</h3>
+                
+                <p>For each of the following real-world scenarios, identify which topic area from this course would be most relevant. Choose from: <em>Consumer Theory, Producer Theory, Market Equilibrium, Trade Policy, Welfare Economics, or Uncertainty</em>.</p>
+
+                <p><strong>a)</strong> A farmer deciding how much fertilizer to apply to maximize profit</p>
+
+                <p><strong>b)</strong> The government evaluating the welfare effects of removing wheat import tariffs</p>
+
+                <p><strong>c)</strong> A household choosing between organic and conventional vegetables given their budget</p>
+
+                <p><strong>d)</strong> An agricultural cooperative deciding how to allocate limited water across different crops</p>
+
+                <p><strong>e)</strong> A grain trader considering whether to hedge against price risk using futures contracts</p>
+            </div>
+        </section>
+
+        <section class="problem-section">
+            <h2>Part B: R Fundamentals</h2>
+
+            <div class="problem">
+                <span class="problem-number">Problem 3</span>
+                <h3>Basic Operations</h3>
+                
+                <p>Without using R first, predict the output of each expression. Then verify in R.</p>
+
+                <pre><code class="language-r"># a) 
+3 + 5 * 2
+
+# b)
+(3 + 5) * 2
+
+# c)
+17 %% 5
+
+# d)
+log(exp(3))
+
+# e)
+sqrt(64) / 2^2</code></pre>
+            </div>
+
+            <div class="problem">
+                <span class="problem-number">Problem 4</span>
+                <h3>Vectors</h3>
+                
+                <p><strong>a)</strong> Create a vector called <code>yields</code> containing the following wheat yields (bushels/acre): 45, 52, 48, 55, 50, 47, 53</p>
+
+                <p><strong>b)</strong> Calculate the mean, standard deviation, minimum, and maximum of <code>yields</code></p>
+
+                <p><strong>c)</strong> How many observations are above the mean? (Use logical indexing)</p>
+
+                <p><strong>d)</strong> Create a new vector <code>high_yields</code> containing only yields above 50 bushels/acre</p>
+
+                <p><strong>e)</strong> If the price of wheat is $6.50 per bushel, create a vector <code>revenues</code> showing revenue per acre for each observation</p>
+            </div>
+
+            <div class="problem">
+                <span class="problem-number">Problem 5</span>
+                <h3>Functions</h3>
+                
+                <p><strong>a)</strong> Write a function called <code>fahrenheit_to_celsius</code> that converts temperature from Fahrenheit to Celsius using the formula: \(C = \frac{5}{9}(F - 32)\)</p>
+
+                <p><strong>b)</strong> Test your function with F = 32, 68, and 100</p>
+
+                <p><strong>c)</strong> Write a function called <code>profit</code> that takes <code>revenue</code> and <code>cost</code> as arguments and returns profit. Include a default argument <code>tax_rate = 0.25</code> that reduces profit by that percentage.</p>
+
+                <p><strong>d)</strong> Use your profit function to calculate after-tax profit when revenue = $50,000, cost = $30,000, and tax rate = 20%</p>
+            </div>
+        </section>
+
+        <section class="problem-section">
+            <h2>Part C: Economic Applications</h2>
+
+            <div class="problem">
+                <span class="problem-number">Problem 6</span>
+                <h3>Supply and Demand</h3>
+                
+                <p>The market for soybeans can be described by:</p>
+                <ul>
+                    <li>Demand: \(Q_d = 500 - 10P\)</li>
+                    <li>Supply: \(Q_s = -100 + 20P\)</li>
+                </ul>
+                <p>where \(Q\) is in millions of bushels and \(P\) is in dollars per bushel.</p>
+
+                <p><strong>a) Analytically:</strong> Solve for the equilibrium price \(P^*\) and quantity \(Q^*\)</p>
+
+                <p><strong>b) In R:</strong> Create functions for demand and supply, then find equilibrium numerically using <code>uniroot()</code></p>
+
+                <p><strong>c) In R:</strong> Create a plot showing both curves with the equilibrium point marked</p>
+
+                <p><strong>d)</strong> Calculate the price elasticity of demand at equilibrium using the formula:</p>
+                <p>$$\varepsilon_d = \frac{dQ_d}{dP} \cdot \frac{P}{Q_d}$$</p>
+
+                <p><strong>e)</strong> Is demand elastic or inelastic at equilibrium? What does this imply for soybean producers considering a price increase?</p>
+            </div>
+
+            <div class="problem">
+                <span class="problem-number">Problem 7</span>
+                <h3>Policy Analysis</h3>
+                
+                <p>Continuing with the soybean market from Problem 6:</p>
+
+                <p><strong>a)</strong> Suppose the government imposes a price floor of $25 per bushel. What quantity will be demanded? What quantity will be supplied? Is there a surplus or shortage, and of how much?</p>
+
+                <p><strong>b)</strong> Now suppose instead of a price floor, the government imposes a $3 per bushel tax on producers.</p>
+                <ul>
+                    <li>Write a new supply function incorporating the tax</li>
+                    <li>Find the new equilibrium price and quantity</li>
+                    <li>Calculate how the tax burden is shared between consumers and producers</li>
+                    <li>Compute the deadweight loss (you may approximate graphically)</li>
+                </ul>
+            </div>
+
+            <div class="problem">
+                <span class="problem-number">Problem 8</span>
+                <h3>Multiple Markets</h3>
+                
+                <p>A farmer produces two crops. The profit from each depends on price:</p>
+                <ul>
+                    <li>Wheat profit: \(\pi_W = 50P_W - 200\)</li>
+                    <li>Corn profit: \(\pi_C = 30P_C - 100\)</li>
+                </ul>
+                <p>where prices are in $/bushel.</p>
+
+                <p><strong>a)</strong> Write R functions for each profit equation</p>
+
+                <p><strong>b)</strong> If \(P_W = 8\) and \(P_C = 6\), which crop is more profitable?</p>
+
+                <p><strong>c)</strong> At what wheat price would the farmer be indifferent between the two crops (assuming \(P_C = 6\))?</p>
+
+                <p><strong>d)</strong> Create a plot showing both profit functions for prices ranging from $0 to $15. Mark the indifference point.</p>
+            </div>
+        </section>
+
+        <section class="problem-section">
+            <h2>Part D: Challenge Problems</h2>
+
+            <div class="problem">
+                <span class="problem-number">Problem 9</span>
+                <h3>Data Analysis Preview</h3>
+                
+                <p>The following R code loads a built-in dataset about car stopping distances:</p>
+
+                <pre><code class="language-r">data(cars)
+head(cars)</code></pre>
+
+                <p><strong>a)</strong> How many observations are in the dataset?</p>
+
+                <p><strong>b)</strong> What are the variable names?</p>
+
+                <p><strong>c)</strong> Create a scatter plot of stopping distance (<code>dist</code>) versus speed (<code>speed</code>)</p>
+
+                <p><strong>d)</strong> Does there appear to be a relationship? Describe it in words.</p>
+
+                <p><strong>e)</strong> Calculate the correlation coefficient using <code>cor()</code></p>
+            </div>
+
+            <div class="problem">
+                <span class="problem-number">Problem 10</span>
+                <h3>Simulation</h3>
+                
+                <p>A simple crop yield model assumes yield depends on rainfall:</p>
+                <p>$$Y = 30 + 0.5R - 0.002R^2$$</p>
+                <p>where \(Y\) is yield (bushels/acre) and \(R\) is rainfall (mm).</p>
+
+                <p><strong>a)</strong> Write this as an R function</p>
+
+                <p><strong>b)</strong> What rainfall level maximises yield? (Hint: Take the derivative and set it to zero.)</p>
+
+                <p><strong>c)</strong> Create a plot of yield versus rainfall for \(R \in [0, 200]\)</p>
+
+                <p><strong>d)</strong> Generate 50 random rainfall values from a uniform distribution between 50 and 150 mm using <code>runif(50, 50, 150)</code>. Calculate yields for each.</p>
+
+                <p><strong>e)</strong> What is the average yield across your 50 simulations?</p>
+            </div>
+        </section>
+
+        <div class="submission">
+            <h2>Submission Guidelines</h2>
+            <ul>
+                <li>Submit as a PDF containing both analytical work and R code/output</li>
+                <li>For R questions, include both your code AND the output</li>
+                <li>Comment your code to explain what each section does</li>
+                <li>Due: Before Week 2 class</li>
+            </ul>
+        </div>
+
+        <div class="checklist">
+            <h2>Self-Assessment Checklist</h2>
+            <p>Before submitting, ensure you can:</p>
+            <ul>
+                <li>Explain why we use mathematical models in economics</li>
+                <li>Create and manipulate vectors in R</li>
+                <li>Write and use custom functions</li>
+                <li>Build a simple supply-demand model</li>
+                <li>Find equilibrium analytically and numerically</li>
+                <li>Create basic plots in R</li>
+                <li>Calculate elasticity and interpret it</li>
+                <li>Analyze simple policy interventions</li>
+            </ul>
+        </div>
+    </main>
+
+</body>
+</html>

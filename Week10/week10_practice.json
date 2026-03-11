@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "week": 10,
+    "title": "International Trade and Policy",
+    "learning_objectives": [
+      "Explain comparative advantage and gains from trade",
+      "Derive excess demand and supply functions",
+      "Analyze free trade vs autarky welfare effects",
+      "Calculate tariff impacts on prices and welfare",
+      "Compare tariffs, quotas, and subsidies",
+      "Understand large country trade effects"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W10-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Comparative Advantage",
+      "question": "Vietnam: 5 hrs/rice, 10 hrs/textile. Japan: 2 hrs/rice, 3 hrs/textile. Find absolute and comparative advantages.",
+      "hints": [
+        "Absolute advantage: fewer resources to produce",
+        "Comparative advantage: lower opportunity cost"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W10-P2",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Terms of Trade",
+      "question": "Using Problem 1 countries, find mutually beneficial ToT for textiles.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Autarky vs Free Trade",
+      "question": "Qᴰ = 120 - 2p, Qˢ = 3p - 30, pʷ = 24. Find autarky eq, trade direction, and welfare changes.",
+      "hints": [
+        "Autarky: set Qᴰ = Qˢ",
+        "If pʷ < pᴬ, country imports"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W10-P4",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Tariff Analysis - Small Country",
+      "question": "Same market (Qᴰ=120-2p, Qˢ=3p-30, pʷ=24), tariff t=6. Full welfare analysis.",
+      "hints": [
+        "Domestic price = pʷ + t",
+        "DWL = production distortion + consumption distortion"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W10-P5",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Import Quota",
+      "question": "Same market, import quota M̄ = 12. Find price, quantities, and quota rent.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Export Country Analysis",
+      "question": "Qᴰ = 80-p, Qˢ = 2p-10, pʷ = 40. Analyze export tax (t=9) and subsidy (s=6).",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P7",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Large Country Tariff",
+      "question": "Qᴰ = 200-4p, Qˢ = 2p-40, foreign export supply X* = 4pʷ-80. Analyze tariff t=10.",
+      "hints": [
+        "Large country: domestic price ≠ world price + t",
+        "Equilibrium: domestic imports = foreign exports"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W10-P8",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Optimal Tariff",
+      "question": "For the large country in W10-P7, find the optimal tariff.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P9",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Australian Beef Market",
+      "question": "Australian beef: Qᴰ = 1200-10p, Qˢ = 5p+200, export demand Qᵉˣᵖ = 800-5pʷ. Analyze Japanese tariff.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P10",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Policy Comparison",
+      "question": "Compare tariff, quota, and production subsidy for reducing imports by 50%.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P11",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Excess Demand Function",
+      "question": "Qᴰ = a - bp, Qˢ = c + dp. Derive excess demand ED(p).",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W10-P12",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "R Implementation",
+      "question": "Write R functions for trade analysis. Test with Qᴰ=100-2p, Qˢ=p-20, pʷ=30, t=10.",
+      "hints": [],
+      "solution": ""
+    }
+  ]
+}

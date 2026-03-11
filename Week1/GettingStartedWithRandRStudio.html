@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with R and RStudio - ECON4002</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --code-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .author {
+            font-size: 1.1rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .directory-tree {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 1rem;
+            }
+            
+            h1 {
+                page-break-after: avoid;
+            }
+            
+            pre {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Getting Started with R and RStudio</h1>
+        <p class="author">Atakelty Hailu<br>University of Western Australia</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>1. Introduction</h2>
+            <p>This unit is taught with <strong>R</strong>, a software for statistical computing and graphics development. R includes a large number of methods for data manipulation, statistical computations, and statistical tests. Its capabilities can be extended by installing add-on packages. R is often described as a programming language and software environment for statistical computing and graphical visualization.</p>
+
+            <p>R has been around for about three decades and is well-documented. It is available for download from the <strong>CRAN (Comprehensive R Archive Network)</strong>. R is platform-independent, meaning R scripts work the same way on Windows, Unix/Linux, or Mac/iOS.</p>
+
+            <p>R can be used on its own, but it is more productive to use it with <strong>RStudio</strong>, an integrated development environment (IDE) that makes R easier to use for beginners and experts alike.</p>
+        </section>
+
+        <section>
+            <h2>2. The RStudio IDE</h2>
+            <p>When RStudio is launched, you get a graphical user interface (GUI) with four default panes:</p>
+
+            <ol>
+                <li><strong>Source Pane</strong>: Where R scripts are written and edited.</li>
+                <li><strong>Console/Terminal Pane</strong>: Where you interact directly with R.</li>
+                <li><strong>Environment/History Pane</strong>: Shows objects in the workspace and command history.</li>
+                <li><strong>Files/Plots/Packages/Help Pane</strong>: Displays plots, files, packages, and help documentation.</li>
+            </ol>
+
+            <h3>2.1 Exploring RStudio</h3>
+
+            <h4>2.1.1 Set a Working Directory</h4>
+            <p>To avoid confusion, organize your files using a sensible directory structure. For example:</p>
+
+            <div class="directory-tree">
+HOME_DIRECTORY/
+├── SCIE4401/
+│   ├── Week1/
+│   │   └── Test.R
+            </div>
+
+            <p>To set a working directory in RStudio, go to <strong>Session > Set Working Directory</strong>.</p>
+
+            <h4>2.1.2 Testing the RStudio Environment</h4>
+            <p>Run some basic R commands to get familiar with the environment:</p>
+
+            <pre><code class="language-r"># What is 2 + 2?
+2 + 2
+
+# What is 2 times 3?
+2 * 3
+
+# Store the result of 2 times 3 in a variable
+product &lt;- 2 * 3
+product
+
+# What is the square of 9?
+9^2
+
+# Calculate the square root of 2
+t1 &lt;- sqrt(2)
+t1
+
+# What is the natural log of 10?
+log(10)
+
+# What is the log of 10 (base 10)?
+log10(10)
+
+# What is the value of the constant pi?
+pi</code></pre>
+        </section>
+
+        <section>
+            <h2>3. R Basics</h2>
+
+            <h3>3.1 R Commands, Comments, and Methods</h3>
+            <ul>
+                <li><strong>Comments</strong>: Lines starting with <code>#</code> are ignored by R.</li>
+                <li><strong>Methods/Functions</strong>: Always use parentheses, e.g., <code>print()</code>, <code>log()</code>.</li>
+                <li><strong>Ending Commands</strong>: Use a semicolon (<code>;</code>) to separate multiple commands on a single line.</li>
+            </ul>
+
+            <pre><code class="language-r"># Example of a comment
+X &lt;- c(2, 3, 4, 5, 6, 7)  # Create a vector
+print(X)  # Print the vector</code></pre>
+
+            <h3>3.2 Using a Working Directory</h3>
+            <ul>
+                <li><strong>Get Working Directory</strong>: <code>getwd()</code></li>
+                <li><strong>Set Working Directory</strong>: <code>setwd("path/to/directory")</code></li>
+                <li><strong>List Files</strong>: <code>list.files()</code></li>
+            </ul>
+
+            <h3>3.3 Data Types and Structures</h3>
+            <p>R supports the following data types:</p>
+            <ul>
+                <li>Numeric</li>
+                <li>Integer</li>
+                <li>Character</li>
+                <li>Logical</li>
+            </ul>
+
+            <h4>Vectors</h4>
+            <pre><code class="language-r"># Create a numeric vector
+vec1 &lt;- c(2, 3, 4, 5)
+
+# Create a sequence
+vec2 &lt;- 2:5
+
+# Create a vector with repetition
+vec3 &lt;- rep(3, 5)</code></pre>
+
+            <h4>Data Frames</h4>
+            <pre><code class="language-r"># Create a data frame
+X1 &lt;- c(1, 2, 3, 4, 5, 6, 7)
+X2 &lt;- 15:21
+X3 &lt;- 66:72
+
+X.data &lt;- data.frame(X1 = X1, X2 = X2, X3 = X3)
+head(X.data, n = 3)</code></pre>
+
+            <h3>3.4 Subsetting Data</h3>
+            <pre><code class="language-r"># Subset rows where X3 >= 70
+X.data[X.data$X3 >= 70, ]
+
+# Subset rows where X2 * X3 > 1200
+subset(X.data, X.data$X2 * X.data$X3 > 1200)</code></pre>
+
+            <h3>3.5 Loading and Reading Data</h3>
+            <pre><code class="language-r"># Load built-in dataset
+data(cars)
+head(cars, n = 4)
+
+# Read data from a CSV file
+b &lt;- read.csv("sBarley.csv")
+str(b)</code></pre>
+
+            <h3>3.6 Plotting Data</h3>
+            <pre><code class="language-r"># Scatter plot
+with(b, plot(GrainYield ~ TotalRainfall,
+             pch = "+", col = "brown", cex = 0.7,
+             main = "Rainfall and Grain Yield",
+             ylab = "Grain Yield (kg/ha)",
+             xlab = "Total Rainfall (mm)"))
+
+# Box plot
+with(b, boxplot(N, P,
+                col = "gold",
+                names = c("N", "P"),
+                ylab = "Fertiliser Rate (kg/ha)",
+                main = "N and P Application Rates"))</code></pre>
+
+            <h3>3.7 Using <code>apply()</code> and <code>tapply()</code></h3>
+            <pre><code class="language-r"># Calculate mean by group
+mean.hours.bygender &lt;- tapply(hours.table[, "hours"],
+                             INDEX = gender,
+                             mean)</code></pre>
+        </section>
+
+        <section>
+            <h2>4. Learning About R Beyond the Lab Sessions</h2>
+            <ul>
+                <li><strong>Online Tutorials</strong>: <a href="http://www.cyclismo.org/tutorial/R/" target="_blank">Kelly Black's R Tutorial</a></li>
+                <li><strong>Books</strong>: Applied Econometrics with R, Linear Models in R</li>
+                <li><strong>Search Engines</strong>: Rseek, Google</li>
+                <li><strong>Videos</strong>: YouTube tutorials on R and RStudio</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Summary</h2>
+            <p>This guide covered:</p>
+            <ul>
+                <li>R and RStudio software</li>
+                <li>Working directories</li>
+                <li>R commands, comments, and methods</li>
+                <li>Data types, structures, and data frames</li>
+                <li>Loading and reading data</li>
+                <li>Subsetting data</li>
+                <li>Plotting data</li>
+                <li>Using <code>apply()</code> and <code>tapply()</code></li>
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+    </script>
+</body>
+</html>

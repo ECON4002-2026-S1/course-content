@@ -1,0 +1,126 @@
+{
+  "week": 2,
+  "title": "Linear Algebra in R",
+  "description": "Matrix operations, determinants, inverses, and solving linear systems",
+  "snippets": [
+    {
+      "id": "W2-CS01",
+      "category": "matrix_creation",
+      "title": "Create Matrix by Row",
+      "code": "A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE)\nA",
+      "output": "     [,1] [,2] [,3]\n[1,]    1    2    3\n[2,]    4    5    6",
+      "notes": "byrow=TRUE fills matrix row by row. Default is column by column."
+    },
+    {
+      "id": "W2-CS02",
+      "category": "matrix_creation",
+      "title": "Special Matrices",
+      "code": "# Identity matrix\nI <- diag(3)\n\n# Diagonal matrix\nD <- diag(c(2, 3, 4))\n\n# Zero matrix\nZ <- matrix(0, nrow = 2, ncol = 3)",
+      "notes": "diag(n) creates n×n identity. diag(vector) creates diagonal matrix."
+    },
+    {
+      "id": "W2-CS03",
+      "category": "matrix_operations",
+      "title": "Matrix Multiplication",
+      "code": "A <- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)\nB <- matrix(c(5, 6, 7, 8), nrow = 2, byrow = TRUE)\n\n# CORRECT: Matrix multiplication\nA %*% B\n\n# WRONG: Element-wise multiplication\n# A * B  # Don't use this for matrix mult!",
+      "output": "     [,1] [,2]\n[1,]   19   22\n[2,]   43   50",
+      "notes": "CRITICAL: Always use %*% for matrix multiplication. The * operator does element-wise multiplication.",
+      "common_error": "Using * instead of %*%"
+    },
+    {
+      "id": "W2-CS04",
+      "category": "matrix_operations",
+      "title": "Transpose",
+      "code": "A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, byrow = TRUE)\nt(A)",
+      "output": "     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6",
+      "notes": "Rows become columns. Dimension changes from m×n to n×m."
+    },
+    {
+      "id": "W2-CS05",
+      "category": "determinants",
+      "title": "Calculate Determinant",
+      "code": "# 2×2 determinant\nA <- matrix(c(3, 2, 1, 4), nrow = 2, byrow = TRUE)\ndet(A)  # 3*4 - 2*1 = 10\n\n# 3×3 determinant\nB <- matrix(c(1, 2, 3, 7, 0, 8, 4, 5, 6), nrow = 3, byrow = TRUE)\ndet(B)  # 45",
+      "notes": "For 2×2: det([[a,b],[c,d]]) = ad - bc. det ≠ 0 means inverse exists."
+    },
+    {
+      "id": "W2-CS06",
+      "category": "inverse",
+      "title": "Matrix Inverse",
+      "code": "A <- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)\n\n# Find inverse\nA_inv <- solve(A)\n\n# Verify: A × A^(-1) = I\nround(A %*% A_inv, 10)",
+      "output": "     [,1] [,2]\n[1,]    1    0\n[2,]    0    1",
+      "notes": "solve(A) returns A^(-1). Only works if det(A) ≠ 0."
+    },
+    {
+      "id": "W2-CS07",
+      "category": "linear_systems",
+      "title": "Solve Linear System",
+      "code": "# Solve: 2x + y = 8\n#        3x + 5y = 19\n\nA <- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)\nb <- c(8, 19)\n\nx <- solve(A, b)\nx  # x = 3, y = 2\n\n# Verify\nA %*% x  # Should equal b",
+      "notes": "solve(A, b) is more efficient than solve(A) %*% b"
+    },
+    {
+      "id": "W2-CS08",
+      "category": "linear_systems",
+      "title": "Cramer's Rule",
+      "code": "cramers_rule <- function(A, b) {\n  det_A <- det(A)\n  if (abs(det_A) < 1e-10) stop(\"Singular matrix\")\n  \n  n <- length(b)\n  x <- numeric(n)\n  \n  for (i in 1:n) {\n    A_i <- A\n    A_i[, i] <- b  # Replace column i\n    x[i] <- det(A_i) / det_A\n  }\n  return(x)\n}\n\nA <- matrix(c(2, 1, 3, 5), nrow = 2, byrow = TRUE)\nb <- c(8, 19)\ncramers_rule(A, b)  # 3, 2",
+      "notes": "x_i = det(A_i) / det(A) where A_i has column i replaced by b"
+    },
+    {
+      "id": "W2-CS09",
+      "category": "economics",
+      "title": "Market Equilibrium Matrix Form",
+      "code": "# Qd = 100 - 2P  →  Q + 2P = 100\n# Qs = -20 + 4P  →  Q - 4P = -20\n\nA <- matrix(c(1, 2, 1, -4), nrow = 2, byrow = TRUE)\nb <- c(100, -20)\n\neq <- solve(A, b)\nQ_star <- eq[1]\nP_star <- eq[2]\n\ncat(\"P* =\", P_star, \", Q* =\", Q_star)",
+      "output": "P* = 20 , Q* = 60",
+      "economic_interpretation": "Unique equilibrium exists because det(A) = -6 ≠ 0"
+    },
+    {
+      "id": "W2-CS10",
+      "category": "economics",
+      "title": "Two-Market System",
+      "code": "# Wheat: 5Pw - Pc = 90\n# Corn: -Pw + 7Pc = 120\n\nA <- matrix(c(5, -1, -1, 7), nrow = 2, byrow = TRUE)\nb <- c(90, 120)\n\nprices <- solve(A, b)\nPw <- prices[1]\nPc <- prices[2]\n\ncat(\"Wheat price:\", round(Pw, 2))\ncat(\"Corn price:\", round(Pc, 2))",
+      "output": "Wheat price: 21.18\nCorn price: 20.18",
+      "economic_interpretation": "Cross-price effects captured in off-diagonal elements"
+    },
+    {
+      "id": "W2-CS11",
+      "category": "economics",
+      "title": "Leontief Input-Output",
+      "code": "# Technology matrix\nA <- matrix(c(0.2, 0.4, 0.1, 0.2), nrow = 2, byrow = TRUE)\nd <- c(80, 60)  # Final demand\n\n# Leontief solution: x = (I - A)^(-1) × d\nI <- diag(2)\nleontief <- solve(I - A)\nx <- leontief %*% d\n\ncat(\"Total output:\", round(x, 1))",
+      "output": "Total output: 151.7 96.6",
+      "economic_interpretation": "Accounts for direct and indirect input requirements"
+    },
+    {
+      "id": "W2-CS12",
+      "category": "eigenvalues",
+      "title": "Eigenvalues for Definiteness",
+      "code": "# Quadratic form: Q = 2x1² + 3x2² + 2x1x2\nA <- matrix(c(2, 1, 1, 3), nrow = 2, byrow = TRUE)\n\neig <- eigen(A)\neig$values  # 3.618, 1.382\n\n# All positive → positive definite\nif (all(eig$values > 0)) {\n  cat(\"Positive definite: minimum exists\")\n}",
+      "notes": "Pos def: all eigenvalues > 0. Neg def: all < 0. Indefinite: mixed signs."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Solve Economic System",
+      "template": "A <- matrix(c(...), nrow=n, byrow=TRUE)\nb <- c(...)\nif (abs(det(A)) > 1e-10) {\n  solution <- solve(A, b)\n} else {\n  cat('No unique solution')\n}"
+    },
+    {
+      "pattern": "Check Invertibility",
+      "template": "if (abs(det(A)) > 1e-10) {\n  A_inv <- solve(A)\n} else {\n  warning('Matrix is singular')\n}"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "non-conformable arguments",
+      "cause": "Matrix dimensions don't match for multiplication",
+      "fix": "Check dim(A) and dim(B). For A %*% B, need ncol(A) = nrow(B)"
+    },
+    {
+      "error": "system is exactly singular",
+      "cause": "det(A) = 0, no inverse exists",
+      "fix": "Check det(A). If 0, system has infinite or no solutions"
+    },
+    {
+      "error": "Wrong numerical results",
+      "cause": "Used * instead of %*%",
+      "fix": "Always use %*% for matrix multiplication"
+    }
+  ]
+}

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 12 Code Snippets: Decision Making Under Uncertainty | ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            document.querySelectorAll('pre code[class*="language-"]').forEach(codeEl => {
+                const pre = codeEl.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copy';
+                wrapper.insertBefore(btn, pre);
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                        btn.textContent = 'Copied!';
+                        btn.style.background = '#27ae60';
+                        setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = ''; }, 1600);
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary:  #2c3e50;
+            --accent:   #16a085;
+            --text:     #333333;
+            --code-bg:  #f8f9fa;
+            --border:   #e1e4e8;
+            --th-bg:    #0e7566;
+            --th-text:  #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7; color: var(--text);
+            max-width: 1000px; margin: 0 auto; padding: 2rem;
+        }
+        header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 3px solid var(--accent); }
+        h1 { font-size: 2.4rem; color: var(--primary); margin-bottom: 0.4rem; }
+        .subtitle { font-size: 1.1rem; color: #666; font-weight: 600; }
+        h2 { font-size: 1.5rem; color: var(--primary); margin-top: 2.5rem; margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--border); }
+        h3 { font-size: 1.2rem; color: var(--accent); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin: 0.5rem 0 1rem 1.6rem; }
+        li { margin-bottom: 0.3rem; }
+        .summary { background: #e8f8f5; border-left: 4px solid var(--accent); border-radius: 6px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+        .note { background: #fdf9ec; border-left: 4px solid #f0ad4e; border-radius: 4px; padding: 0.8rem 1.1rem; margin: 0.8rem 0; font-size: 0.95rem; }
+        .snippet-card { margin-bottom: 2.5rem; border: 1px solid #c8d6cf; border-radius: 8px; overflow: hidden; }
+        .snippet-header { background: #e8f8f5; padding: 0.8rem 1.2rem; border-bottom: 1px solid #c8d6cf; }
+        .snippet-header h2 { font-size: 1.2rem; border: none; margin: 0; padding: 0; color: var(--primary); }
+        .snippet-body { padding: 1rem 1.2rem; }
+        table { border-collapse: collapse; width: 100%; margin: 1.2rem 0; }
+        th { background: var(--th-bg); color: var(--th-text); padding: 0.65rem 1rem; text-align: left; }
+        td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+        tr:nth-child(even) td { background: #f6f8fa; }
+        .code-wrapper { position: relative; margin: 0.8rem 0; }
+        .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: var(--accent); color: #fff; border: none; border-radius: 4px; padding: 0.25rem 0.65rem; font-size: 0.8rem; cursor: pointer; z-index: 1; transition: background 0.2s; }
+        .copy-btn:hover { background: #0e7566; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.1rem 1.2rem; overflow-x: auto; font-size: 0.88rem; line-height: 1.55; }
+        pre code { background: none; padding: 0; }
+        code { background: var(--code-bg); border-radius: 3px; padding: 0.15em 0.4em; font-size: 0.88em; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; }
+        footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--border); color: #888; font-size: 0.9rem; }
+        @media (max-width: 768px) { body { padding: 1rem; } h1 { font-size: 2rem; } th, td { padding: 0.5rem; font-size: 0.9rem; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Week 12 Code Snippets: Decision Making Under Uncertainty</h1>
+    <div class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics</div>
+    <div class="subtitle">University of Western Australia</div>
+</header>
+
+<main>
+
+<div class="summary">
+    <p><strong>R implementations for:</strong> Expected value &amp; utility · Certainty equivalents &amp; risk premiums · Arrow–Pratt risk aversion measures · EU diagrams · Insurance demand analysis · Value of perfect and imperfect information (Bayes) · Mean–variance portfolio optimisation · Complete uncertainty toolkit</p>
+</div>
+
+<!-- Snippet 1 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>1. Expected Value Calculator</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">expected_value <- function(outcomes, probs) {
+  if (abs(sum(probs) - 1) > 1e-6) stop("Probabilities must sum to 1")
+  EV <- sum(probs * outcomes)
+  cat("E[X] =", paste(probs, "*", outcomes, collapse = " + "), "=", EV, "\n")
+  return(EV)
+}
+
+# Farmer fertilizer example
+EV <- expected_value(outcomes = c(450, 50), probs = c(0.5, 0.5))</code></pre>
+        <div class="note"><strong>Notes:</strong> Basic expected value calculation. Validates that probabilities sum to 1.</div>
+    </div>
+</div>
+
+<!-- Snippet 2 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>2. Expected Utility Analysis</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">eu_analysis <- function(outcomes, probs, u_fn, u_inv) {
+  EV        <- sum(probs * outcomes)
+  utilities <- sapply(outcomes, u_fn)
+  EU        <- sum(probs * utilities)
+  CE        <- u_inv(EU)
+  RP        <- EV - CE
+
+  cat("=== Expected Utility Analysis ===\n")
+  cat("Outcomes:", outcomes, "\n")
+  cat("Probabilities:", probs, "\n")
+  cat("Utilities:", round(utilities, 2), "\n")
+  cat("EV:", round(EV, 2), "\n")
+  cat("EU:", round(EU, 2), "\n")
+  cat("CE:", round(CE, 2), "\n")
+  cat("RP:", round(RP, 2), "\n")
+
+  list(EV = EV, EU = EU, CE = CE, RP = RP)
+}
+
+# Square root utility (scaled)
+u_sqrt     <- function(x) 10 * sqrt(x)
+u_sqrt_inv <- function(u) (u / 10)^2
+
+result <- eu_analysis(c(450, 50), c(0.5, 0.5), u_sqrt, u_sqrt_inv)</code></pre>
+        <div class="note"><strong>Notes:</strong> Complete EU analysis with CE and RP. Requires utility function and its inverse.</div>
+    </div>
+</div>
+
+<!-- Snippet 3 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>3. Common Utility Functions Library</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r"># Square root utility (CRRA, gamma = 0.5)
+u_sqrt     <- function(x, a = 1) a * sqrt(x)
+u_sqrt_inv <- function(u, a = 1) (u / a)^2
+
+# Logarithmic utility (CRRA, gamma -> 0)
+u_log     <- function(x) log(x)
+u_log_inv <- function(u) exp(u)
+
+# Exponential / CARA utility: u(x) = -exp(-a*x)
+u_cara     <- function(x, a = 0.001) -exp(-a * x)
+u_cara_inv <- function(u, a = 0.001) -log(-u) / a
+
+# Power utility (CRRA with parameter gamma)
+u_power <- function(x, gamma = 0.5) {
+  if (gamma == 1) return(log(x))
+  x^(1 - gamma) / (1 - gamma)
+}
+u_power_inv <- function(u, gamma = 0.5) {
+  if (gamma == 1) return(exp(u))
+  (u * (1 - gamma))^(1 / (1 - gamma))
+}
+
+# Linear utility (risk neutral)
+u_linear     <- function(x, a = 1, b = 0) a * x + b
+u_linear_inv <- function(u, a = 1, b = 0) (u - b) / a</code></pre>
+        <div class="note"><strong>Notes:</strong> Library of common utility functions with their inverses. Feed into <code>eu_analysis()</code>.</div>
+    </div>
+</div>
+
+<!-- Snippet 4 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>4. Arrow–Pratt Risk Aversion Measures</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r"># Numerical first and second derivatives
+num_deriv  <- function(f, x, h = 1e-6)  (f(x + h) - f(x - h)) / (2 * h)
+num_deriv2 <- function(f, x, h = 1e-4) (f(x + h) - 2 * f(x) + f(x - h)) / h^2
+
+# Absolute and Relative Risk Aversion
+ara <- function(u_fn, x)  -num_deriv2(u_fn, x) / num_deriv(u_fn, x)
+rra <- function(u_fn, x)   x * ara(u_fn, x)
+
+# Compare risk aversion across wealth levels
+wealth_levels <- c(10000, 50000, 100000, 500000)
+
+cat("\n=== Logarithmic utility: u(x) = ln(x) ===\n")
+for (w in wealth_levels) {
+  cat(sprintf("W = $%d: ARA = %.6f, RRA = %.2f\n",
+              w, ara(u_log, w), rra(u_log, w)))
+}
+
+cat("\n=== CARA utility: u(x) = -exp(-0.0001x) ===\n")
+u_cara_ex <- function(x) -exp(-0.0001 * x)
+for (w in wealth_levels) {
+  cat(sprintf("W = $%d: ARA = %.6f, RRA = %.2f\n",
+              w, ara(u_cara_ex, w), rra(u_cara_ex, w)))
+}</code></pre>
+        <div class="note"><strong>Notes:</strong> Calculates Arrow–Pratt ARA and RRA numerically for any differentiable $u(x)$.</div>
+    </div>
+</div>
+
+<!-- Snippet 5 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>5. Expected Utility Diagram</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">plot_eu_diagram <- function(outcomes, probs, u_fn, title = "Expected Utility") {
+  x_range <- seq(0.1, max(outcomes) * 1.2, length = 300)
+  u_vals  <- sapply(x_range, u_fn)
+
+  EU <- sum(probs * sapply(outcomes, u_fn))
+  EV <- sum(probs * outcomes)
+  CE <- uniroot(function(x) u_fn(x) - EU, c(0.1, max(outcomes)))$root
+  RP <- EV - CE
+
+  plot(x_range, u_vals, type = "l", lwd = 2, col = "black",
+       xlab = "Outcome ($)", ylab = "Utility",
+       main = title, xlim = c(0, max(x_range)))
+
+  # Chord between outcomes
+  segments(outcomes[1], u_fn(outcomes[1]),
+           outcomes[2], u_fn(outcomes[2]),
+           col = "blue", lwd = 2, lty = 2)
+
+  # Mark outcome points
+  points(outcomes, sapply(outcomes, u_fn), pch = 19, col = "red", cex = 1.5)
+  text(outcomes, sapply(outcomes, u_fn),
+       labels = paste0("u(", outcomes, ")"), pos = c(2, 4), cex = 0.8)
+
+  # EU horizontal line
+  abline(h = EU, col = "green", lty = 3, lwd = 1.5)
+  text(max(x_range) * 0.9, EU, paste("EU =", round(EU, 1)),
+       pos = 3, col = "green")
+
+  # CE and EV verticals
+  abline(v = CE, col = "orange", lty = 3)
+  abline(v = EV, col = "purple", lty = 3)
+
+  # Risk premium bracket
+  arrows(CE, EU * 0.5, EV, EU * 0.5, code = 3, length = 0.1, col = "brown")
+  text((CE + EV) / 2, EU * 0.45,
+       paste("RP =", round(RP, 0)), col = "brown")
+
+  legend("topleft",
+         c("u(x)", "Chord", "EU", "CE", "EV"),
+         col = c("black", "blue", "green", "orange", "purple"),
+         lty = c(1, 2, 3, 3, 3), lwd = c(2, 2, 1.5, 1, 1))
+  grid()
+
+  list(EU = EU, CE = CE, EV = EV, RP = RP)
+}
+
+# Example
+u_sqrt <- function(x) 10 * sqrt(x)
+plot_eu_diagram(c(50, 450), c(0.5, 0.5), u_sqrt, "Fertilizer Decision")</code></pre>
+        <div class="note"><strong>Notes:</strong> Produces a textbook-style EU diagram with chord, CE, EV, and RP labelled.</div>
+    </div>
+</div>
+
+<!-- Snippet 6 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>6. Compare Risk Attitudes</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">compare_risk_attitudes <- function(x_max = 1000) {
+  x <- seq(1, x_max, length = 200)
+
+  # Normalize to [0, 1] for visual comparison
+  u_averse  <- sqrt(x) / sqrt(x_max)
+  u_neutral <- x / x_max
+  u_loving  <- (x / x_max)^2
+
+  plot(x, u_neutral, type = "l", lwd = 2, col = "green",
+       xlab = "Outcome", ylab = "Utility (normalized)",
+       main = "Risk Attitudes: Utility Function Shapes")
+  lines(x, u_averse, lwd = 2, col = "blue")
+  lines(x, u_loving, lwd = 2, col = "red")
+
+  # Mark a 50/50 gamble at x_low and x_high
+  x_low <- 200; x_high <- 800; p <- 0.5
+  EV    <- p * x_low + (1 - p) * x_high
+  EU_a  <- p * sqrt(x_low) + (1 - p) * sqrt(x_high)
+
+  points(c(x_low, x_high, EV),
+         c(sqrt(x_low), sqrt(x_high), EU_a) / sqrt(x_max),
+         pch = 19, col = "blue")
+
+  legend("bottomright",
+         c("Risk Neutral (linear)", "Risk Averse (concave)", "Risk Loving (convex)"),
+         col = c("green", "blue", "red"), lwd = 2)
+  grid()
+}
+
+compare_risk_attitudes()</code></pre>
+        <div class="note"><strong>Notes:</strong> Visual comparison of risk averse, neutral, and loving utility shapes.</div>
+    </div>
+</div>
+
+<!-- Snippet 7 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>7. Insurance Demand Analysis</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">insurance_analysis <- function(W0, loss, p_loss, u_fn, u_inv) {
+  EU_no_ins  <- (1 - p_loss) * u_fn(W0) + p_loss * u_fn(W0 - loss)
+  CE_no_ins  <- u_inv(EU_no_ins)
+  P_fair     <- p_loss * loss
+  P_max      <- W0 - CE_no_ins
+  loading_max <- P_max / P_fair
+
+  cat("=== Insurance Analysis ===\n")
+  cat("Initial wealth:", W0, "\n")
+  cat("Potential loss:", loss, "with probability", p_loss, "\n")
+  cat("\nWithout insurance:\n")
+  cat("  EU:", round(EU_no_ins, 4), "\n")
+  cat("  CE:", round(CE_no_ins, 2), "\n")
+  cat("\nFair premium:", round(P_fair, 2), "\n")
+  cat("With fair insurance: EU =", round(u_fn(W0 - P_fair), 4), "\n")
+  cat("\nMax premium willing to pay:", round(P_max, 2), "\n")
+  cat("Maximum loading:", round((loading_max - 1) * 100, 1), "% above fair\n")
+  cat("Risk premium (welfare gain from insurance):",
+      round(P_max - P_fair, 2), "\n")
+
+  list(EU_no_ins = EU_no_ins, CE_no_ins = CE_no_ins,
+       P_fair = P_fair, P_max = P_max, loading_max = loading_max)
+}
+
+# Sheep farmer example
+insurance_analysis(W0 = 200000, loss = 150000, p_loss = 0.05,
+                   u_fn = u_log, u_inv = u_log_inv)</code></pre>
+        <div class="note"><strong>Notes:</strong> Complete insurance demand: fair premium, maximum WTP, and loading tolerance.</div>
+    </div>
+</div>
+
+<!-- Snippet 8 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>8. Insurance Demand Curve (Plot)</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">plot_insurance_demand <- function(W0, loss, p_loss, u_fn, u_inv) {
+  EU_no_ins <- (1 - p_loss) * u_fn(W0) + p_loss * u_fn(W0 - loss)
+  CE_no_ins <- u_inv(EU_no_ins)
+  P_fair    <- p_loss * loss
+  P_max     <- W0 - CE_no_ins
+  P_range   <- seq(0, P_max * 1.2, length = 100)
+  EU_ins    <- sapply(P_range, function(P) u_fn(W0 - P))
+  demand    <- ifelse(EU_ins >= EU_no_ins, 1, 0)
+
+  par(mfrow = c(1, 2))
+
+  # Panel 1: EU comparison
+  plot(P_range, EU_ins, type = "l", lwd = 2, col = "blue",
+       xlab = "Premium ($)", ylab = "Expected Utility",
+       main = "EU: Insured vs Uninsured")
+  abline(h = EU_no_ins, col = "red",    lty = 2, lwd = 2)
+  abline(v = P_max,     col = "orange", lty = 3)
+  abline(v = P_fair,    col = "green",  lty = 3)
+  legend("topright", c("EU(insured)", "EU(uninsured)", "Max P", "Fair P"),
+         col = c("blue", "red", "orange", "green"), lty = c(1, 2, 3, 3), lwd = 2)
+
+  # Panel 2: demand step function
+  plot(P_range, demand, type = "s", lwd = 2, col = "darkgreen",
+       xlab = "Premium ($)", ylab = "Insurance Purchased (0/1)",
+       main = "Insurance Demand", ylim = c(-0.1, 1.1))
+  abline(v = P_max, col = "orange", lty = 2)
+  text(P_max, 0.5, paste("Max P =", round(P_max, 0)), pos = 2)
+
+  par(mfrow = c(1, 1))
+  list(P_fair = P_fair, P_max = P_max)
+}
+
+plot_insurance_demand(200000, 150000, 0.05, u_log, u_log_inv)</code></pre>
+        <div class="note"><strong>Notes:</strong> Two-panel plot: EU comparison and demand step function as a function of premium.</div>
+    </div>
+</div>
+
+<!-- Snippet 9 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>9. Value of Perfect Information</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">value_of_info <- function(states, probs, actions, payoffs, u_fn, u_inv) {
+  # payoffs: matrix[states, actions]
+  n_actions <- length(actions)
+
+  # Without info: EU for each action
+  EU_actions <- numeric(n_actions)
+  for (a in 1:n_actions)
+    EU_actions[a] <- sum(probs * sapply(payoffs[, a], u_fn))
+
+  best_a      <- which.max(EU_actions)
+  EU_no_info  <- max(EU_actions)
+  CE_no_info  <- u_inv(EU_no_info)
+
+  # With perfect info: optimal action per state
+  EU_per_state    <- numeric(length(states))
+  optimal_actions <- character(length(states))
+  for (s in seq_along(states)) {
+    utils <- sapply(payoffs[s, ], u_fn)
+    best  <- which.max(utils)
+    EU_per_state[s]    <- utils[best]
+    optimal_actions[s] <- actions[best]
+  }
+  EU_with_info <- sum(probs * EU_per_state)
+  CE_with_info <- u_inv(EU_with_info)
+  VPI          <- CE_with_info - CE_no_info
+
+  cat("=== Value of Perfect Information ===\n")
+  cat("\nWithout info: Best action =", actions[best_a], "\n")
+  cat("  EU =", round(EU_no_info, 2), ", CE =", round(CE_no_info, 2), "\n")
+  cat("\nWith perfect info:\n")
+  for (s in seq_along(states))
+    cat("  If", states[s], ": choose", optimal_actions[s], "\n")
+  cat("  EU =", round(EU_with_info, 2), ", CE =", round(CE_with_info, 2), "\n")
+  cat("\nValue of Perfect Information: $", round(VPI, 2), "\n")
+
+  list(VPI = VPI, CE_no_info = CE_no_info, CE_with_info = CE_with_info)
+}
+
+# Frost protection example
+states  <- c("Frost", "No Frost")
+probs   <- c(0.2, 0.8)
+actions <- c("Protect", "No Protect")
+# payoffs[state, action]: wealth outcomes
+payoffs <- matrix(c(
+   95000,  60000,   # Frost: protect vs no protect
+   95000, 100000    # No Frost: protect vs no protect
+), nrow = 2, byrow = TRUE)
+
+u_sqrt     <- function(x) sqrt(x)
+u_sqrt_inv <- function(u) u^2
+value_of_info(states, probs, actions, payoffs, u_sqrt, u_sqrt_inv)</code></pre>
+        <div class="note"><strong>Notes:</strong> Generalised VPI calculator — compares optimal decisions with vs. without prior knowledge of state.</div>
+    </div>
+</div>
+
+<!-- Snippet 10 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>10. Value of Imperfect Information (Bayes)</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">value_imperfect_info <- function(prior_probs, signal_accuracy,
+                                  payoffs, actions, u_fn, u_inv) {
+  # signal_accuracy[true_state, signal]: likelihood matrix
+  n_signals  <- ncol(signal_accuracy)
+  n_states   <- length(prior_probs)
+  P_signal   <- colSums(signal_accuracy * prior_probs)
+
+  # Bayesian posterior: P(state | signal)
+  posterior <- matrix(0, n_states, n_signals)
+  for (sig in 1:n_signals)
+    for (s in 1:n_states)
+      posterior[s, sig] <- signal_accuracy[s, sig] * prior_probs[s] / P_signal[sig]
+
+  cat("Signal probabilities:", round(P_signal, 3), "\n")
+  cat("Posterior P(frost|signal):", round(posterior[1, ], 3), "\n")
+
+  # Best action per signal
+  EU_given_sig <- matrix(0, n_signals, length(actions))
+  for (sig in 1:n_signals)
+    for (a in seq_along(actions))
+      EU_given_sig[sig, a] <- sum(posterior[, sig] * sapply(payoffs[, a], u_fn))
+
+  best_action_sig <- apply(EU_given_sig, 1, which.max)
+  EU_best_sig     <- apply(EU_given_sig, 1, max)
+
+  EU_imperfect <- sum(P_signal * EU_best_sig)
+  CE_imperfect <- u_inv(EU_imperfect)
+
+  cat("\nOptimal actions given signals:", actions[best_action_sig], "\n")
+  cat("EU with imperfect info:", round(EU_imperfect, 2), "\n")
+  cat("CE with imperfect info:", round(CE_imperfect, 2), "\n")
+
+  list(EU = EU_imperfect, CE = CE_imperfect,
+       P_signal = P_signal, posterior = posterior)
+}
+
+# Imperfect frost forecast
+prior_probs     <- c(0.2, 0.8)   # P(frost), P(no frost)
+signal_accuracy <- matrix(c(
+  0.80, 0.20,   # P(signal_frost | frost), P(signal_no_frost | frost)
+  0.10, 0.90    # P(signal_frost | no frost), P(signal_no_frost | no frost)
+), nrow = 2, byrow = TRUE)
+
+payoffs <- matrix(c(95000, 60000, 95000, 100000), nrow = 2, byrow = TRUE)
+
+result <- value_imperfect_info(
+  prior_probs, signal_accuracy, payoffs,
+  c("Protect", "No Protect"), u_sqrt, u_sqrt_inv
+)</code></pre>
+        <div class="note"><strong>Notes:</strong> Bayesian updating of state probabilities given an imperfect signal, then computes VPII.</div>
+    </div>
+</div>
+
+<!-- Snippet 11 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>11. Mean–Variance Portfolio Optimisation</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r">mv_portfolio <- function(returns, std_devs, corr,
+                          risk_aversion, total_area = 100) {
+  E1 <- returns[1];   E2 <- returns[2]
+  s1 <- std_devs[1];  s2 <- std_devs[2]
+
+  # Grid search over integer allocations
+  w_range  <- seq(0, total_area, by = 1)
+  E_R      <- w_range * E1 + (total_area - w_range) * E2
+  Var_R    <- w_range^2 * s1^2 +
+              (total_area - w_range)^2 * s2^2 +
+              2 * w_range * (total_area - w_range) * corr * s1 * s2
+  U        <- E_R - (risk_aversion / 2) * Var_R
+  opt_idx  <- which.max(U)
+
+  cat("=== Mean-Variance Portfolio Optimisation ===\n")
+  cat("Asset 1: E =", E1, ", sigma =", s1, "\n")
+  cat("Asset 2: E =", E2, ", sigma =", s2, "\n")
+  cat("Correlation:", corr, "  |  Risk aversion A:", risk_aversion, "\n")
+  cat("\nOptimal allocation:\n")
+  cat("  Asset 1:", w_range[opt_idx], "units\n")
+  cat("  Asset 2:", total_area - w_range[opt_idx], "units\n")
+  cat("  E[R]:", round(E_R[opt_idx], 0), "\n")
+  cat("  Var[R]:", round(Var_R[opt_idx], 0), "\n")
+  cat("  Utility:", round(U[opt_idx], 2), "\n")
+
+  # Plot efficient frontier
+  plot(sqrt(Var_R), E_R, type = "l", lwd = 2, col = "blue",
+       xlab = "Portfolio Std Dev ($)", ylab = "Expected Return ($)",
+       main = "Portfolio Frontier")
+  points(sqrt(Var_R[opt_idx]), E_R[opt_idx], pch = 19, col = "red", cex = 2)
+  text(sqrt(Var_R[opt_idx]), E_R[opt_idx],
+       paste("w* =", w_range[opt_idx]), pos = 4)
+  grid()
+
+  list(w_opt = w_range[opt_idx], E_R = E_R[opt_idx],
+       Var_R = Var_R[opt_idx], U = U[opt_idx])
+}
+
+# Wheat-lentil example (Problem 8)
+mv_portfolio(returns = c(400, 500), std_devs = c(150, 300),
+             corr = 0.2, risk_aversion = 0.002)</code></pre>
+        <div class="note"><strong>Notes:</strong> Two-asset mean–variance optimisation with frontier plot. Matches the Problem 8 algebra analytically.</div>
+    </div>
+</div>
+
+<!-- Snippet 12 -->
+<div class="snippet-card">
+    <div class="snippet-header"><h2>12. Complete Uncertainty Toolkit</h2></div>
+    <div class="snippet-body">
+        <pre><code class="language-r"># Assumes Snippets 1-11 (or at minimum Snippets 2, 7, 9) have been sourced.
+# Core utility functions (unscaled)
+u_sqrt     <- function(x) sqrt(x)
+u_sqrt_inv <- function(u) u^2
+u_log      <- function(x) log(x)
+u_log_inv  <- function(u) exp(u)
+
+# ---- Build toolkit for a chosen utility function ----
+uncertainty_toolkit <- function(u_fn = u_sqrt, u_inv = u_sqrt_inv) {
+  list(
+    eu_analysis = function(outcomes, probs)
+      eu_analysis(outcomes, probs, u_fn, u_inv),
+
+    plot_eu = function(outcomes, probs, title = "EU Analysis")
+      plot_eu_diagram(outcomes, probs, u_fn, title),
+
+    insurance = function(W0, loss, p_loss)
+      insurance_analysis(W0, loss, p_loss, u_fn, u_inv),
+
+    vpi = function(states, probs, actions, payoffs)
+      value_of_info(states, probs, actions, payoffs, u_fn, u_inv),
+
+    risk_aversion = function(x)
+      list(ARA = ara(u_fn, x), RRA = rra(u_fn, x))
+  )
+}
+
+# ---- Usage examples ----
+toolkit <- uncertainty_toolkit(u_log, u_log_inv)
+
+toolkit$eu_analysis(c(50, 450), c(0.5, 0.5))
+toolkit$insurance(W0 = 200000, loss = 150000, p_loss = 0.05)
+toolkit$risk_aversion(100000)   # ARA and RRA at wealth $100,000</code></pre>
+        <div class="note"><strong>Notes:</strong> Unified wrapper that binds a chosen utility function to all analysis tools. Swap <code>u_fn</code>/<code>u_inv</code> to change risk preferences in one line.</div>
+    </div>
+</div>
+
+<!-- Common Patterns Table -->
+<h2>Common Patterns</h2>
+<table>
+    <thead><tr><th>Pattern</th><th>R Template</th></tr></thead>
+    <tbody>
+        <tr><td>Expected Utility</td><td><code>EU &lt;- sum(probs * sapply(outcomes, u_fn))</code></td></tr>
+        <tr><td>Certainty Equivalent</td><td><code>CE &lt;- u_inv(EU)</code></td></tr>
+        <tr><td>Risk Premium</td><td><code>RP &lt;- sum(probs * outcomes) - CE</code></td></tr>
+        <tr><td>Fair Insurance Premium</td><td><code>P_fair &lt;- prob_loss * loss_amount</code></td></tr>
+        <tr><td>Maximum Insurance Premium</td><td><code>P_max &lt;- W0 - u_inv(EU_uninsured)</code></td></tr>
+        <tr><td>Bayesian Posterior</td><td><code>posterior[s, sig] &lt;- likelihood[s, sig] * prior[s] / P_signal[sig]</code></td></tr>
+    </tbody>
+</table>
+
+<!-- Debugging Tips Table -->
+<h2>Debugging Tips</h2>
+<table>
+    <thead><tr><th>Error</th><th>Likely Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+        <tr>
+            <td>NaN with <code>sqrt</code> or <code>log</code></td>
+            <td>Negative argument</td>
+            <td>Ensure all wealth outcomes are positive; check losses &lt; wealth</td>
+        </tr>
+        <tr>
+            <td>CE &gt; EV for risk-averse agent</td>
+            <td>Wrong utility or inverse function</td>
+            <td>Verify <code>u_fn</code> is concave ($u'' &lt; 0$) and <code>u_inv</code> is the correct inverse</td>
+        </tr>
+        <tr>
+            <td>Probabilities don't sum to 1</td>
+            <td>Input error or rounding</td>
+            <td>Normalize: <code>probs &lt;- probs / sum(probs)</code></td>
+        </tr>
+        <tr>
+            <td>VPI is negative</td>
+            <td>Logic error in payoff matrix</td>
+            <td>Check payoff matrix orientation; information value is always $\geq 0$</td>
+        </tr>
+        <tr>
+            <td><code>uniroot</code> fails in <code>plot_eu_diagram</code></td>
+            <td>CE outside search bounds</td>
+            <td>Expand the bracket, e.g. <code>c(0.01, max(outcomes) * 2)</code></td>
+        </tr>
+    </tbody>
+</table>
+
+</main>
+
+<footer>
+    <p>Week 12 Code Snippets — ECON4002 | University of Western Australia</p>
+</footer>
+
+</body>
+</html>

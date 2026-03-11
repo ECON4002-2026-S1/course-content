@@ -1,0 +1,155 @@
+{
+  "metadata": {
+    "week": 2,
+    "title": "Mathematical Methods I: Linear Algebra",
+    "learning_objectives": [
+      "Perform matrix operations in R",
+      "Calculate determinants",
+      "Find matrix inverses",
+      "Solve systems of linear equations",
+      "Apply Cramer's Rule",
+      "Model economic systems with matrices"
+    ]
+  },
+  "questions": [
+    {
+      "id": "W2-P1",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Matrix Multiplication",
+      "question": "Given A = [[2,1],[3,5]] and B = [[4,0],[1,2]], calculate AB and BA. Does AB = BA?",
+      "hints": [
+        "For AB: element (i,j) = row i of A dot column j of B",
+        "Use %*% in R for matrix multiplication, not *"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P2a",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Determinants",
+      "question": "Calculate the determinant of D1 = [[3,2],[1,4]]",
+      "hints": [
+        "For 2×2: det = ad - bc",
+        "Use det() in R"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P2b",
+      "type": "open_ended",
+      "difficulty": "easy",
+      "topic": "Determinants - Singular",
+      "question": "Calculate the determinant of D2 = [[6,2],[3,1]]",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W2-P2c",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "3×3 Determinant",
+      "question": "Calculate the determinant of D3 = [[1,2,3],[7,0,8],[4,5,6]]",
+      "hints": [
+        "Expand along first row",
+        "det = a(ei-fh) - b(di-fg) + c(dh-eg)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P3",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Matrix Inverse",
+      "question": "Find the inverse of A = [[2,1],[3,5]] using the 2×2 formula",
+      "hints": [
+        "Formula: A^(-1) = (1/det) × [[d,-b],[-c,a]]",
+        "First find det(A)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P4a",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Solving Linear Systems",
+      "question": "Solve: 5x + 3y = 11, 4x + y = 6. Determine solution type.",
+      "hints": [
+        "Check determinant first",
+        "Use solve(A, b) in R"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P4b",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Dependent Systems",
+      "question": "Solve: 2x + y = 4, x + 0.5y = 2. Determine solution type.",
+      "hints": [],
+      "solution": ""
+    },
+    {
+      "id": "W2-P5",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Cramer's Rule",
+      "question": "Use Cramer's Rule to solve: 2x - 4y + 6z = 3, -x + 3y + 2z = 2, 6x - 7y - 2z = 4",
+      "hints": [
+        "det(A_x) = det of A with column 1 replaced by b",
+        "x = det(A_x) / det(A)"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P6",
+      "type": "open_ended",
+      "difficulty": "medium",
+      "topic": "Supply-Demand System",
+      "question": "Wheat market: Qd = 100 - 2P, Qs = -20 + 4P. Set up in matrix form and solve for equilibrium.",
+      "hints": [
+        "At equilibrium Q = Qd = Qs",
+        "Rewrite as: Q + 2P = 100 and Q - 4P = -20"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P7",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Two-Market Equilibrium",
+      "question": "Wheat: Qw_d = 80 - 3Pw + Pc, Qw_s = -10 + 2Pw. Corn: Qc_d = 100 + Pw - 4Pc, Qc_s = -20 + 3Pc. Find equilibrium prices.",
+      "hints": [
+        "Set Qd = Qs for each market",
+        "You get two equations in Pw and Pc"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P8",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Input-Output Analysis",
+      "question": "Two sectors (Crops, Livestock) with technology matrix A = [[0.2,0.4],[0.1,0.2]]. Final demand: d = [80, 60]. Find total output.",
+      "hints": [
+        "x = (I - A)^(-1) × d",
+        "This is the Leontief model"
+      ],
+      "solution": ""
+    },
+    {
+      "id": "W2-P10",
+      "type": "open_ended",
+      "difficulty": "hard",
+      "topic": "Quadratic Forms",
+      "question": "For Q = 2x₁² + 3x₂² + 2x₁x₂, write in matrix form and determine definiteness.",
+      "hints": [
+        "Q = x'Ax where A is symmetric",
+        "For 2x₁x₂ term, use a₁₂ = a₂₁ = 1",
+        "Check eigenvalues for definiteness"
+      ],
+      "solution": ""
+    }
+  ]
+}

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 12: Decision Making Under Uncertainty | ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            document.querySelectorAll('pre code[class*="language-"]').forEach(codeEl => {
+                const pre = codeEl.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copy';
+                wrapper.insertBefore(btn, pre);
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                        btn.textContent = 'Copied!';
+                        btn.style.background = '#27ae60';
+                        setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = ''; }, 1600);
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary:  #2c3e50;
+            --accent:   #3498db;
+            --text:     #333333;
+            --code-bg:  #f8f9fa;
+            --border:   #e1e4e8;
+            --th-bg:    #34495e;
+            --th-text:  #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7; color: var(--text);
+            max-width: 1000px; margin: 0 auto; padding: 2rem;
+        }
+        header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 3px solid var(--accent); }
+        h1 { font-size: 2.4rem; color: var(--primary); margin-bottom: 0.4rem; }
+        .subtitle { font-size: 1.1rem; color: #666; font-weight: 600; }
+        h2 { font-size: 1.75rem; color: var(--primary); margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--border); }
+        h3 { font-size: 1.35rem; color: var(--accent); margin-top: 1.8rem; margin-bottom: 0.7rem; }
+        h4 { font-size: 1.1rem; color: var(--text); margin-top: 1.4rem; margin-bottom: 0.5rem; font-weight: 600; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin: 0.5rem 0 1rem 1.6rem; }
+        li { margin-bottom: 0.3rem; }
+        .objectives { background: #eaf4fb; border-left: 4px solid var(--accent); border-radius: 6px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+        .insight { background: #fff8e1; border-left: 4px solid #f39c12; border-radius: 4px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+        .highlight-box { background: #eaf4fb; border: 1px solid #bde0f5; border-radius: 6px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+        .warning-box { background: #fdf3f3; border-left: 4px solid #e74c3c; border-radius: 4px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+        table { border-collapse: collapse; width: 100%; margin: 1.2rem 0; }
+        th { background: var(--th-bg); color: var(--th-text); padding: 0.7rem 1rem; text-align: left; }
+        td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+        tr:nth-child(even) td { background: #f6f8fa; }
+        .diagram { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.2rem; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.85rem; overflow-x: auto; white-space: pre; margin: 1rem 0; }
+        .code-wrapper { position: relative; margin: 1.2rem 0; }
+        .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: var(--accent); color: #fff; border: none; border-radius: 4px; padding: 0.25rem 0.65rem; font-size: 0.8rem; cursor: pointer; z-index: 1; transition: background 0.2s; }
+        .copy-btn:hover { background: #2176ae; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.1rem 1.2rem; overflow-x: auto; font-size: 0.9rem; line-height: 1.55; }
+        pre code { background: none; padding: 0; }
+        code { background: var(--code-bg); border-radius: 3px; padding: 0.15em 0.4em; font-size: 0.88em; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; }
+        section { margin-bottom: 2.5rem; }
+        footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--border); color: #888; font-size: 0.9rem; }
+        @media (max-width: 768px) { body { padding: 1rem; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } th, td { padding: 0.5rem; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Week 12: Decision Making Under Uncertainty</h1>
+    <div class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics</div>
+    <div class="subtitle">University of Western Australia</div>
+</header>
+
+<main>
+
+<section>
+    <h2>Learning Objectives</h2>
+    <div class="objectives">
+        <p>By the end of this week, you will be able to:</p>
+        <ol>
+            <li>Distinguish between risk (quantifiable uncertainty) and true uncertainty</li>
+            <li>Calculate expected value and explain why it may not guide decisions</li>
+            <li>Apply expected utility theory to analyse decisions under risk</li>
+            <li>Calculate certainty equivalents and risk premiums</li>
+            <li>Classify decision makers by risk attitude (averse, neutral, loving)</li>
+            <li>Analyse agricultural decisions involving weather, price, and yield risk</li>
+            <li>Calculate the value of information for risky decisions</li>
+            <li>Apply risk concepts to insurance, crop choice, and resource management</li>
+        </ol>
+    </div>
+</section>
+
+<!-- Section 1 -->
+<section>
+    <h2>1. Introduction: Why Uncertainty Matters</h2>
+
+    <h3>1.1 The Nature of Economic Decisions</h3>
+    <p>Most decisions faced by economic agents—especially in agriculture and natural resources—are made <strong>under uncertainty</strong>:</p>
+    <table>
+        <thead><tr><th>Domain</th><th>Sources of Uncertainty</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Agriculture</strong></td><td>Weather, pest outbreaks, commodity prices, input costs</td></tr>
+            <tr><td><strong>Fisheries</strong></td><td>Stock abundance, recruitment, catch rates, market prices</td></tr>
+            <tr><td><strong>Mining</strong></td><td>Ore grades, extraction costs, commodity prices, regulations</td></tr>
+            <tr><td><strong>Water</strong></td><td>Rainfall, streamflow, allocation decisions, demand</td></tr>
+            <tr><td><strong>Environment</strong></td><td>Climate change impacts, ecosystem responses, policy shifts</td></tr>
+        </tbody>
+    </table>
+
+    <h3>1.2 Risk vs. Uncertainty: The Knight Distinction</h3>
+    <p><strong>Frank Knight (1921)</strong> distinguished between:</p>
+    <ul>
+        <li><strong>Risk</strong>: Outcomes are uncertain but probabilities are <em>known</em> (or can be estimated) — e.g., probability of a dry season based on historical climate data</li>
+        <li><strong>Uncertainty</strong>: Outcomes are uncertain and probabilities are <em>unknown</em> or cannot be meaningfully assigned — e.g., probability of a completely novel regulatory change</li>
+    </ul>
+    <div class="insight">In this course we focus primarily on <strong>risk</strong> — situations where we can assign probabilities to outcomes.</div>
+
+    <h3>1.3 Framing Risky Decisions as Lotteries</h3>
+    <p>A <strong>lottery</strong> is a formal representation of a risky prospect:</p>
+    $$L = \{(x_1, p_1),\, (x_2, p_2),\, \ldots,\, (x_n, p_n)\}$$
+    <p>where $x_i$ = outcome $i$, $p_i$ = probability of outcome $i$, and $\sum_{i=1}^{n} p_i = 1$. Outcomes are mutually exclusive.</p>
+    <table>
+        <thead><tr><th>Type</th><th>Source</th><th>Example</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Objective</strong></td><td>Relative frequencies from data</td><td>30% of years are drought years (60-year record)</td></tr>
+            <tr><td><strong>Subjective</strong></td><td>Best guesses, expert judgment</td><td>20% chance of new export restrictions next year</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- Section 2 -->
+<section>
+    <h2>2. Expected Value: A First Approach</h2>
+
+    <h3>2.1 Definition</h3>
+    <p>The <strong>expected value (EV)</strong> of a lottery is the probability-weighted average of outcomes:</p>
+    $$EV = E[X] = \sum_{i=1}^{n} p_i \cdot x_i$$
+
+    <h3>2.2 Farmer Fertiliser Example</h3>
+    <p>A wheat farmer considers whether to apply nitrogen fertiliser. The decision depends on rainfall:</p>
+    <table>
+        <thead><tr><th>Season</th><th>Probability</th><th>Profit with Fertiliser</th><th>Profit without Fertiliser</th></tr></thead>
+        <tbody>
+            <tr><td>Wet</td><td>0.5</td><td>$450</td><td>$300</td></tr>
+            <tr><td>Dry</td><td>0.5</td><td>$50</td><td>$200</td></tr>
+        </tbody>
+    </table>
+    <p><strong>Expected profit WITH fertiliser:</strong> $E[\pi_{fert}] = 0.5 \times 450 + 0.5 \times 50 = \$250$</p>
+    <p><strong>Expected profit WITHOUT fertiliser:</strong> $E[\pi_{no}] = 0.5 \times 300 + 0.5 \times 200 = \$250$</p>
+    <p>Both strategies have the same expected profit — should the farmer be <em>indifferent</em>?</p>
+
+    <h3>2.3 The Problem with Expected Value</h3>
+    <p>Fertilising involves far greater <strong>variance</strong>: the outcome range is $400 (with fertiliser) vs. $100 (without). <strong>Most people prefer the less risky option when expected values are equal.</strong> This is the concept of a <strong>fair gamble</strong>: a gamble with zero expected gain. Most people are unwilling to accept fair gambles.</p>
+
+    <h3>2.4 The St. Petersburg Paradox</h3>
+    <p>The inadequacy of expected value was demonstrated by the <strong>St. Petersburg Paradox</strong> (Bernoulli, 1738):</p>
+    <ul>
+        <li>A fair coin is tossed until heads appears</li>
+        <li>If heads appears on toss $t$, you receive $2^t$ dollars</li>
+    </ul>
+    $$EV = \frac{1}{2}(2) + \frac{1}{4}(4) + \frac{1}{8}(8) + \ldots = 1 + 1 + 1 + \ldots = \infty$$
+    <div class="insight"><strong>The Paradox:</strong> Despite infinite expected value, most people would pay only $10–20 to play. People do not maximise expected value — they must be maximising something else.</div>
+</section>
+
+<!-- Section 3 -->
+<section>
+    <h2>3. Expected Utility Theory</h2>
+
+    <h3>3.1 The von Neumann–Morgenstern Framework</h3>
+    <p><strong>Expected Utility (EU) Theory</strong> proposes that rational decision makers maximise the expected value of a <strong>utility function</strong> over outcomes:</p>
+    $$EU = E[u(X)] = \sum_{i=1}^{n} p_i \cdot u(x_i)$$
+    <div class="highlight-box">Key insight: Transform outcomes through a utility function $u(\cdot)$ <em>before</em> taking expectations.</div>
+
+    <h3>3.2 Properties of Utility Functions</h3>
+    <ol>
+        <li><strong>Monotonicity</strong>: More is better → $u'(x) > 0$</li>
+        <li><strong>Risk attitude</strong>: Curvature determines attitude toward risk</li>
+        <li><strong>Cardinality</strong>: Defined only up to positive affine transformations</li>
+    </ol>
+
+    <h3>3.3 Solving the St. Petersburg Paradox</h3>
+    <p>Using $u(x) = \ln(x)$:</p>
+    $$EU = \sum_{t=1}^{\infty} \frac{1}{2^t} \ln(2^t) = \sum_{t=1}^{\infty} \frac{t \ln 2}{2^t} = 2\ln 2 \approx 1.39$$
+    <p>A finite expected utility! The certainty equivalent is $e^{1.39} \approx \$4$.</p>
+
+    <h3>3.4 Farmer Example with Expected Utility</h3>
+    <p>Suppose the farmer has utility function $u(x) = 10\sqrt{x}$:</p>
+    <p><strong>With fertiliser:</strong></p>
+    $$EU_{fert} = 0.5 \times 10\sqrt{450} + 0.5 \times 10\sqrt{50} = 106.07 + 35.36 = 141.42$$
+    <p><strong>Without fertiliser:</strong></p>
+    $$EU_{no} = 0.5 \times 10\sqrt{300} + 0.5 \times 10\sqrt{200} = 86.60 + 70.71 = 157.31$$
+    <p><strong>Decision:</strong> $EU_{no} > EU_{fert}$ → the farmer should <strong>NOT fertilise</strong>.</p>
+    <div class="insight">Note: $u(250) = 10\sqrt{250} = 158.11 > EU_{fert} = 141.42$, confirming the farmer prefers certainty over the fertiliser gamble.</div>
+</section>
+
+<!-- Section 4 -->
+<section>
+    <h2>4. Certainty Equivalent and Risk Premium</h2>
+
+    <h3>4.1 Certainty Equivalent (CE)</h3>
+    <p>The <strong>certainty equivalent</strong> is the guaranteed amount that yields the same utility as a risky lottery:</p>
+    $$u(CE) = EU \implies CE = u^{-1}(EU)$$
+    <p><strong>For the fertiliser lottery:</strong></p>
+    $$10\sqrt{CE} = 141.42 \implies CE = 200$$
+    <p>The farmer is indifferent between the risky fertiliser lottery and a guaranteed $200.</p>
+
+    <h3>4.2 Risk Premium (RP)</h3>
+    <p>The <strong>risk premium</strong> is the amount the decision maker would pay to eliminate risk:</p>
+    $$RP = E[X] - CE$$
+    <p><strong>For the fertiliser lottery:</strong> $RP = 250 - 200 = \$50$</p>
+    <p>The farmer would pay up to $50 to convert the risky prospect into a certain $200.</p>
+
+    <h3>4.3 Graphical Interpretation</h3>
+    <div class="diagram">  u(x)
+    │                              ●━━━━ u(450) = 212
+    │                           ╱
+    │                        ╱
+    │ u(250) = 158 ━━━●━━━╱━━━━━━━━━━━━━━━━━━━━
+    │                ╱│
+    │ EU = 141 ─────╱─┼───────●────────────────
+    │            ╱   │       ╱│
+    │         ╱     │     ╱  │
+    │      ╱        │   ╱    │
+    │   ●━━━━━━━━━━━│━╱━━━━━━│━━━━ u(50) = 71
+    │ ╱             │╱       │
+    │╱              ●        ●
+    └───────────────┴────────┴────────────────── x
+                   CE=200   EV=250    450
+    
+    Risk Premium = EV − CE = 250 − 200 = 50</div>
+    <p>The <strong>chord</strong> connecting the utility at the two outcomes lies <em>below</em> the utility curve — this is the graphical signature of <strong>risk aversion</strong>.</p>
+</section>
+
+<!-- Section 5 -->
+<section>
+    <h2>5. Risk Attitudes</h2>
+
+    <h3>5.1 Three Types of Decision Makers</h3>
+    <table>
+        <thead><tr><th>Risk Attitude</th><th>Utility Shape</th><th>$u''(x)$</th><th>Behaviour</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Risk Averse</strong></td><td>Concave</td><td>$u'' &lt; 0$</td><td>Rejects fair gambles; $CE &lt; EV$</td></tr>
+            <tr><td><strong>Risk Neutral</strong></td><td>Linear</td><td>$u'' = 0$</td><td>Indifferent to fair gambles; $CE = EV$</td></tr>
+            <tr><td><strong>Risk Loving</strong></td><td>Convex</td><td>$u'' &gt; 0$</td><td>Accepts fair gambles; $CE &gt; EV$</td></tr>
+        </tbody>
+    </table>
+
+    <h3>5.2 Mathematical Characterisation</h3>
+    <p><strong>Risk aversion</strong> is equivalent to:</p>
+    <ol>
+        <li><strong>Concave utility</strong>: $u''(x) &lt; 0$ (diminishing marginal utility)</li>
+        <li><strong>Jensen's Inequality</strong>: $E[u(X)] &lt; u(E[X])$ for non-degenerate $X$</li>
+        <li><strong>Positive risk premium</strong>: $RP &gt; 0$</li>
+        <li><strong>Fair gamble rejection</strong>: Declines any gamble with $E[\Delta W] = 0$</li>
+    </ol>
+
+    <h3>5.3 Common Utility Functions</h3>
+    <table>
+        <thead><tr><th>Name</th><th>Form</th><th>Risk Attitude</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Square root</td><td>$u(x) = \sqrt{x}$</td><td>Risk averse</td><td>Decreasing absolute RA</td></tr>
+            <tr><td>Logarithmic</td><td>$u(x) = \ln(x)$</td><td>Risk averse</td><td>Constant relative RA</td></tr>
+            <tr><td>Exponential</td><td>$u(x) = -e^{-ax}$</td><td>Risk averse</td><td>Constant absolute RA (CARA)</td></tr>
+            <tr><td>Quadratic</td><td>$u(x) = x - bx^2$</td><td>Risk averse</td><td>Increasing absolute RA (less realistic)</td></tr>
+            <tr><td>Linear</td><td>$u(x) = x$</td><td>Risk neutral</td><td>Expected value maximiser</td></tr>
+            <tr><td>Power</td><td>$u(x) = x^\gamma$</td><td>Depends on $\gamma$</td><td>$\gamma &lt; 1$: averse; $\gamma &gt; 1$: loving</td></tr>
+        </tbody>
+    </table>
+
+    <h3>5.4 Arrow–Pratt Measures of Risk Aversion</h3>
+    <p><strong>Absolute Risk Aversion (ARA):</strong></p>
+    $$A(x) = -\frac{u''(x)}{u'(x)}$$
+    <p><strong>Relative Risk Aversion (RRA):</strong></p>
+    $$R(x) = -\frac{x \cdot u''(x)}{u'(x)} = x \cdot A(x)$$
+    <p><strong>Example for $u(x) = \ln(x)$:</strong> $u'(x) = 1/x,\ u''(x) = -1/x^2$ → $A(x) = 1/x$ (decreasing), $R(x) = 1$ (constant RRA).</p>
+    <div class="highlight-box">With CRRA utility, the <em>percentage</em> of wealth allocated to risky assets is constant regardless of wealth level.</div>
+</section>
+
+<!-- Section 6 -->
+<section>
+    <h2>6. The Value of Information</h2>
+
+    <h3>6.1 Value of Perfect Information (VPI)</h3>
+    <p>The <strong>VPI</strong> is the maximum amount a decision maker would pay to know the true state <em>before</em> making a decision.</p>
+    <ul>
+        <li><strong>Without information:</strong> choose the action that maximises EU given prior probabilities</li>
+        <li><strong>With information:</strong> choose the optimal action conditional on each state</li>
+    </ul>
+    $$VPI = CE_{PI} - CE_{\text{no info}}$$
+
+    <h3>6.2 Farmer Example: Value of Weather Forecast</h3>
+    <table>
+        <thead><tr><th>Season</th><th>Prob</th><th>Profit (Fert)</th><th>Profit (No Fert)</th><th>Optimal</th></tr></thead>
+        <tbody>
+            <tr><td>Wet</td><td>0.5</td><td>$450</td><td>$300</td><td>Fertilise</td></tr>
+            <tr><td>Dry</td><td>0.5</td><td>$50</td><td>$200</td><td>Don't fertilise</td></tr>
+        </tbody>
+    </table>
+    <p><strong>Without information:</strong> Optimal is not to fertilise → $EU = 157.31$, $CE = \$247.50$</p>
+    <p><strong>With perfect information:</strong></p>
+    <ul>
+        <li>If Wet → Fertilise → $u(450) = 212.13$</li>
+        <li>If Dry → Don't fertilise → $u(200) = 141.42$</li>
+        <li>$EU_{PI} = 0.5 \times 212.13 + 0.5 \times 141.42 = 176.78$, $CE_{PI} = \$312.50$</li>
+    </ul>
+    $$VPI = 312.50 - 247.50 = \$65$$
+    <p>The farmer would pay up to $65 for perfect weather forecasting.</p>
+
+    <h3>6.3 Imperfect Information</h3>
+    <p>In practice, information is imperfect. The value of imperfect information lies between zero and VPI, and is calculated using Bayesian updating of probabilities — see Practice Problem 11 for a worked example.</p>
+</section>
+
+<!-- Section 7 -->
+<section>
+    <h2>7. Applications in Agricultural and Resource Economics</h2>
+
+    <h3>7.1 Crop Insurance</h3>
+    <p><strong>Insurance contract:</strong> premium $P$ (paid upfront); indemnity pays $(Y^* - Y)$ if yield $Y &lt; Y^*$.</p>
+    <p><strong>Fair premium:</strong> $P_{\text{fair}} = E[\text{Indemnity}]$</p>
+    <div class="insight"><strong>Key result:</strong> Risk-averse farmers are willing to pay <em>more</em> than the fair premium. The excess represents the risk premium they pay for certainty.</div>
+
+    <h3>7.2 Wheat Crop Insurance Example</h3>
+    <table>
+        <thead><tr><th>Weather</th><th>Prob</th><th>Yield (t/ha)</th><th>Revenue (@$300/t)</th></tr></thead>
+        <tbody>
+            <tr><td>Good</td><td>0.4</td><td>3.0</td><td>$900</td></tr>
+            <tr><td>Average</td><td>0.4</td><td>2.0</td><td>$600</td></tr>
+            <tr><td>Drought</td><td>0.2</td><td>0.5</td><td>$150</td></tr>
+        </tbody>
+    </table>
+    <p><strong>Without insurance</strong> ($u(x) = \sqrt{x}$): $EU = 24.25$, $CE = \$588$</p>
+    <p><strong>Insurance contract</strong> guaranteeing 2 t/ha: fair premium $P_{\text{fair}} = 0.2 \times 450 = \$90$</p>
+    <p><strong>With fair insurance ($P = 90$):</strong> $EU = 24.93$, $CE = \$622$</p>
+    <p>Welfare gain: $622 - 588 = \$34$. Maximum premium: $\approx \$124$ (the farmer pays up to $34 above fair premium).</p>
+
+    <h3>7.3 Crop Portfolio Diversification</h3>
+    <p>A farmer allocates 100 ha between two crops (wheat: $E = \$400$/ha, $\sigma = \$200$; canola: $E = \$500$/ha, $\sigma = \$300$; $\rho = 0.3$).</p>
+    <p><strong>Portfolio expected return:</strong> $E[R_p] = 400w + 500(100-w)$</p>
+    <p><strong>Portfolio variance:</strong></p>
+    $$\sigma_p^2 = w^2 \sigma_W^2 + (100-w)^2 \sigma_C^2 + 2w(100-w)\rho\sigma_W\sigma_C$$
+    <p>A risk-averse farmer may allocate some area to wheat (lower return, lower variance) even though canola has higher expected return, to reduce overall portfolio risk.</p>
+
+    <h3>7.4 Water Allocation Under Uncertainty</h3>
+    <p>Water managers face uncertain inflows. The <strong>state-contingent framework</strong> maximises expected welfare across inflow states subject to water availability in each state.</p>
+
+    <h3>7.5 Fisheries and the Precautionary Approach</h3>
+    <p>Under stock uncertainty, a risk-averse regulator applies:</p>
+    $$H^* = E[MSY] - k \cdot \sigma_{MSY}$$
+    <p>where $k &gt; 0$ reflects risk aversion — reducing expected catch to lower the probability of stock collapse.</p>
+</section>
+
+<!-- Section 8 -->
+<section>
+    <h2>8. Advanced Topics</h2>
+
+    <h3>8.1 Mean–Variance Analysis</h3>
+    <p>When returns are normally distributed (or utility is quadratic):</p>
+    $$EU \approx E[W] - \frac{A}{2}\text{Var}(W)$$
+    <p>Decision makers trade off expected return against variance, with the trade-off governed by absolute risk aversion $A$.</p>
+
+    <h3>8.2 Stochastic Dominance</h3>
+    <p><strong>First-Order Stochastic Dominance (FOSD):</strong> Lottery $A$ FOSD-dominates $B$ if $F_A(x) \leq F_B(x)$ for all $x$ — all agents who prefer more prefer $A$.</p>
+    <p><strong>Second-Order Stochastic Dominance (SOSD):</strong> $A$ SOSD-dominates $B$ if $\int_{-\infty}^{x} F_A(t)\,dt \leq \int_{-\infty}^{x} F_B(t)\,dt$ for all $x$ — all <em>risk-averse</em> agents prefer $A$.</p>
+
+    <h3>8.3 Behavioural Departures from EU Theory</h3>
+    <table>
+        <thead><tr><th>Phenomenon</th><th>Description</th><th>Example</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Certainty effect</strong></td><td>Overweight certain outcomes</td><td>Prefer sure $3,000 over 80% chance of $4,000</td></tr>
+            <tr><td><strong>Loss aversion</strong></td><td>Losses loom larger than gains</td><td>Refuse a fair 50/50 gamble of ±$100</td></tr>
+            <tr><td><strong>Probability weighting</strong></td><td>Overweight small probabilities</td><td>Buy lottery tickets; over-insure rare events</td></tr>
+            <tr><td><strong>Framing effects</strong></td><td>Choice depends on presentation</td><td>"90% survival" vs. "10% mortality"</td></tr>
+        </tbody>
+    </table>
+    <div class="insight"><strong>Prospect Theory</strong> (Kahneman &amp; Tversky, 1979) addresses these violations by evaluating outcomes relative to a reference point, weighting probabilities non-linearly, and using a kinked value function (steeper for losses).</div>
+</section>
+
+<!-- Section 9 -->
+<section>
+    <h2>9. Summary: Key Concepts and Formulas</h2>
+
+    <h3>9.1 Core Formulas</h3>
+    <table>
+        <thead><tr><th>Concept</th><th>Formula</th></tr></thead>
+        <tbody>
+            <tr><td>Expected Value</td><td>$EV = \sum_i p_i x_i$</td></tr>
+            <tr><td>Expected Utility</td><td>$EU = \sum_i p_i u(x_i)$</td></tr>
+            <tr><td>Certainty Equivalent</td><td>$u(CE) = EU \implies CE = u^{-1}(EU)$</td></tr>
+            <tr><td>Risk Premium</td><td>$RP = EV - CE$</td></tr>
+            <tr><td>Absolute Risk Aversion</td><td>$A(x) = -u''(x)/u'(x)$</td></tr>
+            <tr><td>Relative Risk Aversion</td><td>$R(x) = -x \cdot u''(x)/u'(x)$</td></tr>
+        </tbody>
+    </table>
+
+    <h3>9.2 Risk Aversion Conditions (All Equivalent)</h3>
+    <ol>
+        <li>Concave utility: $u''(x) &lt; 0$</li>
+        <li>Positive risk premium: $RP &gt; 0$</li>
+        <li>Certainty equivalent below expected value: $CE &lt; EV$</li>
+        <li>Rejects fair gambles</li>
+        <li>$E[u(X)] &lt; u(E[X])$ (Jensen's Inequality)</li>
+    </ol>
+
+    <h3>9.3 Decision Framework</h3>
+    <div class="diagram">┌─────────────────────────────────────────────────────────────────────┐
+│                    DECISION UNDER UNCERTAINTY                        │
+├─────────────────────────────────────────────────────────────────────┤
+│  1. IDENTIFY  states, outcomes, probabilities                        │
+│  2. SPECIFY   utility function u(x)                                  │
+│  3. CALCULATE  EU(a) = Σ pᵢ × u(xᵢ(a))  for each action a          │
+│  4. CHOOSE    action with highest EU                                 │
+│  5. INTERPRET via CE and RP:   CE = u⁻¹(EU),   RP = EV − CE        │
+└─────────────────────────────────────────────────────────────────────┘</div>
+</section>
+
+<!-- Section 10 -->
+<section>
+    <h2>10. Exercises</h2>
+
+    <h3>Exercise 1: Probability of Wet Season = 0.9</h3>
+    <p>Repeat the farmer example with probability of wet season = 0.9. Using $u(x) = 10\sqrt{x}$:</p>
+    <p><strong>With fertiliser:</strong> $EU_{fert} = 0.9 \times 212.13 + 0.1 \times 70.71 = 197.99$; $CE = 392$; $EV = 410$; $RP = 18$.</p>
+    <p><strong>Interpretation:</strong> With a higher probability of the wet season, fertiliser becomes more attractive. The risk premium falls because the outcome distribution is less dispersed.</p>
+
+    <h3>Exercise 2: Insurance Loading</h3>
+    <p>If an insurer charges a 30% loading above the fair premium: actual premium = $90 \times 1.3 = \$117$. Does the farmer still buy? Compare $EU_{ins}(P=117)$ to $EU_{no}$.</p>
+</section>
+
+<!-- References -->
+<section>
+    <h2>References</h2>
+    <ul>
+        <li>Perloff, J.M. (2018). <em>Microeconomics</em>, Ch. 17. Pearson.</li>
+        <li>Knight, F.H. (1921). <em>Risk, Uncertainty, and Profit</em>.</li>
+        <li>Hardaker, J.B. et al. (2015). <em>Coping with Risk in Agriculture</em>, 3rd ed.</li>
+        <li>Kahneman, D. &amp; Tversky, A. (1979). "Prospect Theory: An Analysis of Decision under Risk." <em>Econometrica</em>.</li>
+        <li>Varian, H.R. (1992). <em>Microeconomic Analysis</em>, 3rd ed. Norton.</li>
+    </ul>
+</section>
+
+</main>
+
+<footer>
+    <p>Week 12 Lesson — ECON4002 | University of Western Australia</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "week": 1,
+  "title": "R Foundations for Economics",
+  "description": "Essential R code snippets for basic operations, vectors, functions, and simple economic models",
+  "snippets": [
+    {
+      "id": "W1-CS01",
+      "category": "basics",
+      "title": "Arithmetic Operations",
+      "description": "Basic mathematical operations in R",
+      "code": "# Basic arithmetic\n2 + 3          # Addition: 5\n10 - 4         # Subtraction: 6\n5 * 6          # Multiplication: 30\n20 / 4         # Division: 5\n2^5            # Exponentiation: 32\n17 %% 5        # Modulo (remainder): 2\n17 %/% 5       # Integer division: 3",
+      "output": "5, 6, 30, 5, 32, 2, 3",
+      "notes": "R follows standard order of operations (PEMDAS). Use parentheses to override.",
+      "common_errors": ["Confusing %% (modulo) with % (not valid)", "Forgetting ^ for exponentiation"]
+    },
+    {
+      "id": "W1-CS02",
+      "category": "basics",
+      "title": "Mathematical Functions",
+      "description": "Common mathematical functions",
+      "code": "# Square root and absolute value\nsqrt(16)       # 4\nabs(-5)        # 5\n\n# Exponential and logarithms\nexp(1)         # e = 2.718282\nlog(10)        # Natural log: 2.302585\nlog10(100)     # Log base 10: 2\nlog(8, base=2) # Log base 2: 3\n\n# Constants\npi             # 3.141593",
+      "notes": "log() is natural logarithm by default. Use log10() for base-10 or specify base=",
+      "common_errors": ["Assuming log() is base-10 (it's natural log)", "Forgetting exp() returns e^x"]
+    },
+    {
+      "id": "W1-CS03",
+      "category": "variables",
+      "title": "Variable Assignment",
+      "description": "Creating and naming variables",
+      "code": "# Assignment (use <- or =)\nprice <- 25\nquantity <- 100\nrevenue <- price * quantity\nrevenue        # 2500\n\n# View all variables\nls()\n\n# Remove variables\nrm(price)              # Remove one\nrm(list = ls())        # Remove ALL (careful!)",
+      "notes": "Convention: use <- for assignment. Variable names are case-sensitive.",
+      "common_errors": ["Starting name with number (invalid)", "Using hyphens in names (use underscores)"]
+    },
+    {
+      "id": "W1-CS04",
+      "category": "vectors",
+      "title": "Creating Vectors",
+      "description": "Different ways to create vectors",
+      "code": "# Combine elements with c()\nprices <- c(250, 275, 300, 280, 290)\ncrops <- c(\"wheat\", \"corn\", \"soybean\")\n\n# Sequences\nyears <- 2020:2025                      # Integer sequence\nby_two <- seq(0, 10, by = 2)            # 0, 2, 4, 6, 8, 10\nfive_points <- seq(0, 100, length.out = 5)  # 0, 25, 50, 75, 100\n\n# Repetition\nzeros <- rep(0, 5)                      # 0, 0, 0, 0, 0\npattern <- rep(c(1, 2), times = 3)      # 1, 2, 1, 2, 1, 2",
+      "notes": "c() combines elements. seq() creates sequences. rep() creates repetitions.",
+      "common_errors": ["Forgetting c() when creating vectors", "Confusing times= and each= in rep()"]
+    },
+    {
+      "id": "W1-CS05",
+      "category": "vectors",
+      "title": "Vector Operations",
+      "description": "Element-wise operations and summary functions",
+      "code": "x <- c(1, 2, 3, 4, 5)\ny <- c(10, 20, 30, 40, 50)\n\n# Element-wise operations\nx + y          # 11, 22, 33, 44, 55\nx * y          # 10, 40, 90, 160, 250\nx * 2          # 2, 4, 6, 8, 10 (scalar recycling)\n\n# Summary functions\nlength(x)      # 5\nsum(x)         # 15\nmean(x)        # 3\nsd(x)          # 1.581\nmin(x)         # 1\nmax(x)         # 5",
+      "notes": "Operations are element-wise. Scalars are recycled to match vector length.",
+      "common_errors": ["Expecting matrix multiplication with * (use %*% for that)"]
+    },
+    {
+      "id": "W1-CS06",
+      "category": "vectors",
+      "title": "Indexing and Subsetting",
+      "description": "Selecting elements from vectors",
+      "code": "prices <- c(250, 275, 300, 280, 290)\n\n# Positive indexing (select)\nprices[1]           # First element: 250 (R is 1-indexed!)\nprices[c(1, 3, 5)]  # Elements 1, 3, 5\nprices[2:4]         # Elements 2 through 4\n\n# Negative indexing (exclude)\nprices[-1]          # All except first\n\n# Logical indexing\nprices[prices > 280]  # Elements > 280: 300, 290\n\n# Which indices?\nwhich(prices > 280)   # Returns: 3, 5\nwhich.max(prices)     # Index of max: 3",
+      "notes": "R uses 1-based indexing (first element is [1], not [0]). Negative indices exclude.",
+      "common_errors": ["Using [0] (returns empty vector)", "Forgetting R is 1-indexed"]
+    },
+    {
+      "id": "W1-CS07",
+      "category": "functions",
+      "title": "Creating Functions",
+      "description": "Define custom functions with arguments",
+      "code": "# Basic function\ncalculate_revenue <- function(price, quantity) {\n  revenue <- price * quantity\n  return(revenue)\n}\n\ncalculate_revenue(25, 100)  # 2500\n\n# Function with default argument\nprofit <- function(revenue, cost, tax_rate = 0.20) {\n  gross <- revenue - cost\n  net <- gross * (1 - tax_rate)\n  return(net)\n}\n\nprofit(1000, 600)              # Uses default: 320\nprofit(1000, 600, tax_rate = 0.15)  # Override: 340",
+      "notes": "Functions use function() keyword. Default arguments go after required ones.",
+      "common_errors": ["Forgetting return() (last expression returned by default)", "Missing closing brace }"]
+    },
+    {
+      "id": "W1-CS08",
+      "category": "economics",
+      "title": "Demand and Supply Functions",
+      "description": "Define linear demand and supply curves",
+      "code": "# Demand: Qd = a - bP\ndemand <- function(P, a = 200, b = 4) {\n  Qd <- a - b * P\n  return(pmax(Qd, 0))  # Ensure non-negative\n}\n\n# Supply: Qs = c + dP\nsupply <- function(P, c = -20, d = 6) {\n  Qs <- c + d * P\n  return(pmax(Qs, 0))\n}\n\n# Test\ndemand(30)  # 200 - 4*30 = 80\nsupply(30)  # -20 + 6*30 = 160",
+      "notes": "pmax() ensures non-negative quantities (parallel maximum with 0).",
+      "economic_interpretation": "Demand slopes down (b > 0 gives negative slope). Supply slopes up (d > 0)."
+    },
+    {
+      "id": "W1-CS09",
+      "category": "economics",
+      "title": "Finding Equilibrium",
+      "description": "Solve for market equilibrium numerically",
+      "code": "# Excess demand function\nexcess_demand <- function(P) {\n  demand(P) - supply(P)\n}\n\n# Find P where excess demand = 0\nequilibrium <- uniroot(excess_demand, interval = c(0, 100))\nP_star <- equilibrium$root\nQ_star <- demand(P_star)\n\ncat(\"Equilibrium: P* =\", round(P_star, 2), \n    \", Q* =\", round(Q_star, 2))",
+      "notes": "uniroot() finds where function equals zero. interval= specifies search range.",
+      "economic_interpretation": "Equilibrium where Qd = Qs. Excess demand = 0 means market clears."
+    },
+    {
+      "id": "W1-CS10",
+      "category": "economics",
+      "title": "Market Visualization",
+      "description": "Plot supply and demand curves",
+      "code": "# Generate data\nP_range <- seq(0, 50, by = 0.5)\nQd <- demand(P_range)\nQs <- supply(P_range)\n\n# Plot\nplot(Qd, P_range, type = \"l\", col = \"blue\", lwd = 2,\n     xlim = c(0, 250), ylim = c(0, 60),\n     xlab = \"Quantity\", ylab = \"Price\",\n     main = \"Supply and Demand\")\nlines(Qs, P_range, col = \"red\", lwd = 2)\n\n# Mark equilibrium\npoints(Q_star, P_star, pch = 19, cex = 1.5)\n\n# Add reference lines\nabline(h = P_star, lty = 2, col = \"gray\")\nabline(v = Q_star, lty = 2, col = \"gray\")\n\n# Legend and grid\nlegend(\"topright\", c(\"Demand\", \"Supply\"), \n       col = c(\"blue\", \"red\"), lwd = 2)\ngrid()",
+      "notes": "type='l' for line. lwd controls line width. pch controls point shape.",
+      "parameters": {
+        "type": "l=line, p=points, b=both",
+        "lwd": "line width (default 1)",
+        "col": "color name or hex",
+        "pch": "point character (19=filled circle)",
+        "cex": "character expansion (point size multiplier)"
+      }
+    },
+    {
+      "id": "W1-CS11",
+      "category": "economics",
+      "title": "Elasticity Calculation",
+      "description": "Calculate price elasticity of demand",
+      "code": "# Point elasticity: ε = (dQ/dP) × (P/Q)\n# For linear Qd = a - bP, dQ/dP = -b\n\nelasticity_demand <- function(P, a = 200, b = 4) {\n  Qd <- a - b * P\n  dQ_dP <- -b\n  epsilon <- dQ_dP * (P / Qd)\n  return(epsilon)\n}\n\n# At equilibrium\nepsilon_star <- elasticity_demand(P_star)\ncat(\"Elasticity:\", round(epsilon_star, 3))\n\n# Interpretation\nif (abs(epsilon_star) > 1) {\n  cat(\"\\nElastic: %ΔQ > %ΔP\")\n} else {\n  cat(\"\\nInelastic: %ΔQ < %ΔP\")\n}",
+      "notes": "Elasticity is negative for demand. |ε| > 1 is elastic, |ε| < 1 is inelastic.",
+      "economic_interpretation": "Inelastic demand: price increases raise total revenue. Elastic demand: price increases reduce revenue."
+    },
+    {
+      "id": "W1-CS12",
+      "category": "economics",
+      "title": "Tax Analysis",
+      "description": "Analyze effect of per-unit tax on suppliers",
+      "code": "tax <- 5\n\n# Supply with tax: suppliers receive (P - tax)\nsupply_tax <- function(P, c = -20, d = 6, t = tax) {\n  Qs <- c + d * (P - t)\n  return(pmax(Qs, 0))\n}\n\n# New equilibrium\nexcess_tax <- function(P) demand(P) - supply_tax(P)\neq_tax <- uniroot(excess_tax, c(0, 100))\nP_consumer <- eq_tax$root\nQ_new <- demand(P_consumer)\nP_producer <- P_consumer - tax\n\n# Tax burden\nconsumer_burden <- P_consumer - P_star\nproducer_burden <- P_star - P_producer\n\ncat(\"Consumer pays: $\", round(consumer_burden, 2), \n    \" (\", round(100*consumer_burden/tax), \"%)\\n\")\ncat(\"Producer pays: $\", round(producer_burden, 2),\n    \" (\", round(100*producer_burden/tax), \"%)\\n\")\n\n# Deadweight loss\nDWL <- 0.5 * tax * (Q_star - Q_new)\ncat(\"DWL: $\", round(DWL, 2))",
+      "notes": "Tax creates wedge between consumer price and producer price.",
+      "economic_interpretation": "Tax burden depends on relative elasticities. More inelastic side bears more burden."
+    },
+    {
+      "id": "W1-CS13",
+      "category": "data",
+      "title": "Data Frames Preview",
+      "description": "Create and manipulate basic data frames",
+      "code": "# Create data frame\nfarm_data <- data.frame(\n  crop = c(\"wheat\", \"corn\", \"soybean\"),\n  yield = c(45, 180, 50),\n  price = c(7.50, 4.50, 13.00)\n)\n\n# Access columns\nfarm_data$yield        # By name\nfarm_data[, \"yield\"]   # Same\nfarm_data[, 2]         # By position\n\n# Add column\nfarm_data$revenue <- farm_data$yield * farm_data$price\n\n# Filter rows\nfarm_data[farm_data$yield > 50, ]",
+      "notes": "Data frames are tables. Access columns with $ or [,]. Filter rows with logical conditions."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Economic Function",
+      "template": "function_name <- function(args) {\n  result <- calculation\n  return(pmax(result, 0))  # Non-negative\n}"
+    },
+    {
+      "pattern": "Find Equilibrium",
+      "template": "excess <- function(P) demand(P) - supply(P)\neq <- uniroot(excess, c(lower, upper))\nP_star <- eq$root"
+    },
+    {
+      "pattern": "Plot Two Curves",
+      "template": "plot(x1, y1, type='l', col='blue')\nlines(x2, y2, col='red')\nlegend('topright', c('Curve1', 'Curve2'), col=c('blue','red'), lty=1)"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "object 'x' not found",
+      "cause": "Variable not defined or typo in name",
+      "fix": "Check spelling and that variable was created"
+    },
+    {
+      "error": "could not find function",
+      "cause": "Function name misspelled or package not loaded",
+      "fix": "Check spelling; load package with library()"
+    },
+    {
+      "error": "non-numeric argument to binary operator",
+      "cause": "Trying to do math on non-numeric data",
+      "fix": "Check data types with class(); convert if needed"
+    },
+    {
+      "error": "replacement has length zero",
+      "cause": "Assigning empty result to variable",
+      "fix": "Check that your calculation produces output"
+    }
+  ]
+}

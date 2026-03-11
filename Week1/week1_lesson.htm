@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Foundations — Economics & R Setup - ECON4002</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$',  right: '$',  display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            document.querySelectorAll('pre code[class*="language-"]').forEach(codeEl => {
+                const pre = codeEl.parentElement;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Copy';
+                wrapper.insertBefore(btn, pre);
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                        btn.textContent = 'Copied!';
+                        btn.style.background = '#27ae60';
+                        setTimeout(() => {
+                            btn.textContent = 'Copy';
+                            btn.style.background = '';
+                        }, 1600);
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --code-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --table-header-bg: #34495e;
+            --table-header-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        thead {
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .highlight-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box strong {
+            color: var(--secondary-color);
+        }
+
+        .learning-objectives {
+            background-color: #f0f7fb;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .learning-objectives h2 {
+            color: var(--secondary-color);
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        .course-flow {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 1rem;
+            }
+            
+            h1 {
+                page-break-after: avoid;
+            }
+            
+            pre, table {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+
+        .code-wrapper {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.65rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            z-index: 1;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover { background: #2176ae; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Week 1: Foundations — Economics & R Setup</h1>
+        <p class="subtitle">ECON4002: Core Concepts in Agricultural and Resource Economics<br>University of Western Australia</p>
+    </header>
+
+    <main>
+        <section class="learning-objectives">
+            <h2>Learning Objectives</h2>
+            <p>By the end of this week, you will be able to:</p>
+            <ol>
+                <li><strong>Explain</strong> the role of formal mathematical analysis in agricultural and resource economics</li>
+                <li><strong>Identify</strong> the key topics and methods covered in this unit</li>
+                <li><strong>Set up</strong> R and RStudio for economic analysis</li>
+                <li><strong>Execute</strong> basic R commands for arithmetic, variables, and functions</li>
+                <li><strong>Construct</strong> simple supply and demand models in R</li>
+                <li><strong>Visualize</strong> market relationships using R's plotting capabilities</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>1. Introduction to Agricultural and Resource Economics</h2>
+
+            <h3>1.1 What is Agricultural and Resource Economics?</h3>
+            <p>Agricultural and Resource Economics applies economic theory and quantitative methods to understand:</p>
+            <ul>
+                <li><strong>Agricultural production decisions</strong>: How farmers choose what to grow, how much input to use, and when to sell</li>
+                <li><strong>Resource allocation</strong>: How scarce resources (water, land, labor) are distributed across competing uses</li>
+                <li><strong>Market dynamics</strong>: How prices form, how supply responds to demand, and how markets clear</li>
+                <li><strong>Policy evaluation</strong>: How government interventions (subsidies, taxes, trade policies) affect welfare</li>
+            </ul>
+
+            <h3>1.2 Why Formal Economic Analysis?</h3>
+            <p>We use mathematical models because they provide:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benefit</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Precision</strong></td>
+                        <td>Mathematical statements are unambiguous</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Explicit assumptions</strong></td>
+                        <td>We know exactly what we're assuming</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Logical consistency</strong></td>
+                        <td>Mathematics prevents contradictions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generalization</strong></td>
+                        <td>Results extend beyond specific examples</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantification</strong></td>
+                        <td>We can measure effects, not just describe them</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Computational implementation</strong></td>
+                        <td>Models can be simulated and estimated</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <p><strong>Key Insight:</strong> An economic model is a <em>simplified analytical framework</em> representing economic reality. It abstracts from unimportant details to focus on essential relationships.</p>
+            </div>
+
+            <h3>1.3 The Master Narrative of This Course</h3>
+            <p>This course follows a logical progression:</p>
+
+            <div class="course-flow">
+Mathematical Tools → Microeconomic Agents → Market Interactions → Extensions<br>
+     (Wk 1–4)             (Wk 5–8)              (Wk 9–10)           (Wk 11–12)
+            </div>
+
+            <p><strong>You are building toward becoming an Agricultural & Resource Economist</strong> who can:</p>
+            <ol>
+                <li>Formalize real-world problems mathematically</li>
+                <li>Derive optimal solutions analytically</li>
+                <li>Implement computational analysis in R</li>
+                <li>Interpret results for policy and business decisions</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>2. Course Overview: Topics and Methods</h2>
+
+            <h3>2.1 Topics Covered</h3>
+
+            <h4>Consumer/Demand Analysis (Weeks 5-6)</h4>
+            <ul>
+                <li>Utility maximization subject to budget constraints</li>
+                <li>Marshallian (ordinary) and Hicksian (compensated) demand</li>
+                <li>Indirect utility and expenditure functions</li>
+                <li>Consumer welfare measures (CV, EV)</li>
+            </ul>
+            <p><strong>Agricultural Application:</strong> Food demand analysis, dietary choice modeling, welfare effects of food price changes</p>
+
+            <h4>Producer/Supply Analysis (Weeks 7-8)</h4>
+            <ul>
+                <li>Production functions and technology</li>
+                <li>Cost minimization and profit maximization</li>
+                <li>Input demands and output supply</li>
+                <li>Economies of scale and scope</li>
+            </ul>
+            <p><strong>Agricultural Application:</strong> Farm production decisions, input use optimization, technology adoption</p>
+
+            <h4>Market Analysis (Week 9)</h4>
+            <ul>
+                <li>Market equilibrium determination</li>
+                <li>Consumer and producer surplus</li>
+                <li>Tax incidence and deadweight loss</li>
+                <li>Market efficiency</li>
+            </ul>
+            <p><strong>Agricultural Application:</strong> Commodity market analysis, agricultural policy evaluation</p>
+
+            <h4>International Trade (Week 10)</h4>
+            <ul>
+                <li>Comparative advantage</li>
+                <li>Excess demand and supply</li>
+                <li>Trade policy (tariffs, quotas, subsidies)</li>
+                <li>Welfare effects of trade</li>
+            </ul>
+            <p><strong>Agricultural Application:</strong> Agricultural trade policy, export subsidies, import restrictions</p>
+
+            <h4>Welfare Economics (Week 11)</h4>
+            <ul>
+                <li>Social welfare functions</li>
+                <li>Pareto efficiency and equity</li>
+                <li>Compensation criteria (Kaldor–Hicks)</li>
+                <li>Measuring economic well-being</li>
+            </ul>
+            <p><strong>Agricultural Application:</strong> Evaluating policy trade-offs, distributional effects of agricultural programmes</p>
+
+            <h4>Decision Making Under Uncertainty (Week 12)</h4>
+            <ul>
+                <li>Expected utility theory</li>
+                <li>Risk aversion measures</li>
+                <li>Certainty equivalents and risk premiums</li>
+                <li>Insurance and risk management</li>
+            </ul>
+            <p><strong>Agricultural Application:</strong> Crop insurance, weather risk, price risk management</p>
+
+            <h3>2.2 Mathematical Methods</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Application</th>
+                        <th>Week</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Linear algebra</td>
+                        <td>Systems of equations, input-output</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Calculus</td>
+                        <td>Marginal analysis, elasticity</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Unconstrained optimization</td>
+                        <td>Profit maximization</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Constrained optimization</td>
+                        <td>Utility/cost optimization</td>
+                        <td>4-6</td>
+                    </tr>
+                    <tr>
+                        <td>Comparative statics</td>
+                        <td>Policy analysis</td>
+                        <td>5-10</td>
+                    </tr>
+                    <tr>
+                        <td>Welfare analysis</td>
+                        <td>Surplus, compensation criteria</td>
+                        <td>11</td>
+                    </tr>
+                    <tr>
+                        <td>Expected utility</td>
+                        <td>Risk analysis</td>
+                        <td>12</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>3. Assessment Structure</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Weight</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Assignment 1</td>
+                        <td>15%</td>
+                        <td>Mathematical methods (Due Week 4)</td>
+                    </tr>
+                    <tr>
+                        <td>Assignment 2</td>
+                        <td>20%</td>
+                        <td>Consumer and producer theory (Due Week 8)</td>
+                    </tr>
+                    <tr>
+                        <td>Assignment 3</td>
+                        <td>20%</td>
+                        <td>Markets, trade, welfare, and uncertainty (Due Week 12)</td>
+                    </tr>
+                    <tr>
+                        <td>Participation</td>
+                        <td>10%</td>
+                        <td>Homework, quizzes, engagement</td>
+                    </tr>
+                    <tr>
+                        <td>Final Test</td>
+                        <td>35%</td>
+                        <td>Comprehensive (Exam period)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Key Point:</strong> Assignments require both analytical derivations AND R implementation.</p>
+        </section>
+
+        <section>
+            <h2>4. Getting Started with R and RStudio</h2>
+
+            <h3>4.1 Why R?</h3>
+            <p>R is the language of choice for agricultural economists because:</p>
+            <ul>
+                <li><strong>Free and open-source</strong>: No licensing costs</li>
+                <li><strong>Powerful statistical capabilities</strong>: From basic stats to advanced econometrics</li>
+                <li><strong>Excellent graphics</strong>: Publication-quality figures</li>
+                <li><strong>Reproducibility</strong>: Scripts document your analysis</li>
+                <li><strong>Community</strong>: Thousands of packages for specialized tasks</li>
+                <li><strong>Industry standard</strong>: Used by USDA, FAO, agricultural consulting firms</li>
+            </ul>
+
+            <h3>4.2 Installing R and RStudio</h3>
+
+            <h4>Step 1: Install R</h4>
+            <ol>
+                <li>Go to <a href="https://cran.r-project.org/" target="_blank">CRAN</a></li>
+                <li>Select your operating system (Windows, Mac, Linux)</li>
+                <li>Download and install the latest version</li>
+            </ol>
+
+            <h4>Step 2: Install RStudio</h4>
+            <ol>
+                <li>Go to <a href="https://posit.co/download/rstudio-desktop/" target="_blank">Posit</a></li>
+                <li>Download RStudio Desktop (free version)</li>
+                <li>Install and launch</li>
+            </ol>
+
+            <h3>4.3 The RStudio Interface</h3>
+            <p>When you open RStudio, you see four panes:</p>
+
+            <pre><code>┌─────────────────────────────┬─────────────────────────────┐
+│                             │                             │
+│    SOURCE PANE              │    ENVIRONMENT PANE         │
+│    (Write scripts here)     │    (See your variables)     │
+│                             │                             │
+├─────────────────────────────┼─────────────────────────────┤
+│                             │                             │
+│    CONSOLE PANE             │    FILES/PLOTS/HELP PANE    │
+│    (Run commands here)      │    (View outputs)           │
+│                             │                             │
+└─────────────────────────────┴─────────────────────────────┘</code></pre>
+
+            <h3>4.4 Setting Up Your Workspace</h3>
+            <p>Create an organized directory structure:</p>
+
+            <pre><code>Documents/
+└── ECON4002/
+    ├── Week01/
+    │   └── week1_practice.R
+    ├── Week02/
+    ├── ...
+    ├── Assignments/
+    └── Data/</code></pre>
+
+            <p>In R, set your working directory:</p>
+            <pre><code class="language-r"># Check current working directory
+getwd()
+
+# Set working directory (adjust path for your system)
+setwd("~/Documents/ECON4002/Week01")
+
+# List files in current directory
+list.files()</code></pre>
+        </section>
+
+        <section>
+            <h2>5. R Fundamentals</h2>
+
+            <h3>5.1 R as a Calculator</h3>
+            <pre><code class="language-r"># Basic arithmetic
+2 + 2        # Addition: 4
+10 - 3       # Subtraction: 7
+4 * 5        # Multiplication: 20
+20 / 4       # Division: 5
+2^3          # Exponentiation: 8
+17 %% 5      # Modulo (remainder): 2
+17 %/% 5     # Integer division: 3
+
+# Mathematical functions
+sqrt(16)     # Square root: 4
+abs(-5)      # Absolute value: 5
+exp(1)       # Exponential (e^1): 2.718...
+log(10)      # Natural logarithm: 2.303...
+log10(100)   # Base-10 logarithm: 2
+log(8, base=2)  # Base-2 logarithm: 3
+
+# Constants
+pi           # 3.141593
+exp(1)       # Euler's number e: 2.718...</code></pre>
+
+            <h3>5.2 Variables and Assignment</h3>
+            <pre><code class="language-r"># Assignment (use &lt;- or =)
+price &lt;- 25
+quantity &lt;- 100
+revenue &lt;- price * quantity
+revenue  # 2500
+
+# Variable names
+# - Can contain letters, numbers, dots, underscores
+# - Must start with a letter or dot
+# - Case-sensitive (Price ≠ price)
+
+wheat_price &lt;- 300    # Good
+corn.yield &lt;- 150     # Good (but dots can confuse)
+2ndCrop &lt;- "barley"   # ERROR: starts with number</code></pre>
+
+            <h3>5.3 Data Types</h3>
+            <pre><code class="language-r"># Numeric (default for numbers)
+price &lt;- 25.50
+class(price)  # "numeric"
+
+# Integer (add L suffix)
+count &lt;- 10L
+class(count)  # "integer"
+
+# Character (strings)
+crop &lt;- "wheat"
+class(crop)  # "character"
+
+# Logical (TRUE/FALSE)
+is_profitable &lt;- TRUE
+class(is_profitable)  # "logical"
+
+# Check types
+is.numeric(price)     # TRUE
+is.character(crop)    # TRUE</code></pre>
+
+            <h3>5.4 Vectors</h3>
+            <p>Vectors are the fundamental data structure in R:</p>
+            <pre><code class="language-r"># Create vectors with c() (combine)
+prices &lt;- c(250, 275, 300, 280, 290)
+crops &lt;- c("wheat", "corn", "soybean", "barley")
+profitable &lt;- c(TRUE, TRUE, FALSE, TRUE)
+
+# Sequences
+years &lt;- 2020:2025                    # 2020, 2021, 2022, 2023, 2024, 2025
+months &lt;- seq(1, 12, by=1)            # 1 to 12, step 1
+grid &lt;- seq(0, 100, length.out=11)    # 11 evenly spaced points from 0 to 100
+
+# Repetition
+zeros &lt;- rep(0, 5)                    # 0, 0, 0, 0, 0
+pattern &lt;- rep(c(1, 2), times=3)      # 1, 2, 1, 2, 1, 2
+
+# Vector operations (element-wise)
+quantities &lt;- c(100, 150, 80, 120)
+prices &lt;- c(5, 4, 6, 3)
+revenues &lt;- quantities * prices       # 500, 600, 480, 360
+
+# Vector functions
+sum(revenues)      # Total: 1940
+mean(revenues)     # Average: 485
+length(revenues)   # Count: 4
+min(revenues)      # Minimum: 360
+max(revenues)      # Maximum: 600</code></pre>
+
+            <h3>5.5 Indexing and Subsetting</h3>
+            <pre><code class="language-r"># Access elements by position (1-indexed!)
+prices &lt;- c(250, 275, 300, 280, 290)
+prices[1]          # First element: 250
+prices[3]          # Third element: 300
+prices[c(1, 3, 5)] # Elements 1, 3, 5: 250, 300, 290
+prices[2:4]        # Elements 2 through 4: 275, 300, 280
+
+# Negative indexing (exclude elements)
+prices[-1]         # All except first: 275, 300, 280, 290
+prices[-c(1, 5)]   # Exclude first and last: 275, 300, 280
+
+# Logical indexing
+prices[prices > 280]  # Elements > 280: 300, 290
+prices[prices >= 275 & prices <= 290]  # Between 275 and 290
+
+# Named vectors
+yields &lt;- c(wheat=45, corn=180, soy=50)
+yields["wheat"]    # Access by name: 45</code></pre>
+
+            <h3>5.6 Functions</h3>
+            <pre><code class="language-r"># Built-in functions
+mean(c(10, 20, 30))  # 20
+sd(c(10, 20, 30))    # Standard deviation
+
+# Creating your own functions
+calculate_revenue &lt;- function(price, quantity) {
+  revenue &lt;- price * quantity
+  return(revenue)
+}
+
+calculate_revenue(25, 100)  # 2500
+
+# Functions with default arguments
+profit &lt;- function(revenue, cost, tax_rate = 0.20) {
+  net &lt;- (revenue - cost) * (1 - tax_rate)
+  return(net)
+}
+
+profit(1000, 600)              # Uses default tax_rate: 320
+profit(1000, 600, tax_rate=0.15)  # Override default: 340</code></pre>
+        </section>
+
+        <section>
+            <h2>6. Your First Economic Model in R</h2>
+
+            <h3>6.1 Supply and Demand</h3>
+            <p>Let's build a simple market model:</p>
+            <p><strong>Demand</strong>: \(Q_d = 200 - 4P\)<br>
+            <strong>Supply</strong>: \(Q_s = -20 + 6P\)</p>
+
+            <pre><code class="language-r"># Define demand and supply as functions
+demand &lt;- function(P) {
+  Qd &lt;- 200 - 4 * P
+  return(pmax(Qd, 0))  # Ensure non-negative
+}
+
+supply &lt;- function(P) {
+  Qs &lt;- -20 + 6 * P
+  return(pmax(Qs, 0))  # Ensure non-negative
+}
+
+# Test the functions
+demand(30)   # At P=30: Qd = 200 - 120 = 80
+supply(30)   # At P=30: Qs = -20 + 180 = 160</code></pre>
+
+            <h3>6.2 Finding Equilibrium</h3>
+            <p>At equilibrium: \(Q_d = Q_s\)</p>
+            <p>$$200 - 4P = -20 + 6P$$</p>
+            <p>$$220 = 10P$$</p>
+            <p>$$P^* = 22$$</p>
+
+            <pre><code class="language-r"># Analytical solution
+P_star &lt;- 220 / 10
+Q_star &lt;- demand(P_star)
+cat("Equilibrium: P* =", P_star, ", Q* =", Q_star, "\n")
+
+# Numerical solution (useful for complex models)
+excess_demand &lt;- function(P) {
+  demand(P) - supply(P)
+}
+
+P_equilibrium &lt;- uniroot(excess_demand, interval = c(0, 100))$root
+cat("Numerical solution: P* =", round(P_equilibrium, 2), "\n")</code></pre>
+
+            <h3>6.3 Visualizing the Market</h3>
+            <pre><code class="language-r"># Create price sequence
+P_range &lt;- seq(0, 50, by = 1)
+
+# Calculate quantities
+Qd &lt;- demand(P_range)
+Qs &lt;- supply(P_range)
+
+# Plot
+plot(Qd, P_range, type = "l", col = "blue", lwd = 2,
+     xlim = c(0, 200), ylim = c(0, 50),
+     xlab = "Quantity", ylab = "Price",
+     main = "Supply and Demand for Wheat")
+lines(Qs, P_range, col = "red", lwd = 2)
+
+# Add equilibrium point
+points(Q_star, P_star, pch = 19, cex = 1.5, col = "black")
+text(Q_star + 10, P_star, paste0("(", Q_star, ", ", P_star, ")"), pos = 4)
+
+# Add legend
+legend("topright", legend = c("Demand", "Supply", "Equilibrium"),
+       col = c("blue", "red", "black"), lty = c(1, 1, NA), 
+       pch = c(NA, NA, 19), lwd = 2)
+
+# Add grid
+grid()</code></pre>
+
+            <h3>6.4 Policy Analysis: A Tax</h3>
+            <p>Suppose the government imposes a $6 tax per unit on suppliers:</p>
+            <pre><code class="language-r"># New supply with tax
+supply_tax &lt;- function(P) {
+  # Suppliers receive P - 6, so supply based on net price
+  Qs &lt;- -20 + 6 * (P - 6)
+  return(pmax(Qs, 0))
+}
+
+# Find new equilibrium
+excess_demand_tax &lt;- function(P) demand(P) - supply_tax(P)
+P_new &lt;- uniroot(excess_demand_tax, c(0, 100))$root
+Q_new &lt;- demand(P_new)
+
+cat("New equilibrium: P_consumer =", round(P_new, 2), 
+    ", Q =", round(Q_new, 2), "\n")
+cat("Price to producer =", round(P_new - 6, 2), "\n")</code></pre>
+        </section>
+
+        <section>
+            <h2>7. Summary</h2>
+            <p>This week you learned:</p>
+            <ol>
+                <li><strong>Course vision</strong>: Becoming an Agricultural & Resource Economist through mathematical formalism and computational implementation</li>
+                <li><strong>Course structure</strong>: Mathematical tools → Agent optimisation → Market analysis → Welfare &amp; uncertainty</li>
+                <li><strong>R basics</strong>: Data types (numeric, character, logical), vectors and operations, functions (built-in and custom), basic plotting</li>
+                <li><strong>First economic model</strong>: Supply and demand with equilibrium, visualization, and policy analysis</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>8. Preparation for Next Week</h2>
+            <h3>Week 2: Linear Algebra</h3>
+            <p>Before class:</p>
+            <ol>
+                <li>Read Chiang & Wainwright, Chapters 4-5 (Matrices)</li>
+                <li>Complete Practice Problems for Week 1</li>
+                <li>Install any R packages that failed to load</li>
+            </ol>
+
+            <p>Key concepts to preview:</p>
+            <ul>
+                <li>Matrix operations (addition, multiplication, inversion)</li>
+                <li>Determinants and singularity</li>
+                <li>Solving systems of linear equations</li>
+                <li>Economic applications (input-output, market systems)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>References</h2>
+            <ul>
+                <li>Chiang, A.C. & Wainwright, K. (2005). <em>Fundamental Methods of Mathematical Economics</em>, 4th ed. McGraw-Hill.</li>
+                <li>Wickham, H. & Grolemund, G. (2023). <em>R for Data Science</em>, 2nd ed. O'Reilly. [Online: r4ds.hadley.nz]</li>
+                <li>Perloff, J.M. (2018). <em>Microeconomics</em>. Pearson.</li>
+            </ul>
+        </section>
+    </main>
+
+</body>
+</html>

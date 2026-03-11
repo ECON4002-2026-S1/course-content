@@ -1,0 +1,136 @@
+{
+  "week": 5,
+  "title": "Consumer Theory I: R Code Snippets",
+  "description": "R implementations for utility maximization, MRS, and Marshallian demand",
+  "snippets": [
+    {
+      "id": "W5-CS01",
+      "category": "indifference_curves",
+      "title": "Plot Cobb-Douglas Indifference Curves",
+      "code": "plot_IC_CD <- function(alpha = 0.5, u_levels = c(5, 10, 15, 20)) {\n  x1 <- seq(0.1, 30, length = 200)\n  \n  plot(NULL, xlim = c(0, 30), ylim = c(0, 30),\n       xlab = expression(x[1]), ylab = expression(x[2]),\n       main = paste('Cobb-Douglas IC (α =', alpha, ')'))\n  \n  colors <- rainbow(length(u_levels))\n  for (i in seq_along(u_levels)) {\n    u <- u_levels[i]\n    # From U = x1^α * x2^(1-α), solve for x2\n    x2 <- (u / x1^alpha)^(1/(1-alpha))\n    x2[x2 > 30] <- NA\n    lines(x1, x2, col = colors[i], lwd = 2)\n  }\n  legend('topright', legend = paste('U =', u_levels),\n         col = colors, lwd = 2)\n  grid()\n}\n\nplot_IC_CD(alpha = 0.4)",
+      "notes": "x₂ = (U/x₁^α)^(1/(1-α)) derived by solving U = x₁^α x₂^(1-α) for x₂"
+    },
+    {
+      "id": "W5-CS02",
+      "category": "MRS",
+      "title": "Calculate MRS",
+      "code": "# Numerical MRS via gradient\nMRS_numerical <- function(U_fn, x1, x2, h = 1e-6) {\n  MU1 <- (U_fn(x1 + h, x2) - U_fn(x1 - h, x2)) / (2 * h)\n  MU2 <- (U_fn(x1, x2 + h) - U_fn(x1, x2 - h)) / (2 * h)\n  return(MU1 / MU2)\n}\n\n# Analytical MRS for Cobb-Douglas\nMRS_CD <- function(x1, x2, alpha = 0.5) {\n  (alpha / (1 - alpha)) * (x2 / x1)\n}\n\n# Test\nU_CD <- function(x1, x2) x1^0.3 * x2^0.7\ncat('Numerical MRS:', MRS_numerical(U_CD, 10, 20), '\\n')\ncat('Analytical MRS:', MRS_CD(10, 20, 0.3), '\\n')",
+      "notes": "MRS = MU₁/MU₂. For CD: MRS = (α/(1-α))(x₂/x₁)"
+    },
+    {
+      "id": "W5-CS03",
+      "category": "budget",
+      "title": "Plot Budget Constraint",
+      "code": "plot_budget <- function(p1, p2, m, col = 'black', add = FALSE) {\n  x1_max <- m / p1\n  x2_max <- m / p2\n  \n  if (!add) {\n    plot(NULL, xlim = c(0, x1_max * 1.1), ylim = c(0, x2_max * 1.1),\n         xlab = expression(x[1]), ylab = expression(x[2]),\n         main = 'Budget Constraint')\n  }\n  \n  # Budget line\n  segments(0, x2_max, x1_max, 0, col = col, lwd = 2)\n  \n  # Shade feasible region\n  polygon(c(0, 0, x1_max), c(0, x2_max, 0),\n          col = rgb(0.5, 0.5, 0.5, 0.2), border = NA)\n  \n  # Label intercepts\n  text(x1_max, 0, round(x1_max, 1), pos = 1)\n  text(0, x2_max, round(x2_max, 1), pos = 2)\n  grid()\n}\n\nplot_budget(p1 = 4, p2 = 5, m = 100)",
+      "notes": "Budget line: p₁x₁ + p₂x₂ = m. Intercepts at m/p₁ and m/p₂."
+    },
+    {
+      "id": "W5-CS04",
+      "category": "demand",
+      "title": "Cobb-Douglas Demand Function",
+      "code": "cobb_douglas_demand <- function(p1, p2, m, alpha = 0.5) {\n  x1 <- alpha * m / p1\n  x2 <- (1 - alpha) * m / p2\n  utility <- x1^alpha * x2^(1 - alpha)\n  lambda <- alpha * utility / (x1 * p1)  # MU1/p1\n  \n  return(list(\n    x1 = x1,\n    x2 = x2,\n    utility = utility,\n    lambda = lambda,\n    expenditure_share_1 = p1 * x1 / m,\n    expenditure_share_2 = p2 * x2 / m\n  ))\n}\n\n# Test\nresult <- cobb_douglas_demand(p1 = 2, p2 = 3, m = 120, alpha = 0.4)\ncat('x1* =', result$x1, '\\n')\ncat('x2* =', result$x2, '\\n')\ncat('Utility =', round(result$utility, 3), '\\n')\ncat('λ =', result$lambda, '\\n')\ncat('Expenditure shares:', result$expenditure_share_1, ',', result$expenditure_share_2)",
+      "notes": "x₁ = αm/p₁, x₂ = (1-α)m/p₂. Expenditure shares equal exponents."
+    },
+    {
+      "id": "W5-CS05",
+      "category": "visualization",
+      "title": "Complete Consumer Choice Diagram",
+      "code": "plot_consumer_choice <- function(p1, p2, m, alpha = 0.5) {\n  # Get optimal bundle\n  result <- cobb_douglas_demand(p1, p2, m, alpha)\n  x1_star <- result$x1\n  x2_star <- result$x2\n  u_star <- result$utility\n  \n  # Plot setup\n  x1_max <- m / p1 * 1.2\n  x2_max <- m / p2 * 1.2\n  \n  plot(NULL, xlim = c(0, x1_max), ylim = c(0, x2_max),\n       xlab = expression(x[1]), ylab = expression(x[2]),\n       main = 'Utility Maximization')\n  \n  # Budget line\n  segments(0, m/p2, m/p1, 0, col = 'blue', lwd = 2)\n  \n  # Indifference curves\n  x1_seq <- seq(0.1, x1_max, length = 200)\n  for (u in c(u_star * 0.7, u_star, u_star * 1.3)) {\n    x2_seq <- (u / x1_seq^alpha)^(1/(1-alpha))\n    x2_seq[x2_seq > x2_max] <- NA\n    lines(x1_seq, x2_seq, col = 'red', lwd = ifelse(abs(u - u_star) < 0.01, 2, 1))\n  }\n  \n  # Optimal point\n  points(x1_star, x2_star, pch = 19, cex = 1.5, col = 'darkgreen')\n  text(x1_star, x2_star, paste0('(', round(x1_star,1), ', ', round(x2_star,1), ')'),\n       pos = 4, col = 'darkgreen')\n  \n  legend('topright', legend = c('Budget', 'IC', 'Optimal'),\n         col = c('blue', 'red', 'darkgreen'), lty = c(1, 1, NA),\n         pch = c(NA, NA, 19), lwd = 2)\n  grid()\n}\n\nplot_consumer_choice(p1 = 2, p2 = 3, m = 120, alpha = 0.4)",
+      "notes": "Shows tangency of IC and budget line at optimal bundle."
+    },
+    {
+      "id": "W5-CS06",
+      "category": "demand",
+      "title": "Perfect Substitutes Demand",
+      "code": "perfect_subs_demand <- function(a, b, p1, p2, m) {\n  # U = a*x1 + b*x2\n  MU_per_dollar_1 <- a / p1\n  MU_per_dollar_2 <- b / p2\n  \n  if (MU_per_dollar_1 > MU_per_dollar_2) {\n    x1 <- m / p1\n    x2 <- 0\n    corner <- 'x1 only'\n  } else if (MU_per_dollar_1 < MU_per_dollar_2) {\n    x1 <- 0\n    x2 <- m / p2\n    corner <- 'x2 only'\n  } else {\n    x1 <- m / (2 * p1)  # Convention: split\n    x2 <- m / (2 * p2)\n    corner <- 'indifferent'\n  }\n  \n  utility <- a * x1 + b * x2\n  \n  return(list(x1 = x1, x2 = x2, utility = utility,\n              corner = corner,\n              MU_per_dollar = c(MU_per_dollar_1, MU_per_dollar_2)))\n}\n\n# Test: U = 3x1 + 4x2\nresult <- perfect_subs_demand(a = 3, b = 4, p1 = 6, p2 = 10, m = 60)\ncat('Solution:', result$corner, '\\n')\ncat('x1 =', result$x1, ', x2 =', result$x2, '\\n')\ncat('MU per dollar:', result$MU_per_dollar)",
+      "notes": "Corner solution: buy whichever good has higher MU per dollar."
+    },
+    {
+      "id": "W5-CS07",
+      "category": "demand",
+      "title": "Perfect Complements Demand",
+      "code": "perfect_comp_demand <- function(a, b, p1, p2, m) {\n  # U = min{a*x1, b*x2}\n  # At optimum: a*x1 = b*x2 → x2 = (a/b)*x1\n  # Budget: p1*x1 + p2*(a/b)*x1 = m\n  \n  x1 <- m / (p1 + p2 * a / b)\n  x2 <- (a / b) * x1\n  utility <- a * x1  # = b * x2\n  \n  return(list(x1 = x1, x2 = x2, utility = utility,\n              ratio = paste(a, ':', b)))\n}\n\n# Test: U = min{2x1, x2} → consume in ratio 1:2\nresult <- perfect_comp_demand(a = 2, b = 1, p1 = 4, p2 = 2, m = 40)\ncat('x1 =', result$x1, ', x2 =', result$x2, '\\n')\ncat('Utility =', result$utility, '\\n')\ncat('Consumption ratio x1:x2 =', result$ratio)",
+      "notes": "Always consume at kink where a·x₁ = b·x₂."
+    },
+    {
+      "id": "W5-CS08",
+      "category": "demand",
+      "title": "Quasi-Linear Utility",
+      "code": "# U = x1 + v(x2) where v is concave\n# Example: U = x1 + 4*sqrt(x2)\n\nquasi_linear_demand <- function(p1, p2, m) {\n  # FOC: v'(x2) = p2/p1\n  # Here: 2/sqrt(x2) = p2/p1 → x2 = (2*p1/p2)^2\n  \n  x2 <- (2 * p1 / p2)^2\n  \n  # Check if interior solution is feasible\n  if (p2 * x2 > m) {\n    # Corner: spend all on x2\n    x2 <- m / p2\n    x1 <- 0\n  } else {\n    x1 <- (m - p2 * x2) / p1\n  }\n  \n  utility <- x1 + 4 * sqrt(x2)\n  \n  return(list(x1 = x1, x2 = x2, utility = utility))\n}\n\n# Test\nfor (m in c(10, 20, 50)) {\n  result <- quasi_linear_demand(p1 = 1, p2 = 4, m = m)\n  cat('m =', m, ': x1 =', result$x1, ', x2 =', result$x2, '\\n')\n}\n# Note: x2 stays constant (0.25), all extra income goes to x1",
+      "notes": "Quasi-linear: zero income effect for good with nonlinear term."
+    },
+    {
+      "id": "W5-CS09",
+      "category": "demand_curves",
+      "title": "Derive Demand Curve",
+      "code": "plot_demand_curve <- function(p2 = 3, m = 120, alpha = 0.5) {\n  p1_range <- seq(0.5, 20, by = 0.5)\n  \n  # Marshallian demand for x1 as p1 varies\n  x1_demand <- alpha * m / p1_range\n  \n  plot(x1_demand, p1_range, type = 'l', col = 'blue', lwd = 2,\n       xlab = expression(x[1]), ylab = expression(p[1]),\n       main = 'Marshallian Demand Curve for x₁')\n  grid()\n  \n  # Mark a point\n  p1_test <- 4\n  x1_test <- alpha * m / p1_test\n  points(x1_test, p1_test, pch = 19, col = 'red', cex = 1.5)\n  text(x1_test, p1_test, paste0('(', x1_test, ', ', p1_test, ')'), pos = 4)\n}\n\nplot_demand_curve(p2 = 3, m = 120, alpha = 0.5)",
+      "notes": "Demand curve shows x₁ as function of p₁, holding p₂ and m constant."
+    },
+    {
+      "id": "W5-CS10",
+      "category": "engel",
+      "title": "Engel Curves",
+      "code": "plot_engel_curves <- function(p1 = 2, p2 = 3, alpha = 0.5) {\n  m_range <- seq(10, 200, by = 5)\n  \n  x1_engel <- alpha * m_range / p1\n  x2_engel <- (1 - alpha) * m_range / p2\n  \n  par(mfrow = c(1, 2))\n  \n  plot(m_range, x1_engel, type = 'l', col = 'blue', lwd = 2,\n       xlab = 'Income (m)', ylab = expression(x[1]),\n       main = 'Engel Curve for x₁')\n  grid()\n  \n  plot(m_range, x2_engel, type = 'l', col = 'red', lwd = 2,\n       xlab = 'Income (m)', ylab = expression(x[2]),\n       main = 'Engel Curve for x₂')\n  grid()\n  \n  par(mfrow = c(1, 1))\n}\n\nplot_engel_curves()",
+      "notes": "Engel curve: demand as function of income. Linear for Cobb-Douglas."
+    },
+    {
+      "id": "W5-CS11",
+      "category": "numerical",
+      "title": "Numerical Utility Maximization",
+      "code": "library(nloptr)\n\nutility_max_general <- function(U_fn, p1, p2, m) {\n  # Objective (negative for maximization)\n  eval_f <- function(x) -U_fn(x[1], x[2])\n  \n  # Budget constraint: p1*x1 + p2*x2 - m = 0\n  eval_g_eq <- function(x) p1 * x[1] + p2 * x[2] - m\n  eval_jac_g_eq <- function(x) c(p1, p2)\n  \n  # Solve\n  result <- nloptr(\n    x0 = c(m / (2 * p1), m / (2 * p2)),\n    eval_f = eval_f,\n    eval_g_eq = eval_g_eq,\n    eval_jac_g_eq = eval_jac_g_eq,\n    lb = c(0.001, 0.001),  # Positive consumption\n    opts = list(algorithm = 'NLOPT_LD_SLSQP', xtol_rel = 1e-8)\n  )\n  \n  return(list(x1 = result$solution[1], x2 = result$solution[2],\n              utility = -result$objective))\n}\n\n# Test with CES utility\nU_CES <- function(x1, x2) (x1^0.5 + x2^0.5)^2\nresult <- utility_max_general(U_CES, p1 = 2, p2 = 3, m = 100)\ncat('CES demand: x1 =', round(result$x1, 2), ', x2 =', round(result$x2, 2))",
+      "notes": "General numerical solver works for any differentiable utility function."
+    },
+    {
+      "id": "W5-CS12",
+      "category": "elasticity",
+      "title": "Price Elasticity of Demand",
+      "code": "price_elasticity <- function(demand_fn, p, h = 0.001) {\n  x <- demand_fn(p)\n  dx_dp <- (demand_fn(p + h) - demand_fn(p - h)) / (2 * h)\n  epsilon <- dx_dp * p / x\n  return(epsilon)\n}\n\n# For Cobb-Douglas x1 = α*m/p1\nm <- 100; alpha <- 0.5\ndemand_x1 <- function(p1) alpha * m / p1\n\n# Elasticity at different prices\nfor (p in c(2, 5, 10)) {\n  e <- price_elasticity(demand_x1, p)\n  cat('At p1 =', p, ': ε =', round(e, 3), '\\n')\n}\n# Note: Cobb-Douglas always has unit elasticity (-1)",
+      "notes": "Cobb-Douglas demand has unit price elasticity everywhere."
+    },
+    {
+      "id": "W5-CS13",
+      "category": "elasticity",
+      "title": "Income Elasticity",
+      "code": "income_elasticity <- function(demand_fn, m, p, h = 0.001) {\n  x <- demand_fn(m)\n  dx_dm <- (demand_fn(m + h) - demand_fn(m - h)) / (2 * h)\n  eta <- dx_dm * m / x\n  return(eta)\n}\n\n# Cobb-Douglas: x1 = α*m/p1 → η = 1\nalpha <- 0.5; p1 <- 2\ndemand_of_m <- function(m) alpha * m / p1\n\neta <- income_elasticity(demand_of_m, m = 100, p = p1)\ncat('Income elasticity:', round(eta, 3), '\\n')\n\n# Classification\nif (eta > 1) cat('Luxury good\\n')\nelse if (eta > 0) cat('Necessity (normal good)\\n')\nelse cat('Inferior good\\n')",
+      "notes": "Income elasticity > 1: luxury; 0 < η < 1: necessity; η < 0: inferior."
+    },
+    {
+      "id": "W5-CS14",
+      "category": "complete",
+      "title": "Complete Consumer Analysis",
+      "code": "consumer_analysis <- function(p1, p2, m, alpha) {\n  cat('=== Consumer Choice Analysis ===\\n')\n  cat('Parameters: p1 =', p1, ', p2 =', p2, ', m =', m, ', α =', alpha, '\\n\\n')\n  \n  # Optimal bundle\n  x1 <- alpha * m / p1\n  x2 <- (1 - alpha) * m / p2\n  U <- x1^alpha * x2^(1-alpha)\n  lambda <- alpha * U / (x1 * p1)\n  \n  cat('Optimal Bundle:\\n')\n  cat('  x1* =', round(x1, 3), '\\n')\n  cat('  x2* =', round(x2, 3), '\\n')\n  cat('  U* =', round(U, 3), '\\n')\n  cat('  λ (MU of income) =', round(lambda, 4), '\\n\\n')\n  \n  # Expenditure shares\n  cat('Expenditure Shares:\\n')\n  cat('  On x1:', round(100 * alpha, 1), '%\\n')\n  cat('  On x2:', round(100 * (1-alpha), 1), '%\\n\\n')\n  \n  # MRS at optimum\n  MRS <- (alpha / (1 - alpha)) * (x2 / x1)\n  cat('At optimum:\\n')\n  cat('  MRS =', round(MRS, 3), '\\n')\n  cat('  p1/p2 =', round(p1/p2, 3), '\\n')\n  cat('  MRS = p1/p2?', abs(MRS - p1/p2) < 0.001, '\\n')\n}\n\nconsumer_analysis(p1 = 2, p2 = 3, m = 120, alpha = 0.4)",
+      "notes": "Comprehensive analysis verifying optimality conditions."
+    }
+  ],
+  "common_patterns": [
+    {
+      "pattern": "Cobb-Douglas Demand",
+      "template": "x1 <- alpha * m / p1\nx2 <- (1 - alpha) * m / p2"
+    },
+    {
+      "pattern": "Perfect Substitutes",
+      "template": "if (a/p1 > b/p2) x1 <- m/p1 else x2 <- m/p2"
+    },
+    {
+      "pattern": "Perfect Complements",
+      "template": "x1 <- m / (p1 + p2 * a/b)\nx2 <- (a/b) * x1"
+    }
+  ],
+  "debugging_tips": [
+    {
+      "error": "Negative demands",
+      "cause": "Numerical solver went outside feasible region",
+      "fix": "Add lower bounds: lb = c(0.001, 0.001)"
+    },
+    {
+      "error": "MRS ≠ price ratio at 'optimum'",
+      "cause": "Corner solution (perfect substitutes) or calculation error",
+      "fix": "Check if one demand is zero; verify FOCs"
+    },
+    {
+      "error": "Budget not exhausted",
+      "cause": "Non-monotonic preferences or numerical issues",
+      "fix": "Check utility function satisfies monotonicity"
+    }
+  ]
+}

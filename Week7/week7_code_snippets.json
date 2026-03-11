@@ -1,0 +1,105 @@
+{
+  "week": 7,
+  "title": "Producer Theory I: Technology & Costs R Code",
+  "description": "R implementations for production functions, isoquants, cost minimization, and cost functions",
+  "snippets": [
+    {
+      "id": "W7-CS01",
+      "category": "production_functions",
+      "title": "Cobb-Douglas Production Function",
+      "code": "# Cobb-Douglas production function\ncobb_douglas <- function(L, K, A = 1, alpha = 0.5, beta = 0.5) {\n  y <- A * L^alpha * K^beta\n  return(y)\n}\n\n# Test\nL <- 100; K <- 50\ny <- cobb_douglas(L, K, A = 10, alpha = 0.4, beta = 0.6)\ncat('Output:', round(y, 2))",
+      "notes": "f(L,K) = A·L^α·K^β where A is total factor productivity"
+    },
+    {
+      "id": "W7-CS02",
+      "category": "production_functions",
+      "title": "Marginal and Average Products",
+      "code": "# Marginal and average products for Cobb-Douglas\nproduct_analysis <- function(L, K, A = 1, alpha = 0.5, beta = 0.5) {\n  y <- cobb_douglas(L, K, A, alpha, beta)\n  \n  # Marginal products\n  MP_L <- alpha * A * L^(alpha-1) * K^beta\n  MP_K <- beta * A * L^alpha * K^(beta-1)\n  \n  # Average products\n  AP_L <- y / L\n  AP_K <- y / K\n  \n  return(list(\n    output = y,\n    MP_L = MP_L, MP_K = MP_K,\n    AP_L = AP_L, AP_K = AP_K,\n    MP_L_over_AP_L = MP_L / AP_L  # Should equal alpha\n  ))\n}\n\n# Test\nresult <- product_analysis(100, 50, A = 10, alpha = 0.4, beta = 0.6)\ncat('MP_L:', round(result$MP_L, 3), '\\n')\ncat('AP_L:', round(result$AP_L, 3), '\\n')\ncat('MP_L/AP_L:', round(result$MP_L_over_AP_L, 3), '(should = α = 0.4)')",
+      "notes": "For Cobb-Douglas: MP_L = α·AP_L, so MP_L/AP_L = α"
+    },
+    {
+      "id": "W7-CS03",
+      "category": "isoquants",
+      "title": "Plot Isoquants",
+      "code": "# Plot isoquants for Cobb-Douglas\nplot_isoquants <- function(A = 1, alpha = 0.5, beta = 0.5, y_levels = c(50, 100, 150)) {\n  L_seq <- seq(1, 200, length = 200)\n  \n  plot(NULL, xlim = c(0, 200), ylim = c(0, 200),\n       xlab = 'Labor (L)', ylab = 'Capital (K)',\n       main = 'Isoquant Map')\n  \n  colors <- c('blue', 'green', 'red')\n  \n  for (i in seq_along(y_levels)) {\n    y <- y_levels[i]\n    # Solve f(L,K) = y for K: K = (y/(A·L^α))^(1/β)\n    K_seq <- (y / (A * L_seq^alpha))^(1/beta)\n    K_seq[K_seq > 200] <- NA\n    lines(L_seq, K_seq, col = colors[i], lwd = 2)\n  }\n  \n  legend('topright', paste('y =', y_levels), col = colors, lwd = 2)\n  grid()\n}\n\nplot_isoquants(A = 1, alpha = 0.5, beta = 0.5, y_levels = c(5, 10, 15))",
+      "notes": "Isoquant: K = (y/(A·L^α))^(1/β). Curves are convex to origin."
+    },
+    {
+      "id": "W7-CS04",
+      "category": "isoquants",
+      "title": "MRTS Calculation and Visualization",
+      "code": "# Calculate MRTS for Cobb-Douglas\nMRTS_CD <- function(L, K, alpha = 0.5, beta = 0.5) {\n  mrts <- (alpha / beta) * (K / L)\n  return(mrts)\n}\n\n# Visualize MRTS along an isoquant\nplot_mrts <- function(A = 1, alpha = 0.5, beta = 0.5, y = 10) {\n  L_seq <- seq(5, 150, length = 100)\n  K_seq <- (y / (A * L_seq^alpha))^(1/beta)\n  mrts_seq <- MRTS_CD(L_seq, K_seq, alpha, beta)\n  \n  par(mfrow = c(1, 2))\n  \n  # Isoquant\n  plot(L_seq, K_seq, type = 'l', lwd = 2, col = 'blue',\n       xlab = 'L', ylab = 'K', main = paste('Isoquant at y =', y))\n  # Add tangent lines at a few points\n  for (idx in c(20, 50, 80)) {\n    L0 <- L_seq[idx]; K0 <- K_seq[idx]\n    slope <- -mrts_seq[idx]\n    abline(a = K0 - slope * L0, b = slope, col = 'gray', lty = 2)\n    points(L0, K0, pch = 19, col = 'red')\n  }\n  grid()\n  \n  # MRTS as function of L\n  plot(L_seq, mrts_seq, type = 'l', lwd = 2, col = 'green',\n       xlab = 'L', ylab = 'MRTS', main = 'Diminishing MRTS')\n  grid()\n  \n  par(mfrow = c(1, 1))\n}\n\nplot_mrts(A = 1, alpha = 0.5, beta = 0.5, y = 10)",
+      "notes": "MRTS = (α/β)(K/L) decreases as we move down the isoquant (more L, less K)"
+    },
+    {
+      "id": "W7-CS05",
+      "category": "returns_to_scale",
+      "title": "Returns to Scale Analysis",
+      "code": "# Analyze returns to scale\nreturns_to_scale <- function(A = 1, alpha = 0.5, beta = 0.5, t = 2) {\n  L <- 10; K <- 10\n  \n  # Original output\n  y_original <- cobb_douglas(L, K, A, alpha, beta)\n  \n  # Scaled output\n  y_scaled <- cobb_douglas(t * L, t * K, A, alpha, beta)\n  \n  # Compare\n  rts_ratio <- y_scaled / (t * y_original)\n  sum_exponents <- alpha + beta\n  \n  cat('Original output:', round(y_original, 2), '\\n')\n  cat('Scaled output (t=', t, '):', round(y_scaled, 2), '\\n')\n  cat('t × original:', round(t * y_original, 2), '\\n')\n  cat('Ratio:', round(rts_ratio, 3), '\\n')\n  cat('α + β =', sum_exponents, '\\n')\n  \n  if (abs(sum_exponents - 1) < 0.01) {\n    cat('Returns to Scale: CONSTANT (CRS)\\n')\n  } else if (sum_exponents > 1) {\n    cat('Returns to Scale: INCREASING (IRS)\\n')\n  } else {\n    cat('Returns to Scale: DECREASING (DRS)\\n')\n  }\n}\n\n# Test different cases\ncat('=== CRS (α + β = 1) ===\\n')\nreturns_to_scale(alpha = 0.4, beta = 0.6)\n\ncat('\\n=== IRS (α + β > 1) ===\\n')\nreturns_to_scale(alpha = 0.6, beta = 0.6)\n\ncat('\\n=== DRS (α + β < 1) ===\\n')\nreturns_to_scale(alpha = 0.3, beta = 0.4)",
+      "notes": "RTS determined by α + β: = 1 (CRS), > 1 (IRS), < 1 (DRS)"
+    },
+    {
+      "id": "W7-CS06",
+      "category": "cost_minimization",
+      "title": "Cost Minimization - Analytical",
+      "code": "# Analytical cost minimization for Cobb-Douglas (CRS case)\ncost_minimize_CD <- function(w, r, y, alpha = 0.5) {\n  beta <- 1 - alpha  # Assume CRS\n  \n  # From MRTS = w/r: K/L = (α/β)(w/r)⁻¹ = (β/α)(w/r)\n  # Wait, let's be careful: MRTS = MP_L/MP_K = (α/β)(K/L) = w/r\n  # So K/L = (β/α)(w/r)\n  KL_ratio <- (beta / alpha) * (w / r)\n  \n  # From L^α K^β = y with K = KL_ratio × L:\n  # L^α (KL_ratio × L)^β = y\n  # L^(α+β) × KL_ratio^β = y\n  # L = (y / KL_ratio^β)^(1/(α+β))\n  L_star <- (y / (KL_ratio^beta))^(1 / (alpha + beta))\n  K_star <- KL_ratio * L_star\n  \n  # Cost\n  C_star <- w * L_star + r * K_star\n  \n  return(list(\n    L_star = L_star,\n    K_star = K_star,\n    C_star = C_star,\n    KL_ratio = KL_ratio\n  ))\n}\n\n# Test\nresult <- cost_minimize_CD(w = 10, r = 20, y = 100, alpha = 0.5)\ncat('Optimal L*:', round(result$L_star, 2), '\\n')\ncat('Optimal K*:', round(result$K_star, 2), '\\n')\ncat('Minimum Cost:', round(result$C_star, 2), '\\n')\ncat('K/L ratio:', round(result$KL_ratio, 2))",
+      "notes": "At optimum: MRTS = w/r. For CRS Cobb-Douglas, solve analytically."
+    },
+    {
+      "id": "W7-CS07",
+      "category": "cost_minimization",
+      "title": "Cost Minimization - Numerical (General)",
+      "code": "# Numerical cost minimization using optim\ncost_minimize_numerical <- function(w, r, y, prod_fn, L_init = 10, K_init = 10) {\n  # Objective: minimize cost subject to output constraint\n  # Use penalty method: minimize wL + rK + penalty*(y - f(L,K))²\n  \n  objective <- function(x, penalty = 10000) {\n    L <- x[1]; K <- x[2]\n    if (L <= 0 || K <= 0) return(1e10)\n    cost <- w * L + r * K\n    output <- prod_fn(L, K)\n    violation <- (y - output)^2\n    return(cost + penalty * violation)\n  }\n  \n  result <- optim(c(L_init, K_init), objective, method = 'L-BFGS-B',\n                  lower = c(0.1, 0.1))\n  \n  L_star <- result$par[1]\n  K_star <- result$par[2]\n  \n  return(list(\n    L_star = L_star,\n    K_star = K_star,\n    C_star = w * L_star + r * K_star,\n    output_check = prod_fn(L_star, K_star)\n  ))\n}\n\n# Test with CES production function\nCES_fn <- function(L, K, A = 1, delta = 0.5, rho = 0.5) {\n  A * (delta * L^rho + (1 - delta) * K^rho)^(1/rho)\n}\n\nresult <- cost_minimize_numerical(w = 10, r = 20, y = 100,\n                                   prod_fn = function(L, K) CES_fn(L, K))\ncat('L*:', round(result$L_star, 2), '\\n')\ncat('K*:', round(result$K_star, 2), '\\n')\ncat('Cost:', round(result$C_star, 2), '\\n')\ncat('Output check:', round(result$output_check, 2))",
+      "notes": "Penalty method works for any production function. Verify output ≈ target y."
+    },
+    {
+      "id": "W7-CS08",
+      "category": "cost_function",
+      "title": "Cost Function for Cobb-Douglas",
+      "code": "# Cobb-Douglas cost function (CRS case: α + β = 1)\ncost_function_CD <- function(w, r, y, alpha = 0.5) {\n  beta <- 1 - alpha\n  # C(w,r,y) = κ × w^α × r^β × y where κ is a constant\n  kappa <- (alpha^(-alpha)) * ((1-alpha)^(-(1-alpha)))\n  C <- kappa * w^alpha * r^beta * y\n  return(C)\n}\n\n# Verify against direct calculation\nw <- 10; r <- 20; y <- 100; alpha <- 0.5\n\nC_formula <- cost_function_CD(w, r, y, alpha)\nC_direct <- cost_minimize_CD(w, r, y, alpha)$C_star\n\ncat('From cost function:', round(C_formula, 2), '\\n')\ncat('From direct minimization:', round(C_direct, 2), '\\n')\ncat('Match:', abs(C_formula - C_direct) < 0.1)",
+      "notes": "For CRS Cobb-Douglas: C(w,r,y) = κ·w^α·r^(1-α)·y (linear in y)"
+    },
+    {
+      "id": "W7-CS09",
+      "category": "cost_function",
+      "title": "Verify Shephard's Lemma",
+      "code": "# Verify Shephard's Lemma: ∂C/∂w = L*, ∂C/∂r = K*\nverify_shephard <- function(w, r, y, alpha = 0.5, h = 1e-6) {\n  # Numerical derivatives of cost function\n  dC_dw <- (cost_function_CD(w + h, r, y, alpha) - \n            cost_function_CD(w - h, r, y, alpha)) / (2 * h)\n  dC_dr <- (cost_function_CD(w, r + h, y, alpha) - \n            cost_function_CD(w, r - h, y, alpha)) / (2 * h)\n  \n  # Direct conditional demands\n  demands <- cost_minimize_CD(w, r, y, alpha)\n  \n  cat('=== Shephard\\'s Lemma Verification ===\\n')\n  cat('∂C/∂w =', round(dC_dw, 3), ', L* =', round(demands$L_star, 3), '\\n')\n  cat('∂C/∂r =', round(dC_dr, 3), ', K* =', round(demands$K_star, 3), '\\n')\n  cat('\\nShephard\\'s Lemma verified:', \n      abs(dC_dw - demands$L_star) < 0.1 && abs(dC_dr - demands$K_star) < 0.1)\n}\n\nverify_shephard(w = 10, r = 20, y = 100, alpha = 0.4)",
+      "notes": "Shephard's Lemma: ∂C/∂w = L*, ∂C/∂r = K*. Follows from envelope theorem."
+    },
+    {
+      "id": "W7-CS10",
+      "category": "cost_curves",
+      "title": "Short-Run Cost Curves",
+      "code": "# Short-run cost curves with fixed capital\nshort_run_costs <- function(w, r, K_bar, A = 1, alpha = 0.5, beta = 0.5) {\n  # With K fixed, solve for L: y = A·L^α·K_bar^β → L = (y/(A·K_bar^β))^(1/α)\n  \n  y_seq <- seq(1, 200, length = 100)\n  \n  L_seq <- (y_seq / (A * K_bar^beta))^(1/alpha)\n  \n  VC <- w * L_seq           # Variable cost\n  FC <- r * K_bar           # Fixed cost\n  TC <- VC + FC             # Total cost\n  \n  AVC <- VC / y_seq         # Average variable cost\n  AFC <- FC / y_seq         # Average fixed cost\n  AC <- TC / y_seq          # Average cost\n  MC <- w * (1/alpha) * (y_seq / (A * K_bar^beta))^((1-alpha)/alpha) / (A * K_bar^beta)^(1/alpha)\n  # Simplified: MC = (w/α) × L^(1-α)/A·K^β = (w/α) × (y^(1-α))/(A·K^β)^(1/α) × A^(-1)\n  # Actually easier: MC = d(TC)/dy\n  MC <- diff(TC) / diff(y_seq)\n  MC <- c(MC[1], MC)  # Pad to same length\n  \n  return(data.frame(y = y_seq, TC = TC, VC = VC, FC = FC, \n                    AC = AC, AVC = AVC, AFC = AFC, MC = MC))\n}\n\n# Calculate and plot\ncosts <- short_run_costs(w = 20, r = 10, K_bar = 100, A = 10, alpha = 0.5, beta = 0.5)\n\npar(mfrow = c(1, 2))\n\n# Total costs\nplot(costs$y, costs$TC, type = 'l', lwd = 2, col = 'black',\n     xlab = 'Output (y)', ylab = '$', main = 'Total Costs')\nlines(costs$y, costs$VC, lwd = 2, col = 'blue', lty = 2)\nabline(h = costs$FC[1], col = 'red', lty = 3)\nlegend('topleft', c('TC', 'VC', 'FC'), col = c('black', 'blue', 'red'),\n       lty = c(1, 2, 3), lwd = 2)\ngrid()\n\n# Average and marginal costs\nplot(costs$y, costs$AC, type = 'l', lwd = 2, col = 'black',\n     xlab = 'Output (y)', ylab = '$', main = 'Unit Costs',\n     ylim = c(0, max(costs$AC) * 1.5))\nlines(costs$y, costs$AVC, lwd = 2, col = 'blue', lty = 2)\nlines(costs$y, costs$MC, lwd = 2, col = 'red')\nlegend('topright', c('AC', 'AVC', 'MC'), col = c('black', 'blue', 'red'),\n       lty = c(1, 2, 1), lwd = 2)\ngrid()\n\npar(mfrow = c(1, 1))",
+      "notes": "SR costs: TC = VC + FC. MC passes through min of both AC and AVC."
+    },
+    {
+      "id": "W7-CS11",
+      "category": "cost_curves",
+      "title": "Long-Run Cost Envelope",
+      "code": "# Long-run cost as envelope of short-run costs\nplot_lr_envelope <- function(w = 20, r = 10, A = 10, alpha = 0.5, beta = 0.5) {\n  y_seq <- seq(1, 200, length = 200)\n  K_bar_values <- c(25, 50, 100, 150, 200)\n  colors <- rainbow(length(K_bar_values))\n  \n  plot(NULL, xlim = c(0, 200), ylim = c(0, 5000),\n       xlab = 'Output (y)', ylab = 'Total Cost',\n       main = 'Long-Run Cost Envelope')\n  \n  # Plot short-run cost curves for different K_bar\n  all_sr_costs <- list()\n  for (i in seq_along(K_bar_values)) {\n    K_bar <- K_bar_values[i]\n    L_seq <- (y_seq / (A * K_bar^beta))^(1/alpha)\n    TC <- w * L_seq + r * K_bar\n    lines(y_seq, TC, col = colors[i], lwd = 1, lty = 2)\n    all_sr_costs[[i]] <- TC\n  }\n  \n  # Long-run cost (minimum over all SR curves)\n  lr_cost <- sapply(1:length(y_seq), function(j) {\n    min(sapply(all_sr_costs, function(tc) tc[j]))\n  })\n  lines(y_seq, lr_cost, col = 'black', lwd = 3)\n  \n  legend('topleft', c('Long-run C(y)', paste('SR, K̄ =', K_bar_values)),\n         col = c('black', colors), lwd = c(3, rep(1, length(K_bar_values))),\n         lty = c(1, rep(2, length(K_bar_values))))\n  grid()\n}\n\nplot_lr_envelope()",
+      "notes": "LR cost is the lower envelope of SR cost curves. At each y, optimal K̄ is chosen."
+    },
+    {
+      "id": "W7-CS12",
+      "category": "applications",
+      "title": "Agricultural Cost Analysis",
+      "code": "# Complete agricultural cost analysis\nfarm_cost_analysis <- function(w_labor = 25, r_machinery = 50, \n                                A = 100, alpha = 0.6, beta = 0.4,\n                                output_levels = c(500, 1000, 1500)) {\n  cat('=== Farm Cost Analysis ===\\n')\n  cat('Wage rate: $', w_labor, '/hour\\n')\n  cat('Machinery rental: $', r_machinery, '/hour\\n')\n  cat('Technology: y = ', A, '·L^', alpha, '·K^', beta, '\\n\\n', sep = '')\n  \n  # Check returns to scale\n  rts <- alpha + beta\n  rts_type <- ifelse(abs(rts - 1) < 0.01, 'Constant', \n                     ifelse(rts > 1, 'Increasing', 'Decreasing'))\n  cat('Returns to scale: α + β =', rts, '(', rts_type, ')\\n\\n')\n  \n  for (y in output_levels) {\n    result <- cost_minimize_CD(w_labor, r_machinery, y, alpha)\n    \n    cat('--- Output:', y, 'tonnes ---\\n')\n    cat('Optimal labor:', round(result$L_star, 1), 'hours\\n')\n    cat('Optimal machinery:', round(result$K_star, 1), 'hours\\n')\n    cat('Total cost: $', round(result$C_star, 0), '\\n')\n    cat('Average cost: $', round(result$C_star / y, 2), '/tonne\\n')\n    cat('K/L ratio:', round(result$KL_ratio, 2), '\\n\\n')\n  }\n}\n\nfarm_cost_analysis()",
+      "notes": "Complete analysis: returns to scale, optimal inputs, costs at different outputs."
+    },
+    {
+      "id": "W7-CS13",
+      "category": "applications",
+      "title": "Technology Comparison",
+      "code": "# Compare traditional vs modern agricultural technology\ncompare_technologies <- function(w = 20, r = 40, y = 1000) {\n  cat('=== Technology Comparison ===\\n')\n  cat('Output target:', y, 'units\\n')\n  cat('Wage: $', w, ', Capital rental: $', r, '\\n\\n')\n  \n  # Traditional: labor-intensive\n  trad_alpha <- 0.7; trad_beta <- 0.3; trad_A <- 1\n  \n  # Modern: capital-intensive with higher TFP\n  mod_alpha <- 0.3; mod_beta <- 0.7; mod_A <- 1.5\n  \n  # Traditional technology\n  # Need to adjust for non-CRS\n  trad_result <- cost_minimize_numerical(\n    w, r, y, \n    prod_fn = function(L, K) trad_A * L^trad_alpha * K^trad_beta\n  )\n  \n  # Modern technology\n  mod_result <- cost_minimize_numerical(\n    w, r, y,\n    prod_fn = function(L, K) mod_A * L^mod_alpha * K^mod_beta\n  )\n  \n  cat('TRADITIONAL (labor-intensive):\\n')\n  cat('  L*:', round(trad_result$L_star, 1), '\\n')\n  cat('  K*:', round(trad_result$K_star, 1), '\\n')\n  cat('  Cost: $', round(trad_result$C_star, 0), '\\n')\n  cat('  K/L:', round(trad_result$K_star / trad_result$L_star, 2), '\\n\\n')\n  \n  cat('MODERN (capital-intensive, higher TFP):\\n')\n  cat('  L*:', round(mod_result$L_star, 1), '\\n')\n  cat('  K*:', round(mod_result$K_star, 1), '\\n')\n  cat('  Cost: $', round(mod_result$C_star, 0), '\\n')\n  cat('  K/L:', round(mod_result$K_star / mod_result$L_star, 2), '\\n\\n')\n  \n  savings <- trad_result$C_star - mod_result$C_star\n  cat('Cost savings from modern tech: $', round(savings, 0), \n      ' (', round(100 * savings / trad_result$C_star, 1), '%)\\n', sep = '')\n}\n\ncompare_technologies()",
+      "notes": "Modern tech: higher TFP and different factor intensity. Compare total costs."
+    },
+    {
+      "id": "W7-CS14",
+      "category": "toolkit",
+      "title": "Complete Producer Theory Toolkit",
+      "code": "# Complete toolkit for producer theory analysis\nproducer_toolkit <- list(\n  \n  # Production functions\n  cobb_douglas = function(L, K, A = 1, alpha = 0.5, beta = 0.5) {\n    A * L^alpha * K^beta\n  },\n  \n  leontief = function(L, K, a = 1, b = 1) {\n    min(L/a, K/b)\n  },\n  \n  ces = function(L, K, A = 1, delta = 0.5, rho = 0.5) {\n    A * (delta * L^rho + (1-delta) * K^rho)^(1/rho)\n  },\n  \n  # Marginal products\n  MP_L_CD = function(L, K, A = 1, alpha = 0.5, beta = 0.5) {\n    alpha * A * L^(alpha-1) * K^beta\n  },\n  \n  MP_K_CD = function(L, K, A = 1, alpha = 0.5, beta = 0.5) {\n    beta * A * L^alpha * K^(beta-1)\n  },\n  \n  # MRTS\n  MRTS_CD = function(L, K, alpha = 0.5, beta = 0.5) {\n    (alpha/beta) * (K/L)\n  },\n  \n  # Cost minimization\n  cost_min_CD = function(w, r, y, alpha = 0.5) {\n    beta <- 1 - alpha\n    KL <- (beta/alpha) * (w/r)\n    L_star <- (y / (KL^beta))^(1/(alpha+beta))\n    K_star <- KL * L_star\n    C <- w * L_star + r * K_star\n    list(L = L_star, K = K_star, C = C)\n  },\n  \n  # Cost function\n  cost_fn_CD = function(w, r, y, alpha = 0.5) {\n    beta <- 1 - alpha\n    kappa <- alpha^(-alpha) * beta^(-beta)\n    kappa * w^alpha * r^beta * y\n  }\n)\n\n# Usage example\ncat('=== Producer Toolkit Demo ===\\n')\nL <- 50; K <- 100; w <- 15; r <- 25; y <- 80; alpha <- 0.4\n\ncat('\\nProduction:', round(producer_toolkit$cobb_douglas(L, K, alpha = alpha, beta = 0.6), 2))\ncat('\\nMP_L:', round(producer_toolkit$MP_L_CD(L, K, alpha = alpha, beta = 0.6), 3))\ncat('\\nMRTS:', round(producer_toolkit$MRTS_CD(L, K, alpha = alpha, beta = 0.6), 3))\nopt <- producer_toolkit$cost_min_CD(w, r, y, alpha)\ncat('\\nOptimal L*:', round(opt$L, 2), ', K*:', round(opt$K, 2), ', C*:', round(opt$C, 2))",
+      "notes": "Reusable toolkit for production and cost analysis. Import into other scripts."
+    }
+  ]
+}
