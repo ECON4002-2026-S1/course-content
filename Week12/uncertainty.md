@@ -19,7 +19,7 @@
 | Wet season    | 0.5         | $450   |
 | Dry season    | 0.5         | $50    |
 
-- Expected profit: $E(	ext{profit}) = 0.5 * \$450 + 0.5 * \$50 = \$250$
+- Expected profit: $E(\text{profit}) = 0.5 * \$450 + 0.5 * \$50 = \$250$
 
 ## Value of Information
 - What would this farmer be willing to pay for perfect foresight?
@@ -31,19 +31,19 @@
 
 ## St. Petersburg Paradox
 - Gamble: A fair coin is tossed until it comes up heads, at which point the player is paid $2^t$, where $t$ is the number of times the coin was flipped.
-- $EV = rac{1}{2}.2 + rac{1}{4}.4 + rac{1}{8}.8 + \ldots = \sum_{1}^{\infty} 1 = \infty$
+- $EV = \frac{1}{2}.2 + \frac{1}{4}.4 + \frac{1}{8}.8 + \ldots = \sum_{1}^{\infty} 1 = \infty$
 - How much would you pay for the chance to play the game?
 
 ## Expected Utility
 - People maximize **expected utility (EU)**, not expected value.
-- $EU = \sum_{1} p_i 	imes u(v_i)$
-- Example: If the utility function is $u(x) = 10\sqrt{x}$, the farmer's EU would be: $rac{1}{2} u(450) + rac{1}{2} u(50) = 141$
+- $EU = \sum_{1} p_i \times u(v_i)$
+- Example: If the utility function is $u(x) = 10\sqrt{x}$, the farmer's EU would be: $\frac{1}{2} u(450) + \frac{1}{2} u(50) = 141$
 - The utility of a certain outcome (no fertilizer choice) is $u(250) = 158$
 - Expected utility theory says the farmer should not fertilize.
 
 ## EU Theory
 - Expected Utility at point $b$
-- Certainty equivalent at point $e$: $199
+- Certainty equivalent at point $e$: \$199
 - Risk premium: $251 - 199 = 51$
 
 ## Exercise

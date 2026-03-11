@@ -22,7 +22,7 @@
         "For AB: element (i,j) = row i of A dot column j of B",
         "Use %*% in R for matrix multiplication, not *"
       ],
-      "solution": ""
+      "solution": "**Method:** Each element $(AB)_{ij} = \\sum_k A_{ik} B_{kj}$ (dot product of row $i$ of $A$ with column $j$ of $B$).\n\n**Computing AB:**\n$$AB = \\begin{bmatrix}2&1\\\\3&5\\end{bmatrix}\\begin{bmatrix}4&0\\\\1&2\\end{bmatrix}$$\n- $(AB)_{11} = 2(4)+1(1) = 8+1 = 9$\n- $(AB)_{12} = 2(0)+1(2) = 0+2 = 2$\n- $(AB)_{21} = 3(4)+5(1) = 12+5 = 17$\n- $(AB)_{22} = 3(0)+5(2) = 0+10 = 10$\n$$AB = \\begin{bmatrix}9&2\\\\17&10\\end{bmatrix}$$\n\n**Computing BA:**\n$$BA = \\begin{bmatrix}4&0\\\\1&2\\end{bmatrix}\\begin{bmatrix}2&1\\\\3&5\\end{bmatrix}$$\n- $(BA)_{11} = 4(2)+0(3) = 8$\n- $(BA)_{12} = 4(1)+0(5) = 4$\n- $(BA)_{21} = 1(2)+2(3) = 2+6 = 8$\n- $(BA)_{22} = 1(1)+2(5) = 1+10 = 11$\n$$BA = \\begin{bmatrix}8&4\\\\8&11\\end{bmatrix}$$\n\n**Conclusion:** $AB \\neq BA$. Matrix multiplication is generally **not commutative**.\n\n**R code:**\n```r\nA <- matrix(c(2,3,1,5), nrow=2)  # fills column-wise: col1=(2,3), col2=(1,5)\nB <- matrix(c(4,1,0,2), nrow=2)\n\nAB <- A %*% B\nBA <- B %*% A\n\nprint(AB)\n#      [,1] [,2]\n# [1,]    9    2\n# [2,]   17   10\n\nprint(BA)\n#      [,1] [,2]\n# [1,]    8    4\n# [2,]    8   11\n\nall(AB == BA)  # FALSE\n```\n\n**Economic significance:** Non-commutativity matters in dynamic models. If $A$ represents a transition matrix and $B$ a policy matrix, applying policy before transition ($BA$) differs from applying it after ($AB$)."
     },
     {
       "id": "W2-P2a",
@@ -34,7 +34,7 @@
         "For 2×2: det = ad - bc",
         "Use det() in R"
       ],
-      "solution": ""
+      "solution": "**Formula for $2 \\times 2$ determinant:**\n$$\\det\\begin{bmatrix}a&b\\\\c&d\\end{bmatrix} = ad - bc$$\n\n**Calculation:**\n$$\\det(D_1) = \\det\\begin{bmatrix}3&2\\\\1&4\\end{bmatrix} = (3)(4) - (2)(1) = 12 - 2 = 10$$\n\n**Result: $\\det(D_1) = 10$**\n\nSince $\\det(D_1) \\neq 0$, the matrix is **non-singular** (invertible). This means the system of equations $D_1 \\mathbf{x} = \\mathbf{b}$ has a unique solution for any $\\mathbf{b}$.\n\n**R code:**\n```r\nD1 <- matrix(c(3,1,2,4), nrow=2)  # col1=(3,1), col2=(2,4)\ndet(D1)\n# [1] 10\n```"
     },
     {
       "id": "W2-P2b",
@@ -43,7 +43,7 @@
       "topic": "Determinants - Singular",
       "question": "Calculate the determinant of D2 = [[6,2],[3,1]]",
       "hints": [],
-      "solution": ""
+      "solution": "**Calculation:**\n$$\\det(D_2) = \\det\\begin{bmatrix}6&2\\\\3&1\\end{bmatrix} = (6)(1) - (2)(3) = 6 - 6 = 0$$\n\n**Result: $\\det(D_2) = 0$**\n\nSince $\\det(D_2) = 0$, the matrix is **singular** (not invertible). This has important implications:\n\n1. **No unique solution:** The system $D_2 \\mathbf{x} = \\mathbf{b}$ either has no solution or infinitely many solutions.\n2. **Linear dependence:** The rows (and columns) are linearly dependent. Indeed, row 1 = $2 \\times$ row 2: $[6,2] = 2 \\times [3,1]$.\n3. **Economic interpretation:** If $D_2$ were a Jacobian matrix, a zero determinant would indicate the equations are not independent — one market condition is redundant and the model does not identify a unique equilibrium.\n\n**R code:**\n```r\nD2 <- matrix(c(6,3,2,1), nrow=2)\ndet(D2)\n# [1] 0\n```"
     },
     {
       "id": "W2-P2c",
@@ -55,7 +55,7 @@
         "Expand along first row",
         "det = a(ei-fh) - b(di-fg) + c(dh-eg)"
       ],
-      "solution": ""
+      "solution": "**Method:** Cofactor expansion along the first row.\n\n$$\\det(D_3) = \\det\\begin{bmatrix}1&2&3\\\\7&0&8\\\\4&5&6\\end{bmatrix}$$\n\n$$= 1 \\cdot \\det\\begin{bmatrix}0&8\\\\5&6\\end{bmatrix} - 2 \\cdot \\det\\begin{bmatrix}7&8\\\\4&6\\end{bmatrix} + 3 \\cdot \\det\\begin{bmatrix}7&0\\\\4&5\\end{bmatrix}$$\n\n**Compute each $2 \\times 2$ minor:**\n$$M_{11} = (0)(6)-(8)(5) = 0-40 = -40$$\n$$M_{12} = (7)(6)-(8)(4) = 42-32 = 10$$\n$$M_{13} = (7)(5)-(0)(4) = 35-0 = 35$$\n\n**Combine:**\n$$\\det(D_3) = 1(-40) - 2(10) + 3(35) = -40 - 20 + 105 = 45$$\n\n**Result: $\\det(D_3) = 45$**\n\nNon-zero, so $D_3$ is invertible and a system $D_3 \\mathbf{x} = \\mathbf{b}$ has a unique solution.\n\n**R code:**\n```r\nD3 <- matrix(c(1,7,4, 2,0,5, 3,8,6), nrow=3)\ndet(D3)\n# [1] 45\n```\n\n**Note on R's `matrix()` fill order:** R fills matrices column by column. So `c(1,7,4, 2,0,5, 3,8,6)` gives column 1 = (1,7,4), column 2 = (2,0,5), column 3 = (3,8,6), which correctly represents $D_3$."
     },
     {
       "id": "W2-P3",
@@ -67,7 +67,7 @@
         "Formula: A^(-1) = (1/det) × [[d,-b],[-c,a]]",
         "First find det(A)"
       ],
-      "solution": ""
+      "solution": "**Step 1: Compute $\\det(A)$**\n$$A = \\begin{bmatrix}2&1\\\\3&5\\end{bmatrix}, \\quad \\det(A) = (2)(5)-(1)(3) = 10-3 = 7$$\n\n**Step 2: Apply the $2 \\times 2$ inverse formula**\n\nFor $A = \\begin{bmatrix}a&b\\\\c&d\\end{bmatrix}$:\n$$A^{-1} = \\frac{1}{\\det(A)} \\begin{bmatrix}d&-b\\\\-c&a\\end{bmatrix}$$\n\n$$A^{-1} = \\frac{1}{7} \\begin{bmatrix}5&-1\\\\-3&2\\end{bmatrix} = \\begin{bmatrix}5/7&-1/7\\\\-3/7&2/7\\end{bmatrix}$$\n\n**Verification:** $A \\cdot A^{-1} = I$:\n$$\\begin{bmatrix}2&1\\\\3&5\\end{bmatrix}\\begin{bmatrix}5/7&-1/7\\\\-3/7&2/7\\end{bmatrix} = \\frac{1}{7}\\begin{bmatrix}10-3&-2+2\\\\15-15&-3+10\\end{bmatrix} = \\frac{1}{7}\\begin{bmatrix}7&0\\\\0&7\\end{bmatrix} = \\begin{bmatrix}1&0\\\\0&1\\end{bmatrix} \\checkmark$$\n\n**R code:**\n```r\nA <- matrix(c(2,3,1,5), nrow=2)\nA_inv <- solve(A)\nprint(A_inv)\n#            [,1]       [,2]\n# [1,]  0.7142857 -0.1428571\n# [2,] -0.4285714  0.2857143\n\n# Verify: A %*% A_inv should be identity\nround(A %*% A_inv, 10)\n#      [,1] [,2]\n# [1,]    1    0\n# [2,]    0    1\n```"
     },
     {
       "id": "W2-P4a",
@@ -79,7 +79,7 @@
         "Check determinant first",
         "Use solve(A, b) in R"
       ],
-      "solution": ""
+      "solution": "**Setup in matrix form $A\\mathbf{x} = \\mathbf{b}$:**\n$$\\begin{bmatrix}5&3\\\\4&1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix} = \\begin{bmatrix}11\\\\6\\end{bmatrix}$$\n\n**Step 1: Check determinant**\n$$\\det(A) = (5)(1)-(3)(4) = 5-12 = -7 \\neq 0$$\n\nSince $\\det(A) \\neq 0$, the system has a **unique solution**.\n\n**Step 2: Solve using inverse**\n$$A^{-1} = \\frac{1}{-7}\\begin{bmatrix}1&-3\\\\-4&5\\end{bmatrix} = \\begin{bmatrix}-1/7&3/7\\\\4/7&-5/7\\end{bmatrix}$$\n\n$$\\begin{bmatrix}x\\\\y\\end{bmatrix} = A^{-1}\\mathbf{b} = \\begin{bmatrix}-1/7&3/7\\\\4/7&-5/7\\end{bmatrix}\\begin{bmatrix}11\\\\6\\end{bmatrix} = \\begin{bmatrix}(-11+18)/7\\\\(44-30)/7\\end{bmatrix} = \\begin{bmatrix}1\\\\2\\end{bmatrix}$$\n\n**Solution: $x = 1$, $y = 2$**\n\n**Verification:**\n- Eq. 1: $5(1)+3(2) = 5+6 = 11$ ✓\n- Eq. 2: $4(1)+1(2) = 4+2 = 6$ ✓\n\n**R code:**\n```r\nA <- matrix(c(5,4,3,1), nrow=2)\nb <- c(11, 6)\n\ndet(A)       # -7 (unique solution)\nsolve(A, b)  # x=1, y=2\n```"
     },
     {
       "id": "W2-P4b",
@@ -88,7 +88,7 @@
       "topic": "Dependent Systems",
       "question": "Solve: 2x + y = 4, x + 0.5y = 2. Determine solution type.",
       "hints": [],
-      "solution": ""
+      "solution": "**Setup in matrix form:**\n$$\\begin{bmatrix}2&1\\\\1&0.5\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix} = \\begin{bmatrix}4\\\\2\\end{bmatrix}$$\n\n**Step 1: Check determinant**\n$$\\det(A) = (2)(0.5)-(1)(1) = 1-1 = 0$$\n\nThe matrix is **singular**. The system does not have a unique solution.\n\n**Step 2: Determine solution type**\n\nObserve that equation 2 equals exactly $\\frac{1}{2} \\times$ equation 1:\n$$x + 0.5y = 2 \\iff 2x + y = 4$$\n\nThe two equations are **linearly dependent** — they describe the same line. Therefore the system has **infinitely many solutions**.\n\n**Parametric solution:** From $2x + y = 4$, set $x = t$ (free parameter):\n$$y = 4 - 2t, \\quad x = t, \\quad t \\in \\mathbb{R}$$\n\nFor example: $(x,y) = (0,4)$, $(1,2)$, $(2,0)$, $(-1,6)$ are all solutions.\n\n**Geometric interpretation:** Both equations represent the same straight line $y = 4 - 2x$. Any point on this line satisfies the system.\n\n**Economic interpretation:** If these were two market-clearing conditions for the same good, the model would be under-identified — we cannot determine a unique equilibrium price and quantity from these equations alone.\n\n**R code:**\n```r\nA <- matrix(c(2,1,1,0.5), nrow=2)\nb <- c(4, 2)\ndet(A)  # 0 -> singular\n\n# solve(A, b) will throw an error:\n# tryCatch(solve(A, b), error = function(e) message(\"Singular matrix: \", e$message))\n\n# Show that equations are proportional:\nA[1,] / A[2,]  # 2 2 2 (all ratios equal -> dependent)\nb[1] / b[2]    # 2 (same ratio -> consistent -> infinite solutions)\n```"
     },
     {
       "id": "W2-P5",
@@ -100,7 +100,7 @@
         "det(A_x) = det of A with column 1 replaced by b",
         "x = det(A_x) / det(A)"
       ],
-      "solution": ""
+      "solution": "**Setup:**\n$$A = \\begin{bmatrix}2&-4&6\\\\-1&3&2\\\\6&-7&-2\\end{bmatrix}, \\quad \\mathbf{b} = \\begin{bmatrix}3\\\\2\\\\4\\end{bmatrix}$$\n\n**Step 1: Compute $\\det(A)$ (cofactor expansion along row 1)**\n$$\\det(A) = 2\\,\\det\\begin{bmatrix}3&2\\\\-7&-2\\end{bmatrix} - (-4)\\,\\det\\begin{bmatrix}-1&2\\\\6&-2\\end{bmatrix} + 6\\,\\det\\begin{bmatrix}-1&3\\\\6&-7\\end{bmatrix}$$\n$$= 2(-6+14) + 4(2-12) + 6(7-18)$$\n$$= 2(8) + 4(-10) + 6(-11) = 16 - 40 - 66 = -90$$\n\n**Step 2: Compute $\\det(A_x)$ — replace column 1 with $\\mathbf{b}$**\n$$A_x = \\begin{bmatrix}3&-4&6\\\\2&3&2\\\\4&-7&-2\\end{bmatrix}$$\n$$\\det(A_x) = 3(-6+14) - (-4)(-4-8) + 6(-14-12)$$\n$$= 3(8) + 4(-12) + 6(-26) = 24 - 48 - 156 = -180$$\n\n**Step 3: Compute $\\det(A_y)$ — replace column 2 with $\\mathbf{b}$**\n$$A_y = \\begin{bmatrix}2&3&6\\\\-1&2&2\\\\6&4&-2\\end{bmatrix}$$\n$$\\det(A_y) = 2(-4-8) - 3(2-12) + 6(-4-12)$$\n$$= 2(-12) - 3(-10) + 6(-16) = -24 + 30 - 96 = -90$$\n\n**Step 4: Compute $\\det(A_z)$ — replace column 3 with $\\mathbf{b}$**\n$$A_z = \\begin{bmatrix}2&-4&3\\\\-1&3&2\\\\6&-7&4\\end{bmatrix}$$\n$$\\det(A_z) = 2(12+14) - (-4)(-4-12) + 3(7-18)$$\n$$= 2(26) + 4(-16) + 3(-11) = 52 - 64 - 33 = -45$$\n\n**Step 5: Apply Cramer's Rule**\n$$x = \\frac{\\det(A_x)}{\\det(A)} = \\frac{-180}{-90} = 2$$\n$$y = \\frac{\\det(A_y)}{\\det(A)} = \\frac{-90}{-90} = 1$$\n$$z = \\frac{\\det(A_z)}{\\det(A)} = \\frac{-45}{-90} = 0.5$$\n\n**Solution: $x=2$, $y=1$, $z=0.5$**\n\n**Verification:**\n- Eq. 1: $2(2)-4(1)+6(0.5) = 4-4+3 = 3$ ✓\n- Eq. 2: $-(2)+3(1)+2(0.5) = -2+3+1 = 2$ ✓\n- Eq. 3: $6(2)-7(1)-2(0.5) = 12-7-1 = 4$ ✓\n\n**R code:**\n```r\nA <- matrix(c(2,-1,6, -4,3,-7, 6,2,-2), nrow=3)\nb <- c(3, 2, 4)\n\n# Cramer's Rule\ndet_A <- det(A)   # -90\n\nAx <- A; Ax[,1] <- b; x_sol <- det(Ax) / det_A\nAy <- A; Ay[,2] <- b; y_sol <- det(Ay) / det_A\nAz <- A; Az[,3] <- b; z_sol <- det(Az) / det_A\n\ncat(\"x =\", x_sol, \", y =\", y_sol, \", z =\", z_sol, \"\\n\")\n# x = 2, y = 1, z = 0.5\n\n# Verify with solve():\nsolve(A, b)  # should match\n```"
     },
     {
       "id": "W2-P6",
@@ -112,7 +112,7 @@
         "At equilibrium Q = Qd = Qs",
         "Rewrite as: Q + 2P = 100 and Q - 4P = -20"
       ],
-      "solution": ""
+      "solution": "**Step 1: Formulate the system**\n\nAt equilibrium, $Q = Q^d = Q^s$. Setting $Q^d = Q^s$:\n$$100 - 2P = -20 + 4P$$\n\nTo express as a system in two unknowns $(Q, P)$, rewrite each equation:\n- From $Q^d$: $Q = 100 - 2P \\Rightarrow Q + 2P = 100$\n- From $Q^s$: $Q = -20 + 4P \\Rightarrow Q - 4P = -20$\n\n**Step 2: Matrix form $A\\mathbf{x} = \\mathbf{b}$**\n$$\\underbrace{\\begin{bmatrix}1&2\\\\1&-4\\end{bmatrix}}_{A}\\underbrace{\\begin{bmatrix}Q\\\\P\\end{bmatrix}}_{\\mathbf{x}} = \\underbrace{\\begin{bmatrix}100\\\\-20\\end{bmatrix}}_{\\mathbf{b}}$$\n\n**Step 3: Check determinant and solve**\n$$\\det(A) = (1)(-4)-(2)(1) = -4-2 = -6 \\neq 0 \\quad \\text{(unique solution)}$$\n\n$$A^{-1} = \\frac{1}{-6}\\begin{bmatrix}-4&-2\\\\-1&1\\end{bmatrix} = \\begin{bmatrix}2/3&1/3\\\\1/6&-1/6\\end{bmatrix}$$\n\n$$\\begin{bmatrix}Q^*\\\\P^*\\end{bmatrix} = A^{-1}\\mathbf{b} = \\begin{bmatrix}2/3&1/3\\\\1/6&-1/6\\end{bmatrix}\\begin{bmatrix}100\\\\-20\\end{bmatrix} = \\begin{bmatrix}200/3 - 20/3\\\\100/6+20/6\\end{bmatrix} = \\begin{bmatrix}60\\\\20\\end{bmatrix}$$\n\n**Equilibrium: $P^* = 20$, $Q^* = 60$**\n\n**Verification:**\n- $Q^d = 100 - 2(20) = 60$ ✓\n- $Q^s = -20 + 4(20) = 60$ ✓\n\n**R code:**\n```r\nA <- matrix(c(1,1, 2,-4), nrow=2)\nb <- c(100, -20)\n\ndet(A)        # -6\nsoln <- solve(A, b)\ncat(\"Q* =\", soln[1], \", P* =\", soln[2], \"\\n\")  # Q*=60, P*=20\n```"
     },
     {
       "id": "W2-P7",
@@ -124,7 +124,7 @@
         "Set Qd = Qs for each market",
         "You get two equations in Pw and Pc"
       ],
-      "solution": ""
+      "solution": "**Step 1: Set up equilibrium conditions**\n\n**Wheat market** ($Q^d_w = Q^s_w$):\n$$80 - 3P_w + P_c = -10 + 2P_w$$\n$$90 + P_c = 5P_w$$\n$$5P_w - P_c = 90 \\quad \\text{...(1)}$$\n\n**Corn market** ($Q^d_c = Q^s_c$):\n$$100 + P_w - 4P_c = -20 + 3P_c$$\n$$120 + P_w = 7P_c$$\n$$-P_w + 7P_c = 120 \\quad \\text{...(2)}$$\n\n**Step 2: Matrix form**\n$$\\begin{bmatrix}5&-1\\\\-1&7\\end{bmatrix}\\begin{bmatrix}P_w\\\\P_c\\end{bmatrix} = \\begin{bmatrix}90\\\\120\\end{bmatrix}$$\n\n**Step 3: Solve**\n$$\\det(A) = (5)(7)-(-1)(-1) = 35-1 = 34$$\n\n$$\\begin{bmatrix}P_w\\\\P_c\\end{bmatrix} = \\frac{1}{34}\\begin{bmatrix}7&1\\\\1&5\\end{bmatrix}\\begin{bmatrix}90\\\\120\\end{bmatrix} = \\frac{1}{34}\\begin{bmatrix}630+120\\\\90+600\\end{bmatrix} = \\frac{1}{34}\\begin{bmatrix}750\\\\690\\end{bmatrix}$$\n\n$$P_w^* = \\frac{750}{34} \\approx 22.06, \\quad P_c^* = \\frac{690}{34} \\approx 20.29$$\n\n**Step 4: Find equilibrium quantities**\n$$Q^*_w = -10 + 2(750/34) = -10 + 1500/34 = (-340+1500)/34 = 1160/34 \\approx 34.12$$\n$$Q^*_c = -20 + 3(690/34) = -20 + 2070/34 = (-680+2070)/34 = 1390/34 \\approx 40.88$$\n\n**Economic interpretation:** The positive cross-price effect of $P_c$ on wheat demand (and $P_w$ on corn demand) reflects substitutability in production — farmers switch between crops. The simultaneous system captures these interdependencies that a single-market model cannot.\n\n**R code:**\n```r\nA <- matrix(c(5,-1,-1,7), nrow=2)\nb <- c(90, 120)\n\nP_star <- solve(A, b)\ncat(\"Pw* =\", round(P_star[1],4), \"\\n\")  # 22.0588\ncat(\"Pc* =\", round(P_star[2],4), \"\\n\")  # 20.2941\n\n# Quantities\nQw_star <- -10 + 2*P_star[1]\nQc_star <- -20 + 3*P_star[2]\ncat(\"Qw* =\", round(Qw_star,4), \"\\n\")  # 34.1176\ncat(\"Qc* =\", round(Qc_star,4), \"\\n\")  # 40.8824\n```"
     },
     {
       "id": "W2-P8",
@@ -136,7 +136,7 @@
         "x = (I - A)^(-1) × d",
         "This is the Leontief model"
       ],
-      "solution": ""
+      "solution": "**Leontief input-output model:**\n\nTotal output $\\mathbf{x}$ satisfies: $\\mathbf{x} = A\\mathbf{x} + \\mathbf{d}$, where $A\\mathbf{x}$ is intermediate demand and $\\mathbf{d}$ is final demand.\n\nRearranging: $(I - A)\\mathbf{x} = \\mathbf{d}$, so $\\mathbf{x} = (I-A)^{-1}\\mathbf{d}$ (the Leontief inverse).\n\n**Step 1: Compute $I - A$**\n$$I - A = \\begin{bmatrix}1&0\\\\0&1\\end{bmatrix} - \\begin{bmatrix}0.2&0.4\\\\0.1&0.2\\end{bmatrix} = \\begin{bmatrix}0.8&-0.4\\\\-0.1&0.8\\end{bmatrix}$$\n\n**Step 2: Determinant of $I - A$**\n$$\\det(I-A) = (0.8)(0.8)-(-0.4)(-0.1) = 0.64-0.04 = 0.60$$\n\n**Step 3: Inverse (Leontief inverse)**\n$$(I-A)^{-1} = \\frac{1}{0.60}\\begin{bmatrix}0.8&0.4\\\\0.1&0.8\\end{bmatrix} = \\begin{bmatrix}4/3&2/3\\\\1/6&4/3\\end{bmatrix}$$\n\n**Step 4: Total output**\n$$\\mathbf{x} = (I-A)^{-1}\\mathbf{d} = \\begin{bmatrix}4/3&2/3\\\\1/6&4/3\\end{bmatrix}\\begin{bmatrix}80\\\\60\\end{bmatrix}$$\n$$= \\begin{bmatrix}320/3+40\\\\80/6+80\\end{bmatrix} = \\begin{bmatrix}106.67+40\\\\13.33+80\\end{bmatrix} = \\begin{bmatrix}146.67\\\\93.33\\end{bmatrix}$$\n\n**Total output: Crops sector = 146.67 units, Livestock sector = 93.33 units**\n\n**Interpretation:** To meet final demand of 80 units of crops and 60 units of livestock, the economy must produce 146.67 units of crops and 93.33 units of livestock in total, because each sector uses outputs from both sectors as intermediate inputs (e.g., crops feed livestock, livestock provide manure for crops).\n\n**R code:**\n```r\nA <- matrix(c(0.2,0.1,0.4,0.2), nrow=2)\nd <- c(80, 60)\nI <- diag(2)  # 2x2 identity\n\nLeontief_inv <- solve(I - A)\nx <- Leontief_inv %*% d\n\ncat(\"Total output - Crops:\",    round(x[1],2), \"\\n\")  # 146.67\ncat(\"Total output - Livestock:\", round(x[2],2), \"\\n\")  # 93.33\n\n# Verify: Ax + d should equal x\nall.equal(as.vector(A %*% x + d), as.vector(x))  # TRUE\n```"
     },
     {
       "id": "W2-P10",
@@ -149,7 +149,7 @@
         "For 2x₁x₂ term, use a₁₂ = a₂₁ = 1",
         "Check eigenvalues for definiteness"
       ],
-      "solution": ""
+      "solution": "**Step 1: Write in matrix form $Q = \\mathbf{x}'A\\mathbf{x}$**\n\nFor a quadratic form $Q = a_{11}x_1^2 + a_{22}x_2^2 + 2a_{12}x_1x_2$, the symmetric matrix is:\n$$A = \\begin{bmatrix}a_{11}&a_{12}\\\\a_{12}&a_{22}\\end{bmatrix}$$\n\nHere $Q = 2x_1^2 + 3x_2^2 + 2x_1x_2$, so $a_{11}=2$, $a_{22}=3$, and the cross term $2x_1x_2$ means $2a_{12}=2 \\Rightarrow a_{12}=1$:\n$$A = \\begin{bmatrix}2&1\\\\1&3\\end{bmatrix}$$\n\n**Verify:** $\\mathbf{x}'A\\mathbf{x} = [x_1,x_2]\\begin{bmatrix}2&1\\\\1&3\\end{bmatrix}\\begin{bmatrix}x_1\\\\x_2\\end{bmatrix} = 2x_1^2 + x_1x_2 + x_1x_2 + 3x_2^2 = 2x_1^2+3x_2^2+2x_1x_2$ ✓\n\n**Step 2: Determine definiteness via leading principal minors**\n\n**Sylvester's criterion:** A symmetric matrix is positive definite if and only if all leading principal minors are positive.\n\n- $D_1 = a_{11} = 2 > 0$ ✓\n- $D_2 = \\det(A) = (2)(3)-(1)(1) = 6-1 = 5 > 0$ ✓\n\n**Conclusion: $A$ is positive definite, therefore $Q$ is a positive definite quadratic form.**\n\n**Step 3: Verify via eigenvalues**\n\nThe characteristic equation: $\\det(A - \\lambda I) = 0$\n$$(2-\\lambda)(3-\\lambda)-1 = 0$$\n$$\\lambda^2-5\\lambda+5 = 0$$\n$$\\lambda = \\frac{5 \\pm \\sqrt{25-20}}{2} = \\frac{5 \\pm \\sqrt{5}}{2}$$\n$$\\lambda_1 = \\frac{5+\\sqrt{5}}{2} \\approx 3.618, \\quad \\lambda_2 = \\frac{5-\\sqrt{5}}{2} \\approx 1.382$$\n\nBoth eigenvalues are positive, confirming **positive definiteness**.\n\n**Economic significance:** Positive definite quadratic forms appear in:\n- **Cost functions:** Convex costs guarantee a well-defined cost minimum\n- **Utility functions:** Quasi-concavity ensures diminishing marginal utility\n- **SOC for optimization:** A negative definite Hessian at a critical point guarantees a maximum\n\n**R code:**\n```r\nA <- matrix(c(2,1,1,3), nrow=2)\n\n# Leading principal minors\nD1 <- A[1,1]         # 2\nD2 <- det(A)         # 5\ncat(\"D1 =\", D1, \", D2 =\", D2, \"\\n\")\ncat(\"Positive definite:\", D1 > 0 & D2 > 0, \"\\n\")  # TRUE\n\n# Eigenvalues\neigen(A)$values  # ~3.618, ~1.382 (both positive)\n```"
     }
   ]
 }

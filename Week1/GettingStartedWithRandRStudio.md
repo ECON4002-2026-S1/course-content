@@ -1,4 +1,3 @@
-```markdown
 # Getting Started with R and RStudio
 
 **Atakelty Hailu**
@@ -225,8 +224,3 @@ This guide covered:
 ---
 
 You can download this Markdown file and use it as a reference guide for R and RStudio.
-```markdown
-
----
-
-You can copy and paste this Markdown content into a `.md` file and save it for future reference.

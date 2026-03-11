@@ -35,7 +35,7 @@
         "Endogenous means 'determined within' the model",
         "Which variables do we solve for? Which are given?"
       ],
-      "solution": ""
+      "solution": "**Definitions:**\n\n**Endogenous variables** are determined *within* the model — they are the unknowns we solve for. Their values are explained by the model's equations.\n\n**Exogenous variables** are determined *outside* the model — they are taken as given inputs. The model does not explain why they take particular values; they are imposed from the environment.\n\n**Supply-demand example:**\n\nConsider the soybean market: $Q^d = 500 - 10P$ and $Q^s = -100 + 20P$.\n\n- **Endogenous variables:** Equilibrium price $P^*$ and equilibrium quantity $Q^*$. These are solved for within the model (we set $Q^d = Q^s$ to find $P^* = 20$, $Q^* = 300$).\n\n- **Exogenous variables:** The intercept and slope parameters (500, -100, 10, 20) reflect technology, consumer preferences, and input costs — all determined outside the model. An example exogenous shock would be a drought that shifts supply (changing -100 to -200), which the model then translates into new endogenous values of $P^*$ and $Q^*$.\n\n**Key distinction:** If we change an exogenous variable, the model predicts how the endogenous variables respond. Endogenous variables cannot be set independently — they are determined jointly by the system of equations."
     },
     {
       "id": "W1-P3a",
@@ -47,7 +47,7 @@
         "Remember order of operations (PEMDAS/BODMAS)",
         "Multiplication before addition"
       ],
-      "solution": ""
+      "solution": "**Predicted output: 13**\n\n**Reasoning:** R follows standard mathematical order of operations (BODMAS/PEMDAS). Multiplication is evaluated before addition:\n- Step 1: $5 \\times 2 = 10$\n- Step 2: $3 + 10 = 13$\n\n**R code and output:**\n```r\n3 + 5 * 2\n# [1] 13\n```\n\n**Key point:** This is different from $(3 + 5) \\times 2 = 16$. Parentheses override the default operator precedence. In R (as in mathematics), the precedence order is: parentheses → exponentiation → multiplication/division → addition/subtraction."
     },
     {
       "id": "W1-P3b",
@@ -56,7 +56,7 @@
       "topic": "R Basics - Arithmetic",
       "question": "Predict the output, then verify in R: (3 + 5) * 2",
       "hints": [],
-      "solution": ""
+      "solution": "**Predicted output: 16**\n\n**Reasoning:** The parentheses force addition to be evaluated first:\n- Step 1: $3 + 5 = 8$\n- Step 2: $8 \\times 2 = 16$\n\n**R code and output:**\n```r\n(3 + 5) * 2\n# [1] 16\n```\n\n**Contrast with W1-P3a:** Without parentheses, `3 + 5 * 2` gives 13. With parentheses, `(3 + 5) * 2` gives 16. This distinction matters in economic formulas — for example, computing $(P - AVC) \\times Q$ (contribution margin) requires parentheses around $P - AVC$ to avoid R evaluating $P - AVC \\times Q$ instead."
     },
     {
       "id": "W1-P3c",
@@ -67,7 +67,7 @@
       "hints": [
         "%% is the modulo operator (remainder after division)"
       ],
-      "solution": ""
+      "solution": "**Predicted output: 2**\n\n**Reasoning:** The `%%` operator returns the remainder after integer division.\n\nDivide 17 by 5:\n$17 = 3 \\times 5 + 2$\n\nThe quotient is 3 and the **remainder is 2**.\n\n**R code and output:**\n```r\n17 %% 5\n# [1] 2\n\n# Verify:\n17 %/% 5   # integer division -> 3\n17 %% 5    # remainder -> 2\n3 * 5 + 2  # check: 17\n```\n\n**Economic application:** Modulo is useful for grouping observations by cycle. For example, if you have monthly data and want to identify observations belonging to March (month 3), you could use `month %% 12` for 12-month cycles. It is also used in simulation loops to print progress every $k$ iterations."
     },
     {
       "id": "W1-P3d",
@@ -80,7 +80,7 @@
         "exp() is exponential function",
         "These are inverse functions"
       ],
-      "solution": ""
+      "solution": "**Predicted output: 3**\n\n**Reasoning:** `exp(x)` computes $e^x$ and `log(x)` computes $\\ln(x)$ (natural log, base $e$). Since $\\ln$ and $\\exp$ are inverse functions:\n$$\\ln(e^x) = x$$\nTherefore $\\ln(e^3) = 3$.\n\n**R code and output:**\n```r\nlog(exp(3))\n# [1] 3\n\n# Intermediate steps:\nexp(3)       # e^3 = 20.0855...\nlog(20.0855) # ln(20.0855) = 3\n```\n\n**Important R note:** In R, `log()` defaults to the **natural logarithm** (base $e \\approx 2.718$), not base 10. For base-10 log use `log10()`, for base-2 use `log2()`, for arbitrary base $b$ use `log(x, base = b)`.\n\n**Economic relevance:** This inverse relationship is fundamental. If $\\ln(Q) = \\beta_0 + \\beta_1 \\ln(P)$, then $Q = e^{\\beta_0} P^{\\beta_1}$ — the basis of log-linear demand estimation."
     },
     {
       "id": "W1-P4",
@@ -93,7 +93,7 @@
         "Use mean(), sd(), min(), max() for statistics",
         "Use sum() with logical condition to count"
       ],
-      "solution": ""
+      "solution": "**Analytical solution:**\n\nYields: $\\{45, 52, 48, 55, 50, 47, 53\\}$, $n = 7$\n\n**Mean:** $\\bar{Y} = \\frac{45+52+48+55+50+47+53}{7} = \\frac{350}{7} = 50$\n\n**Standard deviation (sample):**\nDeviations from mean: $\\{-5, +2, -2, +5, 0, -3, +3\\}$\nSquared deviations: $\\{25, 4, 4, 25, 0, 9, 9\\}$, sum = 76\n$s = \\sqrt{\\frac{76}{6}} = \\sqrt{12.\\overline{6}} \\approx 3.559$\n\n**Min:** 45, **Max:** 55\n\n**Above mean ($>50$):** 52, 55, 53 → **3 observations**\n\n**R code:**\n```r\n# Create vector\nyields <- c(45, 52, 48, 55, 50, 47, 53)\n\n# Summary statistics\nmean_yield <- mean(yields)   # 50\nsd_yield   <- sd(yields)     # 3.559\nmin_yield  <- min(yields)    # 45\nmax_yield  <- max(yields)    # 55\n\ncat(\"Mean:\", mean_yield, \"\\n\")\ncat(\"SD:\",   sd_yield,   \"\\n\")\ncat(\"Min:\",  min_yield,  \"\\n\")\ncat(\"Max:\",  max_yield,  \"\\n\")\n\n# Count above mean\nabove_mean <- sum(yields > mean_yield)\ncat(\"Above mean:\", above_mean, \"\\n\")  # 3\n\n# Which observations?\nyields[yields > mean_yield]  # 52 55 53\n```\n\n**Interpretation:** Average wheat yield is 50 bushels/hectare with a standard deviation of ~3.56. The symmetric distribution (3 above, 3 below, 1 at mean) suggests no strong skew in this small sample."
     },
     {
       "id": "W1-P5",
@@ -106,7 +106,7 @@
         "Default arguments: function(x, y = 10)",
         "Return values with return() or just put value at end"
       ],
-      "solution": ""
+      "solution": "**Part 1: Temperature conversion function**\n\nFormula: $C = \\frac{5}{9}(F - 32)$\n\n```r\nfahrenheit_to_celsius <- function(F) {\n  C <- (5/9) * (F - 32)\n  return(C)\n}\n\n# Test cases\nfahrenheit_to_celsius(32)   # 0 (freezing)\nfahrenheit_to_celsius(212)  # 100 (boiling)\nfahrenheit_to_celsius(98.6) # 37 (body temperature)\n```\n\n**Part 2: Profit function with default tax rate**\n\nProfit after tax: $\\pi_{\\text{net}} = (\\text{Revenue} - \\text{Cost}) \\times (1 - \\text{tax\\_rate})$\n\n```r\nprofit <- function(revenue, cost, tax_rate = 0.25) {\n  gross_profit <- revenue - cost\n  net_profit   <- gross_profit * (1 - tax_rate)\n  return(net_profit)\n}\n\n# Test: default tax rate\nprofit(revenue = 1000, cost = 600)\n# gross = 400, net = 400 * 0.75 = 300\n\n# Test: override tax rate\nprofit(revenue = 1000, cost = 600, tax_rate = 0.30)\n# net = 400 * 0.70 = 280\n\n# Vectorized: test for a range of revenues\nrevenues <- seq(500, 1500, by = 100)\nprofits  <- profit(revenue = revenues, cost = 600)\nplot(revenues, profits, type = \"l\",\n     xlab = \"Revenue (\\$)\", ylab = \"Net Profit (\\$)\",\n     main = \"Net Profit vs Revenue (tax = 25%)\")\n```\n\n**Key R programming note:** Default arguments are specified in the function signature. When calling `profit(1000, 600)`, R uses `tax_rate = 0.25`. The caller can override any default by providing a named argument. This is useful for sensitivity analysis — you can apply the function across a vector of tax rates to see how profit responds."
     },
     {
       "id": "W1-P6",
@@ -119,7 +119,7 @@
         "Elasticity formula: ε = (dQ/dP) × (P/Q)",
         "For linear demand dQ/dP is the coefficient on P"
       ],
-      "solution": ""
+      "solution": "**Analytical solution:**\n\n**Step 1: Find equilibrium**\nSet $Q^d = Q^s$:\n$$500 - 10P = -100 + 20P$$\n$$600 = 30P$$\n$$P^* = 20$$\n\nSubstitute into either equation:\n$$Q^* = 500 - 10(20) = 500 - 200 = 300$$\n\n**Equilibrium: $P^* = 20$, $Q^* = 300$**\n\n**Step 2: Price elasticity of demand**\n\nFor $Q^d = 500 - 10P$, the slope is $\\frac{dQ}{dP} = -10$.\n\n$$\\varepsilon_d = \\frac{dQ^d}{dP} \\cdot \\frac{P^*}{Q^*} = (-10) \\cdot \\frac{20}{300} = -\\frac{200}{300} = -\\frac{2}{3} \\approx -0.667$$\n\n**Interpretation:** Demand is inelastic at equilibrium ($|\\varepsilon| < 1$). A 1% increase in price reduces quantity demanded by approximately 0.667%.\n\n**R code:**\n```r\n# Define demand and supply functions\nQd <- function(P) 500 - 10 * P\nQs <- function(P) -100 + 20 * P\n\n# Solve for equilibrium analytically\n# 500 - 10P = -100 + 20P => 600 = 30P\nP_star <- 600 / 30\nQ_star <- Qd(P_star)\ncat(\"Equilibrium price:\", P_star, \"\\n\")  # 20\ncat(\"Equilibrium quantity:\", Q_star, \"\\n\") # 300\n\n# Price elasticity of demand\ndQdP <- -10  # slope of demand\nelasticity <- dQdP * (P_star / Q_star)\ncat(\"Price elasticity of demand:\", elasticity, \"\\n\")  # -0.6667\n\n# Plot supply and demand\nP_range <- seq(0, 50, by = 1)\nplot(Qd(P_range), P_range, type = \"l\", col = \"blue\", lwd = 2,\n     xlab = \"Quantity\", ylab = \"Price\",\n     main = \"Soybean Market Equilibrium\",\n     xlim = c(0, 600), ylim = c(0, 50))\nlines(Qs(P_range), P_range, col = \"red\", lwd = 2)\nabline(v = Q_star, h = P_star, lty = 2, col = \"grey\")\npoints(Q_star, P_star, pch = 19, cex = 1.5)\nlegend(\"topright\", legend = c(\"Demand\", \"Supply\"),\n       col = c(\"blue\", \"red\"), lwd = 2)\n```"
     },
     {
       "id": "W1-P7",
@@ -133,7 +133,7 @@
         "Tax burden: compare price changes for consumers and producers",
         "DWL = 0.5 × tax × change in quantity"
       ],
-      "solution": ""
+      "solution": "**Part (a): Price floor at $P_f = 25$**\n\nRecall equilibrium: $P^* = 20$, $Q^* = 300$.\n\nSince $P_f = 25 > P^* = 20$, the floor is **binding**.\n\nAt $P_f = 25$:\n$$Q^d = 500 - 10(25) = 250$$\n$$Q^s = -100 + 20(25) = 400$$\n\n**Surplus = $Q^s - Q^d = 400 - 250 = 150$ units**\n\n*Interpretation:* The price floor prevents the market from clearing. Producers want to supply 400 units but consumers only demand 250 at the elevated price. This is consistent with agricultural price support programs that create commodity surpluses.\n\n---\n\n**Part (b): $3 per-unit tax on producers**\n\n**Step 1: New supply after tax**\nA tax on producers shifts supply up by the tax amount. Producers receive price $P$ but only keep $P - t = P - 3$, so:\n$$Q^s_{\\text{new}} = -100 + 20(P - 3) = -100 + 20P - 60 = -160 + 20P$$\n\n**Step 2: New equilibrium**\nSet $Q^d = Q^s_{\\text{new}}$:\n$$500 - 10P = -160 + 20P$$\n$$660 = 30P$$\n$$P_c^* = 22 \\quad \\text{(price consumers pay)}$$\n\nPrice producers receive: $P_p^* = 22 - 3 = 19$\n\nNew quantity: $Q^{**} = 500 - 10(22) = 280$\n\n**Step 3: Tax burden sharing**\n- Consumer price rises from 20 to 22: **consumer burden = $2 per unit**\n- Producer price falls from 20 to 19: **producer burden = $1 per unit**\n- Total tax = 2 + 1 = $3 ✓\n- Consumer share: 2/3 of the tax burden\n- Producer share: 1/3 of the tax burden\n\n**Step 4: Tax revenue**\n$$\\text{Tax Revenue} = t \\times Q^{**} = 3 \\times 280 = \\$840$$\n\n**Step 5: Deadweight loss**\n$$\\text{DWL} = \\frac{1}{2} \\times t \\times \\Delta Q = \\frac{1}{2} \\times 3 \\times (300 - 280) = \\frac{1}{2} \\times 3 \\times 20 = \\$30$$\n\n*Interpretation:* The tax generates $840 in revenue but destroys $30 in social surplus. Consumers bear the larger share of the burden (2/3) because demand is more inelastic than supply at equilibrium.\n\n**R code:**\n```r\n# Part (a): Price floor\nP_floor <- 25\nQd_floor <- 500 - 10 * P_floor  # 250\nQs_floor <- -100 + 20 * P_floor  # 400\ncat(\"Surplus at price floor:\", Qs_floor - Qd_floor, \"\\n\")  # 150\n\n# Part (b): Tax on producers\nt <- 3\n# New supply: Qs_new = -160 + 20P\nP_c <- (500 + 160) / 30   # 22\nP_p <- P_c - t             # 19\nQ_new <- 500 - 10 * P_c   # 280\n\ntax_revenue <- t * Q_new\nDWL <- 0.5 * t * (300 - Q_new)\n\ncat(\"Consumer price:\", P_c, \"\\n\")\ncat(\"Producer price:\", P_p, \"\\n\")\ncat(\"New quantity:\", Q_new, \"\\n\")\ncat(\"Tax revenue:\", tax_revenue, \"\\n\")\ncat(\"Deadweight loss:\", DWL, \"\\n\")\n```"
     },
     {
       "id": "W1-P10",
@@ -146,7 +146,7 @@
         "Use runif(n, min, max) for uniform random numbers",
         "Apply the yield function to each rainfall value"
       ],
-      "solution": ""
+      "solution": "**Analytical solution:**\n\nYield function: $Y(R) = 30 + 0.5R - 0.002R^2$\n\n**Step 1: Find optimal rainfall (FOC)**\n$$\\frac{dY}{dR} = 0.5 - 0.004R = 0$$\n$$R^* = \\frac{0.5}{0.004} = 125 \\text{ mm}$$\n\n**Step 2: Verify it is a maximum (SOC)**\n$$\\frac{d^2Y}{dR^2} = -0.004 < 0 \\quad \\checkmark \\text{ (maximum)}$$\n\n**Step 3: Maximum yield**\n$$Y^* = 30 + 0.5(125) - 0.002(125)^2 = 30 + 62.5 - 0.002(15625) = 30 + 62.5 - 31.25 = 61.25$$\n\n**Optimal rainfall: $R^* = 125$ mm, Maximum yield: $Y^* = 61.25$ tonnes/ha**\n\n**Theoretical expected yield over U(50,150):**\n$$E[Y] = 30 + 0.5 E[R] - 0.002 E[R^2]$$\nFor $R \\sim U(50, 150)$: $E[R] = 100$, $E[R^2] = \\text{Var}(R) + (E[R])^2 = \\frac{(150-50)^2}{12} + 100^2 = 833.3 + 10000 = 10833.3$\n$$E[Y] = 30 + 0.5(100) - 0.002(10833.3) = 30 + 50 - 21.67 \\approx 58.33$$\n\n**R code:**\n```r\n# Yield function\nyield <- function(R) 30 + 0.5 * R - 0.002 * R^2\n\n# Analytical optimum\nR_star <- 0.5 / (2 * 0.002)\nY_star <- yield(R_star)\ncat(\"Optimal rainfall:\", R_star, \"mm\\n\")   # 125\ncat(\"Maximum yield:\",  Y_star, \"t/ha\\n\")   # 61.25\n\n# Simulation\nset.seed(42)  # for reproducibility\nn <- 50\nrainfall_sim <- runif(n, min = 50, max = 150)\nyield_sim    <- yield(rainfall_sim)\n\ncat(\"Simulated mean yield:\", round(mean(yield_sim), 2), \"\\n\")\ncat(\"Theoretical expected yield: ~58.33\\n\")\n\n# Plot yield curve with simulated points\nR_seq <- seq(0, 200, by = 1)\nplot(R_seq, yield(R_seq), type = \"l\", lwd = 2, col = \"darkgreen\",\n     xlab = \"Rainfall (mm)\", ylab = \"Yield (t/ha)\",\n     main = \"Crop Yield Response to Rainfall\")\npoints(rainfall_sim, yield_sim, pch = 16, col = \"steelblue\", alpha = 0.5)\nabline(v = R_star, lty = 2, col = \"red\")\ntext(R_star + 5, 40, paste(\"R* =\", R_star), col = \"red\")\n```\n\n**Interpretation:** The quadratic yield-rainfall relationship implies diminishing marginal returns to water. Below $R^* = 125$ mm, additional rainfall increases yield; above this level, excess water (waterlogging, nutrient leaching) reduces yield. The simulation with 50 draws from $U(50,150)$ should give a mean yield close to the theoretical expectation of ~58.33 t/ha."
     }
   ]
 }
