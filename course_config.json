@@ -16,7 +16,7 @@
     "instructor": "Atakelty Hailu",
     "email": "atakelty.hailu@uwa.edu.au",
     "office": "Social Sciences Building 380",
-    "officeHours": "Wednesdays 2\u20134pm or by appointment",
+    "officeHours": "Wednesdays 2–4pm or by appointment",
     "description": "A rigorous introduction to the economic concepts and quantitative methods used in agricultural and resource economics. Topics include supply and demand analysis, optimization, consumer and producer theory, market equilibrium, welfare economics, trade policy, and decision under uncertainty. R is used throughout for analysis and visualization."
   },
   "github": {
@@ -106,7 +106,7 @@
         "weight": 15,
         "dueDate": "2026-03-25T23:59:00+08:00",
         "weekNumber": 4,
-        "description": "Submitted via GitHub. Open your assign01-{username} repository in the Worksheets tab. Mathematical and economic analysis covering Weeks 1\u20134.",
+        "description": "Submitted via GitHub. Open your assign01-{username} repository in the Worksheets tab. Mathematical and economic analysis covering Weeks 1–4.",
         "reminderDays": [
           14,
           7,
@@ -217,7 +217,7 @@
         "weight": 35,
         "dueDate": "2026-06-13T23:59:00+08:00",
         "weekNumber": 16,
-        "description": "Not centrally scheduled \u2014 arranged by instructor. Exact date TBA (30 May \u2013 13 June).",
+        "description": "Not centrally scheduled — arranged by instructor. Exact date TBA (30 May – 13 June).",
         "reminderDays": [
           21,
           14,
@@ -228,15 +228,15 @@
       }
     ]
   },
-  "outlineContent": "COVER:\nECON4002: Core Concepts in Agricultural and Applied Economics\nUniversity of Western Australia\nSemester 1, 2026\nInstructor: Atakelty Hailu\n\nDESCRIPTION:\nA rigorous introduction to the economic concepts and quantitative methods used in agricultural and resource economics. Topics include supply and demand analysis, optimization, consumer and producer theory, market equilibrium, welfare economics, trade policy, and decision under uncertainty. R is used throughout for analysis and visualization.\n\nCONTACTS:\nInstructor: Atakelty Hailu\nEmail: atakelty.hailu@uwa.edu.au\nOffice: Social Sciences Building 380\nOffice Hours: Wednesdays 2\u20134pm or by appointment\n\nTOPICS:\nWeek 1: Foundations \u2014 Economics & R Setup\nWeek 2: Mathematical Methods I \u2014 Linear Algebra\nWeek 3: Mathematical Methods II \u2014 Calculus & Functions\nWeek 4: Optimization \u2014 Unconstrained and Constrained\nWeek 5: Consumer Theory I \u2014 Utility & Marshallian Demand\nWeek 6: Consumer Theory II \u2014 Duality & Welfare\nWeek 7: Producer Theory I \u2014 Technology & Costs\nWeek 8: Producer Theory II \u2014 Profit Maximization & Industry\nWeek 9: Market Equilibrium Analysis\nWeek 10: International Trade and Policy\nWeek 11: Welfare Economics \u2014 Measuring Economic Well-Being\nWeek 12: Decision Under Uncertainty\n\nASSESSMENTS:\nHomework 1: 2.5% \u2014 due Mon 16 March (GitHub: hw01-{username})\nAssignment 1: 15% \u2014 due Wed 25 March (GitHub: assign01-{username})\nHomework 2: 2.5% \u2014 due Mon 13 April (GitHub: hw02-{username})\nHomework 3: 2.5% \u2014 due Mon 27 April (GitHub: hw03-{username})\nAssignment 2: 20% \u2014 due Wed 6 May (GitHub: assign02-{username})\nHomework 4: 2.5% \u2014 due Wed 13 May (GitHub: hw04-{username})\nAssignment 3: 20% \u2014 due Wed 20 May (GitHub: assign03-{username})\nClass Participation: 10% \u2014 continuous (attendance + homework)\nFinal Test Practice: ungraded \u2014 due Wed 27 May (GitHub: final-practice-{username})\nFinal Test: 35% \u2014 exam period 30 May \u2013 13 June (exact date TBA)\n\nAll assignments are submitted individually via GitHub. Open the Worksheets tab in Nomad or visit github.com/ECON4002-2026-S1 to find your personal repository for each assessment. Late submissions incur a 5% per day penalty for the first 7 days, after which the assignment is not accepted.",
+  "outlineContent": "COVER:\nECON4002: Core Concepts in Agricultural and Applied Economics\nUniversity of Western Australia\nSemester 1, 2026\nInstructor: Atakelty Hailu\n\nDESCRIPTION:\nA rigorous introduction to the economic concepts and quantitative methods used in agricultural and resource economics. Topics include supply and demand analysis, optimization, consumer and producer theory, market equilibrium, welfare economics, trade policy, and decision under uncertainty. R is used throughout for analysis and visualization.\n\nCONTACTS:\nInstructor: Atakelty Hailu\nEmail: atakelty.hailu@uwa.edu.au\nOffice: Social Sciences Building 380\nOffice Hours: Wednesdays 2–4pm or by appointment\n\nTOPICS:\nWeek 1: Foundations — Economics & R Setup\nWeek 2: Mathematical Methods I — Linear Algebra\nWeek 3: Mathematical Methods II — Calculus & Functions\nWeek 4: Optimization — Unconstrained and Constrained\nWeek 5: Consumer Theory I — Utility & Marshallian Demand\nWeek 6: Consumer Theory II — Duality & Welfare\nWeek 7: Producer Theory I — Technology & Costs\nWeek 8: Producer Theory II — Profit Maximization & Industry\nWeek 9: Market Equilibrium Analysis\nWeek 10: International Trade and Policy\nWeek 11: Welfare Economics — Measuring Economic Well-Being\nWeek 12: Decision Under Uncertainty\n\nASSESSMENTS:\nHomework 1: 2.5% — due Mon 16 March (GitHub: hw01-{username})\nAssignment 1: 15% — due Wed 25 March (GitHub: assign01-{username})\nHomework 2: 2.5% — due Mon 13 April (GitHub: hw02-{username})\nHomework 3: 2.5% — due Mon 27 April (GitHub: hw03-{username})\nAssignment 2: 20% — due Wed 6 May (GitHub: assign02-{username})\nHomework 4: 2.5% — due Wed 13 May (GitHub: hw04-{username})\nAssignment 3: 20% — due Wed 20 May (GitHub: assign03-{username})\nClass Participation: 10% — continuous (attendance + homework)\nFinal Test Practice: ungraded — due Wed 27 May (GitHub: final-practice-{username})\nFinal Test: 35% — exam period 30 May – 13 June (exact date TBA)\n\nAll assignments are submitted individually via GitHub. Open the Worksheets tab in Nomad or visit github.com/ECON4002-2026-S1 to find your personal repository for each assessment. Late submissions incur a 5% per day penalty for the first 7 days, after which the assignment is not accepted.",
   "weeklyResources": {
     "1": {
       "week": 1,
-      "title": "Foundations \u2014 Economics & R Setup",
+      "title": "Foundations — Economics & R Setup",
       "lectureNotes": [
         {
           "id": "w1_lesson",
-          "title": "Week 1: Foundations \u2014 Economics & R Setup",
+          "title": "Week 1: Foundations — Economics & R Setup",
           "description": "Introduction to formal economic analysis, R setup, basic commands, and supply-demand models",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week1/week1_lesson.md",
@@ -254,7 +254,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w1_lab",
+          "title": "Week 1 R Lab: Foundations — Economics & R Setup",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 1",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week1/week1_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w1_practice",
@@ -270,7 +280,7 @@
         {
           "id": "w1_code",
           "title": "R Code Reference: Foundations",
-          "description": "Essential R code snippets for Week 1 \u2014 arithmetic, variables, functions, and basic economic models",
+          "description": "Essential R code snippets for Week 1 — arithmetic, variables, functions, and basic economic models",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week1/week1_code_snippets.md",
           "source": "github",
@@ -280,11 +290,11 @@
     },
     "2": {
       "week": 2,
-      "title": "Mathematical Methods I \u2014 Linear Algebra",
+      "title": "Mathematical Methods I — Linear Algebra",
       "lectureNotes": [
         {
           "id": "w2_lesson",
-          "title": "Week 2: Mathematical Methods I \u2014 Linear Algebra",
+          "title": "Week 2: Mathematical Methods I — Linear Algebra",
           "description": "Vectors, matrices, systems of equations, and linear economic models",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week2/week2_lesson.md",
@@ -293,7 +303,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w2_lab",
+          "title": "Week 2 R Lab: Mathematical Methods I — Linear Algebra",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 2",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week2/week2_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w2_practice",
@@ -319,11 +339,11 @@
     },
     "3": {
       "week": 3,
-      "title": "Mathematical Methods II \u2014 Calculus & Functions",
+      "title": "Mathematical Methods II — Calculus & Functions",
       "lectureNotes": [
         {
           "id": "w3_lesson",
-          "title": "Week 3: Mathematical Methods II \u2014 Calculus & Functions",
+          "title": "Week 3: Mathematical Methods II — Calculus & Functions",
           "description": "Derivatives, optimization conditions, comparative statics, and economic applications",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week3/week3_lesson.md",
@@ -332,7 +352,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w3_lab",
+          "title": "Week 3 R Lab: Mathematical Methods II — Calculus & Functions",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 3",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week3/week3_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w3_practice",
@@ -358,11 +388,11 @@
     },
     "4": {
       "week": 4,
-      "title": "Optimization \u2014 Unconstrained and Constrained",
+      "title": "Optimization — Unconstrained and Constrained",
       "lectureNotes": [
         {
           "id": "w4_lesson",
-          "title": "Week 4: Optimization \u2014 Unconstrained and Constrained",
+          "title": "Week 4: Optimization — Unconstrained and Constrained",
           "description": "First- and second-order conditions, Lagrangian method, Kuhn-Tucker conditions",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week4/week4_lesson.md",
@@ -371,12 +401,22 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w4_lab",
+          "title": "Week 4 R Lab: Optimization — Unconstrained and Constrained",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 4",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week4/week4_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w4_practice",
           "title": "Week 4 Practice Questions",
-          "description": "Optimization problems \u2014 unconstrained and constrained",
+          "description": "Optimization problems — unconstrained and constrained",
           "type": "exercise",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week4/week4_practice.json",
           "source": "github",
@@ -397,11 +437,11 @@
     },
     "5": {
       "week": 5,
-      "title": "Consumer Theory I \u2014 Utility & Marshallian Demand",
+      "title": "Consumer Theory I — Utility & Marshallian Demand",
       "lectureNotes": [
         {
           "id": "w5_lesson",
-          "title": "Week 5: Consumer Theory I \u2014 Utility & Marshallian Demand",
+          "title": "Week 5: Consumer Theory I — Utility & Marshallian Demand",
           "description": "Preferences, utility functions, budget constraint, and utility maximization",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week5/week5_lesson.md",
@@ -410,7 +450,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w5_lab",
+          "title": "Week 5 R Lab: Consumer Theory I — Utility & Marshallian Demand",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 5",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week5/week5_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w5_practice",
@@ -436,11 +486,11 @@
     },
     "6": {
       "week": 6,
-      "title": "Consumer Theory II \u2014 Duality & Welfare",
+      "title": "Consumer Theory II — Duality & Welfare",
       "lectureNotes": [
         {
           "id": "w6_lesson",
-          "title": "Week 6: Consumer Theory II \u2014 Duality & Welfare",
+          "title": "Week 6: Consumer Theory II — Duality & Welfare",
           "description": "Expenditure minimization, Hicksian demand, duality, and welfare measures",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week6/week6_lesson.md",
@@ -449,7 +499,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w6_lab",
+          "title": "Week 6 R Lab: Consumer Theory II — Duality & Welfare",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 6",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week6/week6_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w6_practice",
@@ -475,11 +535,11 @@
     },
     "7": {
       "week": 7,
-      "title": "Producer Theory I \u2014 Technology & Costs",
+      "title": "Producer Theory I — Technology & Costs",
       "lectureNotes": [
         {
           "id": "w7_lesson",
-          "title": "Week 7: Producer Theory I \u2014 Technology & Costs",
+          "title": "Week 7: Producer Theory I — Technology & Costs",
           "description": "Production functions, cost minimization, and cost curves",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week7/week7_lesson.md",
@@ -488,7 +548,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w7_lab",
+          "title": "Week 7 R Lab: Producer Theory I — Technology & Costs",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 7",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week7/week7_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w7_practice",
@@ -504,11 +574,11 @@
     },
     "8": {
       "week": 8,
-      "title": "Producer Theory II \u2014 Profit Maximization & Industry",
+      "title": "Producer Theory II — Profit Maximization & Industry",
       "lectureNotes": [
         {
           "id": "w8_lesson",
-          "title": "Week 8: Producer Theory II \u2014 Profit Maximization & Industry",
+          "title": "Week 8: Producer Theory II — Profit Maximization & Industry",
           "description": "Profit maximization, supply curves, and industry equilibrium",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week8/week8_lesson.md",
@@ -517,7 +587,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w8_lab",
+          "title": "Week 8 R Lab: Producer Theory II — Profit Maximization & Industry",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 8",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week8/week8_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w8_practice",
@@ -556,7 +636,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w9_lab",
+          "title": "Week 9 R Lab: Market Equilibrium Analysis",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 9",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week9/week9_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w9_practice",
@@ -595,7 +685,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w10_lab",
+          "title": "Week 10 R Lab: International Trade and Policy",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 10",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week10/week10_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w10_practice",
@@ -621,11 +721,11 @@
     },
     "11": {
       "week": 11,
-      "title": "Welfare Economics \u2014 Measuring Economic Well-Being",
+      "title": "Welfare Economics — Measuring Economic Well-Being",
       "lectureNotes": [
         {
           "id": "w11_lesson",
-          "title": "Week 11: Welfare Economics \u2014 Measuring Economic Well-Being",
+          "title": "Week 11: Welfare Economics — Measuring Economic Well-Being",
           "description": "Social welfare functions, Pareto efficiency, externalities, and public goods",
           "type": "lectureNotes",
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week11/week11_lesson.md",
@@ -634,7 +734,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w11_lab",
+          "title": "Week 11 R Lab: Welfare Economics — Measuring Economic Well-Being",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 11",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week11/week11_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w11_practice",
@@ -673,7 +783,17 @@
         }
       ],
       "videos": [],
-      "notebooks": [],
+      "notebooks": [
+        {
+          "id": "w12_lab",
+          "title": "Week 12 R Lab: Decision Under Uncertainty",
+          "description": "Interactive R notebook with code snippets, exercises, and pre-baked outputs for Week 12",
+          "type": "notebook",
+          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week12/week12_lab.ipynb",
+          "source": "github",
+          "requiresAuth": false
+        }
+      ],
       "exercises": [
         {
           "id": "w12_practice",
