@@ -160,7 +160,9 @@ $$\varepsilon = \frac{\% \Delta Q}{\% \Delta P} = \frac{\Delta Q / Q}{\Delta P /
 
 For a demand curve $Q = f(P)$:
 
-$$\frac{dTR}{dP} = Q\left(1 + \frac{1}{\varepsilon_d}\right) = Q\left(\frac{\varepsilon_d + 1}{\varepsilon_d}\right)$$
+$$\frac{dTR}{dP} = Q\left(1 + \varepsilon_d\right)$$
+
+$$MR = \frac{dTR}{dQ} = P\left(1 + \frac{1}{\varepsilon_d}\right)$$
 
 | If demand is... | Then raising price... |
 |-----------------|----------------------|
