@@ -1,3 +1,10 @@
 *.DS_Store
 __pycache__/
 *.pyc
+
+# Instructor-only files — NEVER commit
+AnswerKey*
+*_answer_key*
+*_solutions*
+*_rubric*
+*.instructor*
