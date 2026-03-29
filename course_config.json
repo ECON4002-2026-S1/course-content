@@ -1,8 +1,8 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.2.0",
-  "lastUpdated": "2026-03-11",
+  "version": "1.4.0",
+  "lastUpdated": "2026-03-29",
   "institution": {
     "id": "uwa",
     "name": "University of Western Australia",
@@ -25,7 +25,15 @@
     "worksheetFiles": [
       "ANSWERS.md"
     ],
-    "totalWeeks": 8
+    "totalWeeks": 8,
+    "assignments": [
+      {
+        "id": "assignment1",
+        "title": "Assignment 1",
+        "repoPattern": "assignment1-{username}",
+        "files": ["ANSWERS.md"]
+      }
+    ]
   },
   "courseSchedule": {
     "semesterDates": {
@@ -253,7 +261,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w1_video",
+          "title": "Foundations and R Setup",
+          "description": "Lecture video: Foundations and R setup",
+          "type": "video",
+          "url": "https://echo360.net.au/media/3da4301f-54d3-4877-858d-4f0ad26206b0/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w1_lab",
@@ -302,7 +320,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w2_video",
+          "title": "Mathematical Methods I — Linear Algebra",
+          "description": "Lecture video: Mathematical Methods I — Linear Algebra",
+          "type": "video",
+          "url": "https://echo360.net.au/media/b8895cad-7ddb-49db-9bed-b402368d6d89/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w2_lab",
@@ -351,7 +379,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w3_video",
+          "title": "Mathematical Methods II — Calculus & Functions",
+          "description": "Lecture video: Mathematical Methods II — Calculus & Functions",
+          "type": "video",
+          "url": "https://echo360.net.au/media/a9d95bd0-c7b4-46a6-9ae1-7a56eb4d1f83/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w3_lab",
@@ -458,7 +496,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w5_video",
+          "title": "Consumer Theory I — Utility & Marshallian Demand",
+          "description": "Lecture video: Consumer Theory I — Utility & Marshallian Demand",
+          "type": "video",
+          "url": "https://echo360.net.au/media/2e49c24f-2210-4064-98ad-8ad335dafb66/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w5_lab",
