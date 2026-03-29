@@ -1,7 +1,7 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "lastUpdated": "2026-03-29",
   "institution": {
     "id": "uwa",
@@ -438,7 +438,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w4_video",
+          "title": "Optimization — Unconstrained and Constrained",
+          "description": "Lecture video: Optimization — Unconstrained and Constrained",
+          "type": "video",
+          "url": "https://echo360.net.au/media/283de35f-4668-44a2-a62d-9d771db77d58/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w4_lab",
