@@ -1,8 +1,8 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.5.0",
-  "lastUpdated": "2026-03-29",
+  "version": "1.6.0",
+  "lastUpdated": "2026-04-15",
   "institution": {
     "id": "uwa",
     "name": "University of Western Australia",
@@ -574,7 +574,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w6_video",
+          "title": "Consumer Theory II: Duality, Welfare Measurement and Slutsky Equation",
+          "description": "Lecture video: Consumer Theory II — Duality, Welfare Measurement and Slutsky Equation",
+          "type": "video",
+          "url": "https://echo360.net.au/media/48fd3aab-3ea9-425d-9225-d1e956df4294/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w6_lab",
@@ -632,7 +642,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w7_video",
+          "title": "Producer Theory I: Technology and Cost Functions",
+          "description": "Lecture video: Producer Theory I — Technology and Cost Functions",
+          "type": "video",
+          "url": "https://echo360.net.au/media/c117cd1a-d2e9-4e3d-9180-dc796c3d0f1c/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w7_lab",
