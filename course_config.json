@@ -1,8 +1,8 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.6.0",
-  "lastUpdated": "2026-04-15",
+  "version": "1.7.0",
+  "lastUpdated": "2026-04-16",
   "institution": {
     "id": "uwa",
     "name": "University of Western Australia",
@@ -31,7 +31,9 @@
         "id": "assignment1",
         "title": "Assignment 1",
         "repoPattern": "assignment1-{username}",
-        "files": ["ANSWERS.md"]
+        "files": [
+          "ANSWERS.md"
+        ]
       }
     ]
   },
@@ -701,7 +703,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w8_video",
+          "title": "Producer Theory II: Profit Maximisation & Industry",
+          "description": "Lecture video: Producer Theory II — Profit Maximisation, Supply, and Industry Equilibrium",
+          "type": "video",
+          "url": "https://echo360.net.au/media/dab1e99b-ab50-49c0-9d0a-e04f1386e43d/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w8_lab",
