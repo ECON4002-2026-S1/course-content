@@ -9,6 +9,9 @@ AnswerKey*
 *_rubric*
 *.instructor*
 
+# Local-only working files — never commit
+LOCAL/
+
 # LaTeX build artifacts
 *.aux
 *.log
