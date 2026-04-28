@@ -547,6 +547,49 @@ toolkit$insurance(100000, 50000, 0.1)
 
 ---
 
+## 13. Python: Expected Utility Diagram (matplotlib)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_eu_diagram(outcomes, probs, u_fn, title='Expected Utility'):
+    x = np.linspace(0.1, max(outcomes) * 1.2, 400)
+    y = u_fn(x)
+
+    EU = sum(p * u_fn(o) for p, o in zip(probs, outcomes))
+    EV = sum(p * o for p, o in zip(probs, outcomes))
+    # Certainty equivalent: solve u(CE) = EU numerically
+    from scipy.optimize import brentq
+    CE = brentq(lambda x: u_fn(x) - EU, 0.1, max(outcomes))
+    RP = EV - CE
+
+    plt.figure(figsize=(9, 5))
+    plt.plot(x, y, 'k-', lw=2, label='u(x)')
+    # Chord between outcomes
+    plt.plot(outcomes, [u_fn(o) for o in outcomes], 'b--', lw=1.5, label='Chord')
+    plt.scatter(outcomes, [u_fn(o) for o in outcomes], color='red', zorder=5)
+    plt.axhline(EU, color='green', ls=':', lw=1.5, label=f'EU = {EU:.1f}')
+    plt.axvline(CE, color='orange', ls=':', lw=1.5, label=f'CE = {CE:.1f}')
+    plt.axvline(EV, color='purple', ls=':', lw=1.5, label=f'EV = {EV:.1f}')
+    plt.annotate('', xy=(EV, EU*0.5), xytext=(CE, EU*0.5),
+                 arrowprops=dict(arrowstyle='<->', color='brown'))
+    plt.text((CE+EV)/2, EU*0.45, f'RP={RP:.1f}', ha='center', color='brown')
+    plt.xlabel('Outcome ($)'); plt.ylabel('Utility')
+    plt.title(title); plt.legend(); plt.grid(True, alpha=0.3)
+    plt.tight_layout(); plt.show()
+    return dict(EU=EU, EV=EV, CE=CE, RP=RP)
+
+# Farmer fertilizer example from lecture
+u = lambda x: 10 * np.sqrt(x)
+result = plot_eu_diagram([50, 450], [0.5, 0.5], u, 'Fertilizer Decision — Expected Utility')
+print(result)
+```
+
+**Notes:** Replicates the textbook EU diagram using Python/matplotlib. Requires `scipy` for the certainty-equivalent root-finding. Compatible with Jupyter notebooks.
+
+---
+
 ## Common Patterns
 
 | Pattern | Template |
