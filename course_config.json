@@ -910,15 +910,6 @@
           "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week11/week11_code_snippets.md",
           "source": "github",
           "requiresAuth": false
-        },
-        {
-          "id": "w11_topic_notes",
-          "title": "Topic Notes: Welfare Economics",
-          "description": "Notes on economic welfare measures, market efficiency, and the invisible hand",
-          "type": "lectureNotes",
-          "url": "https://raw.githubusercontent.com/ECON4002-2026-S1/course-content/main/Week11/welfare_economics.md",
-          "source": "github",
-          "requiresAuth": false
         }
       ]
     },
