@@ -33,14 +33,14 @@ Agricultural and Resource Economics applies economic theory and quantitative met
 
 We use mathematical models because they provide:
 
-| Benefit | Description |
-|---------|-------------|
-| **Precision** | Mathematical statements are unambiguous |
-| **Explicit assumptions** | We know exactly what we're assuming |
-| **Logical consistency** | Mathematics prevents contradictions |
-| **Generalization** | Results extend beyond specific examples |
-| **Quantification** | We can measure effects, not just describe them |
-| **Computational implementation** | Models can be simulated and estimated |
+| Benefit              | What it gives you                             |
+| -------------------- | --------------------------------------------- |
+| **Precision**        | Unambiguous definitions; testable predictions |
+| **Generality**       | Results hold across many specific cases       |
+| **Tractability**     | Complexity reduced to essential mechanisms    |
+| **Communication**    | Shared language across disciplines            |
+| **Policy relevance** | Quantifiable welfare effects                  |
+| **Reproducibility**  | Others can verify and extend your work        |
 
 > **Key Insight**: An economic model is a *simplified analytical framework* representing economic reality. It abstracts from unimportant details to focus on essential relationships.
 
@@ -97,44 +97,45 @@ Mathematical Tools → Microeconomic Agents → Market Interactions → Policy A
 
 **Agricultural Application**: Agricultural trade policy, export subsidies, import restrictions
 
-#### Decision Under Uncertainty (Week 11)
+#### Welfare Economics (Week 11)
+- Consumer and producer surplus revisited
+- Compensating and equivalent variation
+- The two welfare theorems
+- Externalities and public goods
+
+**Agricultural Application**: Pigouvian taxes on pesticide / nutrient runoff, public-good provision of flood mitigation
+
+#### Decision Making Under Uncertainty (Week 12)
 - Expected utility theory
-- Risk aversion measures
+- Risk aversion measures (absolute, relative)
 - Certainty equivalents and risk premiums
-- Insurance markets
+- Insurance and the maximum willingness to pay for coverage
 
 **Agricultural Application**: Crop insurance, weather risk, price risk management
 
-#### Linear Programming (Week 12)
-- LP formulation and graphical solution
-- Duality and shadow prices
-- Sensitivity analysis
-
-**Agricultural Application**: Farm planning, feed mixing, resource allocation
-
 ### 2.2 Mathematical Methods
 
-| Method | Application | Week |
-|--------|-------------|------|
-| Linear algebra | Systems of equations, input-output | 2 |
-| Calculus | Marginal analysis, elasticity | 3 |
-| Unconstrained optimization | Profit maximization | 4 |
-| Constrained optimization | Utility/cost optimization | 4-6 |
-| Comparative statics | Policy analysis | 5-10 |
-| Expected utility | Risk analysis | 11 |
-| Linear programming | Resource allocation | 12 |
+| Method                           | Application                        | Week |
+| -------------------------------- | ---------------------------------- | ---- |
+| Linear algebra                   | Systems of equations, input-output | 2    |
+| Calculus                         | Marginal analysis, elasticity      | 3    |
+| Unconstrained optimization       | Profit maximization                | 4    |
+| Constrained optimization         | Utility/cost optimization          | 4-6  |
+| Comparative statics              | Policy analysis                    | 5-10 |
+| Surplus measures (CS, PS, CV/EV) | Welfare evaluation                 | 9-11 |
+| Expected utility                 | Risk analysis                      | 12   |
 
 ---
 
 ## 3. Assessment Structure
 
-| Component | Weight | Description |
-|-----------|--------|-------------|
-| Assignment 1 | 15% | Mathematical methods (Due Week 4) |
-| Assignment 2 | 20% | Consumer and producer theory (Due Week 8) |
-| Assignment 3 | 20% | Markets, trade, uncertainty (Due Week 11) |
-| Participation | 10% | Homework, quizzes, engagement |
-| Final Test | 35% | Comprehensive (Week 13) |
+| Component     | Weight | Description                               |
+| ------------- | ------ | ----------------------------------------- |
+| Assignment 1  | 15%    | Mathematical methods (Due Week 4)         |
+| Assignment 2  | 20%    | Consumer and producer theory (Due Week 8) |
+| Assignment 3  | 20%    | Markets, trade, uncertainty (Due Week 11) |
+| Participation | 10%    | Homework, quizzes, engagement             |
+| Final Test    | 35%    | Comprehensive (Week 13)                   |
 
 **Key Point**: Assignments require both analytical derivations AND R implementation.
 
@@ -404,11 +405,15 @@ P_star <- 220 / 10
 Q_star <- demand(P_star)
 cat("Equilibrium: P* =", P_star, ", Q* =", Q_star, "\n")
 
-# Numerical solution (useful for complex models)
+# Numerical solution — useful for complex models where
+# the analytical solution is intractable
 excess_demand <- function(P) {
   demand(P) - supply(P)
 }
 
+# uniroot finds P where excess_demand(P) = 0
+# Uses the bisection / Brent method; supply a bracketing interval [a, b]
+# where the function has opposite signs
 P_equilibrium <- uniroot(excess_demand, interval = c(0, 100))$root
 cat("Numerical solution: P* =", round(P_equilibrium, 2), "\n")
 ```
@@ -443,7 +448,7 @@ legend("topright", legend = c("Demand", "Supply", "Equilibrium"),
 grid()
 ```
 
-### 6.4 Policy Analysis: A Tax
+### 6.4 Policy Analysis I: A Per-Unit Tax
 
 Suppose the government imposes a $6 tax per unit on suppliers:
 
@@ -470,6 +475,58 @@ cat("New equilibrium: P_consumer =", round(P_new, 2),
     ", Q =", round(Q_new, 2), "\n")
 cat("Price to producer =", round(P_new - 6, 2), "\n")
 ```
+
+### 6.5 Policy Analysis II: A Price Floor
+
+A *price floor* (e.g. a guaranteed-minimum price for wheat) sets a lower bound
+$P^{\min}$ below which the market price cannot fall. If $P^{\min} > P^{*}$ the
+floor is **binding**: quantity supplied exceeds quantity demanded and a
+*surplus* emerges.
+
+```r
+P_floor <- 25                  # binding because P* = 22 < 25
+Qd_floor <- demand(P_floor)    # 100
+Qs_floor <- supply(P_floor)    # 130
+surplus  <- Qs_floor - Qd_floor
+cat("Floor:", P_floor, "  Qd =", Qd_floor,
+    "  Qs =", Qs_floor, "  surplus =", surplus, "\n")
+```
+
+The symmetric construct is a *price ceiling* $P^{\max} < P^{*}$, which causes a
+shortage. Welfare implications (deadweight loss, distributional effects) are
+developed in Week 9.
+
+### 6.6 When Analytical Solutions Don't Exist: Nonlinear Demand
+
+The linear models above are easy to solve algebraically — `uniroot` is overkill.
+The real value of numerical root-finding shows up when an analytical solution
+is **unavailable**. Consider an iso-elastic demand and square-root supply
+(both common in agricultural models):
+
+$$
+Q^{d}(P) \;=\; \frac{100}{\sqrt{P}}, \qquad Q^{s}(P) \;=\; 5\sqrt{P}.
+$$
+
+Setting $Q^{d}=Q^{s}$ gives $100/\sqrt{P}=5\sqrt{P}$, i.e. $P=20$ and
+$Q=5\sqrt{20}\approx 22.36$. We will *pretend* this is intractable and let R
+find it numerically:
+
+```r
+demand_nl <- function(P) 100 / sqrt(P)
+supply_nl <- function(P) 5 * sqrt(P)
+
+excess_nl <- function(P) demand_nl(P) - supply_nl(P)
+P_nl <- uniroot(excess_nl, interval = c(0.01, 1000))$root
+Q_nl <- demand_nl(P_nl)
+
+cat("Nonlinear eq:  P* =", round(P_nl, 4),
+    " Q* =", round(Q_nl, 4), "\n")
+# Nonlinear eq:  P* = 20  Q* = 22.3607
+```
+
+**Lesson:** the same `uniroot` workflow scales to *any* continuous excess-demand
+function — Cobb–Douglas markets, CES, multi-input production — where pen-and-paper
+algebra would fail.
 
 ---
 

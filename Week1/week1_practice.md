@@ -186,6 +186,52 @@ e) What is the average yield across your 50 simulations?
 
 ---
 
+### Problem 11: Nonlinear Equilibrium (motivating `uniroot`)
+
+A small market for free-range eggs has an iso-elastic demand and a square-root
+supply (both common in agricultural commodity studies):
+
+$$
+Q^{d}(P) \;=\; \frac{100}{\sqrt{P}}, \qquad Q^{s}(P) \;=\; 5\sqrt{P}.
+$$
+
+a) **Analytically**: by setting $Q^{d}(P) = Q^{s}(P)$ and squaring, solve for the
+   equilibrium price $P^{*}$ and quantity $Q^{*}$. (Show the algebra.)
+
+b) **In R**: define `demand_nl` and `supply_nl`, build `excess_nl(P)` and find the
+   equilibrium with `uniroot()` using the bracket `c(0.01, 1000)`. Confirm to four
+   decimal places that the numerical answer matches the analytical one.
+
+c) **Conceptual.** Why does the analytical method get harder if demand were
+   instead $Q^{d}(P) = 100\,P^{-0.7}$ (still iso-elastic, but with a non-integer
+   exponent)? Verify in one sentence that `uniroot()` would handle it just the
+   same.
+
+d) Compute the price elasticity of demand at the equilibrium for *both* demand
+   specifications. Why is iso-elastic demand so named?
+
+---
+
+### Problem 12: Price Ceiling
+
+Continue with the soybean market from Problem 6: $Q^{d} = 500 - 10P$ and
+$Q^{s} = -100 + 20P$. Suppose Parliament responds to a public outcry over food
+costs and imposes a price *ceiling* of $P^{\max} = \$16$ per bushel.
+
+a) Is the ceiling binding? (Compare with the equilibrium price found in Q6(a).)
+
+b) Compute the quantity demanded and the quantity supplied at the ceiling price,
+   and the size of the shortage.
+
+c) Without using algebra, explain in two or three sentences who *gains* and who
+   *loses* from the ceiling, and why the loss is larger than the gain.
+
+d) **In R**: write a short script that (i) defines the soybean demand and supply,
+   (ii) reports `Qd`, `Qs`, and the shortage at $P = 16$, and (iii) verifies that
+   the analogous floor at $P = 25$ would instead create a *surplus*.
+
+---
+
 ## Submission Guidelines
 
 - Submit as a PDF containing both analytical work and R code/output

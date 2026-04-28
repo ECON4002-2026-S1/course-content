@@ -184,17 +184,51 @@ Test your functions with: $a = 100$, $b = 2$, $c = -20$, $d = 3$, $t = 5$.
 
 ---
 
+## Problem 13: Market Power and Non-Competitive Equilibria (Advanced)
+
+A monopoly seed company holds a patent on herbicide-tolerant canola. Inverse demand for trait licences from farmers is $P = 100 - Q$. The monopolist has constant marginal cost $MC = 20$.
+
+**(a)** Write down the monopolist's marginal revenue function.
+
+**(b)** Find the profit-maximising quantity and price ($Q^m$, $P^m$).
+
+**(c)** What would the competitive equilibrium quantity and price be (where $P = MC$)?
+
+**(d)** Calculate the deadweight loss from monopoly.
+
+**(e)** Explain why the monopolist's equilibrium has no supply curve.
+
+---
+
+## Problem 14: Bilateral Squeeze (Conceptual)
+
+A broadacre grain farmer faces the following market conditions:
+- The four largest seed companies control over 70% of global commercial seed sales
+- On the east coast, two companies dominate grain storage, handling, and export
+
+**(a)** Identify whether the input (seed) market is better described as a monopoly, oligopoly, or perfectly competitive. Explain.
+
+**(b)** Identify whether the output (grain handling) market is best described as a monopoly, oligopoly, monopsony, oligopsony, or perfectly competitive. Explain.
+
+**(c)** What is the "bilateral squeeze"? In which direction are farmers' input costs and output prices pushed relative to the competitive benchmark?
+
+**(d)** List two policy instruments the Australian government has used or proposed to address buyer power in agricultural output markets. For each, explain the mechanism.
+
+---
+
 ## Solutions Summary
 
-| Problem | Key Result |
-|---------|------------|
-| 1 | Aggregate: $Q^d = 22 - 3p$ for $p \leq 6$; kink at $p = 6$ |
-| 2 | Market supply: $S = 300p - 600$ for $p \geq 2$ |
-| 3 | $p^* = 6.25$, $Q^* = 3.25$ |
-| 4 | $CS = 1.76$, $PS = 5.28$, $W = 7.04$ |
-| 5 | With tax: $p_b = 17$, $p_s = 13$, $Q_t = 15$; DWL exists |
-| 6 | Subsidy increases Q above efficient level; DWL > 0 |
-| 7 | $p^{LR} = 2$, $y^* = 1$, $n = 16$ firms |
-| 8 | SR: $\pi > 0$; entry occurs; converges to LR |
-| 9 | Free market: $p^* = 6.67$; with floor at 5: surplus |
-| 10 | Each represents a market failure condition |
+| Problem | Key Result                                                                                                                                                           |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | Aggregate: $Q^d = 22 - 3p$ for $p \leq 6$; kink at $p = 6$                                                                                                           |
+| 2       | Market supply: $S = 300p - 600$ for $p \geq 2$                                                                                                                       |
+| 3       | $p^* = 6.25$, $Q^* = 3.25$                                                                                                                                           |
+| 4       | $CS = 1.76$, $PS = 5.28$, $W = 7.04$                                                                                                                                 |
+| 5       | With tax: $p_b = 17$, $p_s = 13$, $Q_t = 15$; DWL exists                                                                                                             |
+| 6       | Subsidy increases Q above efficient level; DWL > 0                                                                                                                   |
+| 7       | $p^{LR} = 2$, $y^* = 1$, $n = 16$ firms                                                                                                                              |
+| 8       | SR: $\pi > 0$; entry occurs; converges to LR                                                                                                                         |
+| 9       | Free market: $p^* = 6.67$; with floor at 5: surplus                                                                                                                  |
+| 10      | Each represents a market failure condition                                                                                                                           |
+| 13      | Monopoly: $Q^m = 40$, $P^m = 60$; competitive: $Q^c = 80$, $P^c = 20$; DWL = $800$                                                                                   |
+| 14      | Seed market = oligopoly; grain handling = oligopsony; bilateral squeeze pushes input prices up and output prices down; policy: mandatory code, collective bargaining |

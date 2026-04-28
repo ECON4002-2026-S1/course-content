@@ -16,6 +16,8 @@ By the end of this week, you will be able to:
 5. Evaluate the impact of tariffs on prices, quantities, and welfare
 6. Calculate deadweight loss from trade restrictions
 7. Compare tariffs, quotas, and subsidies as policy instruments
+8. Explain why agriculture was treated differently from manufactures in international trade negotiations between 1947 and 1994
+9. Describe the Uruguay Round Agreement on Agriculture (AoA) — its three pillars (market access, domestic support, export competition) — and its implications for Australian agricultural exporters
 
 ---
 
@@ -74,11 +76,11 @@ Trade allows countries to:
 
 Consider Australia and the US producing wheat (Good 1) and cars (Good 2):
 
-| Country | Labor Hours per Unit |        | Opportunity Cost |        |
-|---------|---------------------|--------|------------------|--------|
-|         | Wheat               | Cars   | Wheat            | Cars   |
-| Australia | 20                | 40     | 1/2 car          | 2 wheat |
-| US      | 6                   | 24     | 1/4 car          | 4 wheat |
+| Country   | Labor Hours per Unit |      | Opportunity Cost |         |
+| --------- | -------------------- | ---- | ---------------- | ------- |
+|           | Wheat                | Cars | Wheat            | Cars    |
+| Australia | 20                   | 40   | 1/2 car          | 2 wheat |
+| US        | 6                    | 24   | 1/4 car          | 4 wheat |
 
 **Analysis**:
 - US has **absolute advantage** in both goods (fewer hours)
@@ -117,11 +119,11 @@ For mutually beneficial trade, the ToT must lie between the two countries' oppor
 
 Countries have comparative advantage in goods that use their **abundant factors** intensively:
 
-| Country | Abundant Factor | Comparative Advantage |
-|---------|-----------------|----------------------|
-| Australia | Land | Land-intensive goods (wheat, beef, wool) |
-| China | Labor | Labor-intensive goods (textiles, electronics assembly) |
-| Germany | Capital, skilled labor | Capital-intensive goods (machinery, autos) |
+| Country   | Abundant Factor        | Comparative Advantage                                  |
+| --------- | ---------------------- | ------------------------------------------------------ |
+| Australia | Land                   | Land-intensive goods (wheat, beef, wool)               |
+| China     | Labor                  | Labor-intensive goods (textiles, electronics assembly) |
+| Germany   | Capital, skilled labor | Capital-intensive goods (machinery, autos)             |
 
 ### 3.2 Factor Price Equalization
 
@@ -227,11 +229,11 @@ At $p = p^w$:
 
 Compared to autarky:
 
-| Component | Change | Explanation |
-|-----------|--------|-------------|
-| Consumer Surplus | $+$ (gains) | Lower price, more consumption |
-| Producer Surplus | $-$ (losses) | Lower price, less production |
-| **Net Welfare** | $+$ (gains) | CS gains > PS losses |
+| Component        | Change       | Explanation                   |
+| ---------------- | ------------ | ----------------------------- |
+| Consumer Surplus | $+$ (gains)  | Lower price, more consumption |
+| Producer Surplus | $-$ (losses) | Lower price, less production  |
+| **Net Welfare**  | $+$ (gains)  | CS gains > PS losses          |
 
 $$\Delta W = \Delta CS + \Delta PS > 0$$
 
@@ -298,12 +300,12 @@ p^w+t ├──────●─┼─●────── Domestic price with
 
 ### 6.3 Welfare Effects of Tariff (Small Country)
 
-| Component | Change | Area |
-|-----------|--------|------|
-| Consumer Surplus | $\Delta CS < 0$ | $-(E + F + g + h)$ |
-| Producer Surplus | $\Delta PS > 0$ | $+E$ |
-| Government Revenue | $+T$ | $+F$ |
-| **Net Welfare** | $\Delta W < 0$ | $-(g + h)$ |
+| Component          | Change          | Area               |
+| ------------------ | --------------- | ------------------ |
+| Consumer Surplus   | $\Delta CS < 0$ | $-(E + F + g + h)$ |
+| Producer Surplus   | $\Delta PS > 0$ | $+E$               |
+| Government Revenue | $+T$            | $+F$               |
+| **Net Welfare**    | $\Delta W < 0$  | $-(g + h)$         |
 
 **Deadweight loss**: $DWL = g + h$
 
@@ -368,12 +370,12 @@ A quota of $\bar{M}$ has the same price and quantity effects as a tariff that re
 
 **Key difference**: Who captures the "quota rent" (area $F$)?
 
-| Instrument | Rent Recipient |
-|------------|----------------|
-| Tariff | Government (tax revenue) |
+| Instrument        | Rent Recipient               |
+| ----------------- | ---------------------------- |
+| Tariff            | Government (tax revenue)     |
 | Quota (auctioned) | Government (auction revenue) |
-| Quota (allocated) | Quota holders (importers) |
-| Quota (foreign) | Foreign exporters |
+| Quota (allocated) | Quota holders (importers)    |
+| Quota (foreign)   | Foreign exporters            |
 
 ### 7.4 Quota Rent
 
@@ -400,12 +402,12 @@ Effects (small exporting country):
 
 ### 8.2 Other Trade Policy Instruments
 
-| Instrument | Description | Effect |
-|------------|-------------|--------|
-| **Voluntary Export Restraint (VER)** | Exporting country limits exports | Like quota, rent goes to foreigners |
-| **Local content requirement** | Minimum domestic input share | Raises costs, protects input suppliers |
-| **Anti-dumping duties** | Tariff on "unfairly" priced imports | Often disguised protectionism |
-| **Sanitary/Phytosanitary (SPS)** | Health/safety standards | Can be legitimate or protectionist |
+| Instrument                           | Description                         | Effect                                 |
+| ------------------------------------ | ----------------------------------- | -------------------------------------- |
+| **Voluntary Export Restraint (VER)** | Exporting country limits exports    | Like quota, rent goes to foreigners    |
+| **Local content requirement**        | Minimum domestic input share        | Raises costs, protects input suppliers |
+| **Anti-dumping duties**              | Tariff on "unfairly" priced imports | Often disguised protectionism          |
+| **Sanitary/Phytosanitary (SPS)**     | Health/safety standards             | Can be legitimate or protectionist     |
 
 ---
 
@@ -466,25 +468,25 @@ where $\epsilon^*_s$ is the foreign export supply elasticity.
 
 Despite welfare losses, trade restrictions persist due to:
 
-| Reason | Explanation |
-|--------|-------------|
-| **Revenue** | Tariffs are easy to collect (especially in developing countries) |
-| **Protection** | Shield domestic industries from foreign competition |
-| **Employment** | Preserve jobs in import-competing sectors |
-| **National security** | Self-sufficiency in strategic goods |
-| **Infant industry** | Temporary protection for new industries |
-| **Retaliation** | Respond to trading partners' restrictions |
+| Reason                | Explanation                                                      |
+| --------------------- | ---------------------------------------------------------------- |
+| **Revenue**           | Tariffs are easy to collect (especially in developing countries) |
+| **Protection**        | Shield domestic industries from foreign competition              |
+| **Employment**        | Preserve jobs in import-competing sectors                        |
+| **National security** | Self-sufficiency in strategic goods                              |
+| **Infant industry**   | Temporary protection for new industries                          |
+| **Retaliation**       | Respond to trading partners' restrictions                        |
 
 ### 10.2 Distributional Effects
 
 Trade creates **winners and losers**:
 
-| Group | Free Trade | Protection |
-|-------|------------|------------|
-| Consumers | Gain (lower prices) | Lose |
-| Import-competing producers | Lose | Gain |
-| Export producers | Gain | Lose (if retaliation) |
-| Overall welfare | Higher | Lower |
+| Group                      | Free Trade          | Protection            |
+| -------------------------- | ------------------- | --------------------- |
+| Consumers                  | Gain (lower prices) | Lose                  |
+| Import-competing producers | Lose                | Gain                  |
+| Export producers           | Gain                | Lose (if retaliation) |
+| Overall welfare            | Higher              | Lower                 |
 
 **Political economy**: Losers from trade are often concentrated and organized; gains are diffuse.
 
@@ -502,9 +504,96 @@ Australia generally pursues **free trade** in agriculture:
 
 ---
 
-## 11. Summary: Trade Policy Analysis Framework
+## 11. Agricultural Trade Policy History: From GATT to the WTO
 
-### 11.1 The Analysis Procedure
+The partial-equilibrium tools developed above (tariffs, quotas, export subsidies, terms of trade) are not applied in a vacuum — they are deployed inside an institutional framework built up over the post-war period. This section explains how that framework evolved and, in particular, **why agriculture was treated differently from manufactures for almost 50 years**, and what changed at the Uruguay Round.
+
+### 11.1 The Post-War Trade Architecture: GATT and the WTO
+
+The **General Agreement on Tariffs and Trade (GATT)** came into force in 1947 with 23 signatories. Its core operating principle is **most-favoured nation (MFN) treatment**: any tariff concession a member offers to one trading partner must be extended to all other GATT/WTO members. GATT operated through periodic *negotiating rounds* in which countries swapped tariff cuts on industrial goods.
+
+| Round       | Years       | Members | Main achievements                                               |
+| ----------- | ----------- | ------- | --------------------------------------------------------------- |
+| Geneva      | 1947        | 23      | First MFN tariff cuts on manufactures                           |
+| Dillon      | 1960–61     | 45      | Modest tariff reductions                                        |
+| Kennedy     | 1963–67     | 62      | ~35% cut in industrial tariffs; anti-dumping code               |
+| Tokyo       | 1973–79     | 102     | Non-tariff-barrier codes; plurilateral approach                 |
+| **Uruguay** | **1986–94** | **123** | **WTO created; TRIPS, GATS, Agreement on Agriculture**          |
+| Doha        | 2001–       | 164     | Launched; agricultural subsidy cuts stalled; largely deadlocked |
+
+The **World Trade Organization (WTO)** replaced the GATT institutionally in 1995 as the outcome of the Uruguay Round. The WTO inherited the GATT rules on goods and added new agreements on services (GATS), intellectual property (TRIPS), and — critically for this course — agriculture.
+
+**Key pattern.** Every GATT round before Uruguay focused on **industrial** goods. Agricultural tariffs and (especially) farm subsidies were essentially excluded from GATT disciplines until 1994. The next subsection explains why.
+
+### 11.2 Why Agriculture Was Treated Differently (1947–1994)
+
+For almost half a century, GATT's tariff bindings, MFN rules, and prohibitions on quantitative restrictions did not bite on agriculture in the way they did on manufactures. Five mutually reinforcing reasons explain this:
+
+| Factor                                  | Explanation                                                                                                                                                                                                                                                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **US waiver (1955)**                    | The US obtained a GATT waiver for its domestic farm-support programmes (price supports, deficiency payments, PL 480 food aid). Once the largest economy had carved out an exemption, others followed the precedent.                                                                                    |
+| **EU Common Agricultural Policy (CAP)** | Established 1962. CAP relied on **variable import levies** (which adjust to keep domestic prices above world prices), **target prices** for farmers, and **export refunds** to dispose of resulting surpluses. These instruments were inherently trade-distorting and incompatible with bound tariffs. |
+| **Food-security narrative**             | Many governments argued that domestic food production was a *national-security* matter beyond ordinary efficiency logic, particularly after the disruptions of the 1930s and 1940s.                                                                                                                    |
+| **Political economy**                   | Farm lobbies in the US, EU, and Japan were politically powerful; rural constituencies were over-represented in legislatures (e.g. Japanese rice farmers; French and German farm voters).                                                                                                               |
+| **Measurement complexity**              | Domestic support — price floors, deficiency payments, subsidised credit — is harder to quantify and bind than a border tariff. GATT rules were designed for *border* measures and had no natural way to discipline *internal* support.                                                                 |
+
+**Why this mattered for Australia.** Australia is a globally competitive agricultural exporter with relatively *low* domestic support. The combination of EU export refunds and US deficiency payments meant Australian wheat, sugar, and dairy producers faced **artificially depressed world prices** — a direct welfare loss to Australian PS that no domestic policy could offset. In **1986**, Australia led the formation of the **Cairns Group** (a coalition of 14 — later 19 — agricultural exporters including Canada, New Zealand, Argentina, Brazil, Indonesia, Thailand, and South Africa) explicitly to push agriculture into the GATT/WTO system.
+
+### 11.3 The Uruguay Round and the Agreement on Agriculture (AoA)
+
+The **Uruguay Round (1986–1994)** is the pivotal episode for agricultural trade policy: it produced the WTO and, with it, the first multilateral disciplines on farm trade since GATT was founded.
+
+**Key players:**
+
+- **United States** — wanted to reduce EU export subsidies and open foreign markets, but resistant to constraints on its own domestic support.
+- **European Union** — defensive on agriculture; the **MacSharry CAP reform (1992)**, which began converting price supports into more decoupled direct payments, was the political pre-condition that made an EU–US deal possible.
+- **Cairns Group** (led by Australia) — the third-party coalition that broke the US–EU deadlock by pushing for deeper liberalisation than either superpower wanted on its own.
+- **Developing countries** — split: agricultural *exporters* aligned with Cairns; agricultural *importers* feared higher world food prices once subsidies were cut.
+
+The Round produced the **Agreement on Agriculture (AoA)**, structured around **three pillars**:
+
+| Pillar                 | Commitment (developed-country numbers)                                                                                                                                                                                                                                                 |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Market access**      | Convert all non-tariff measures (variable levies, quotas, minimum import prices) into *equivalent tariffs* — a process called **tariffication**. Bind those tariffs and reduce them by **36%** on average over 6 years.                                                                |
+| **Domestic support**   | Classify support measures into "boxes". Reduce trade-distorting **Amber Box** support (price- or output-linked payments) by **20%**. Exempt **Green Box** support (decoupled payments, environmental and research programmes) and **Blue Box** support (production-limiting payments). |
+| **Export competition** | Reduce export-subsidy *outlays* by **36%** and subsidised export *volumes* by **21%**. Eventually eliminate agricultural export subsidies entirely (achieved by the **Nairobi Ministerial decision, 2015**).                                                                           |
+
+**Why "tariffication" matters analytically.** A bound tariff is transparent and amenable to exactly the welfare analysis you have done in §§6–9 above: ΔCS, ΔPS, government revenue, and DWL. A variable import levy is not — it can be adjusted secretly to neutralise any world-price decline. Replacing variable levies with bound tariffs therefore made agricultural protection *measurable* for the first time.
+
+**Caveats and limitations.** The AoA was an institutional breakthrough but a modest *quantitative* reform:
+- **"Dirty tariffication."** Many countries chose ceiling bindings well above the actual *applied* tariff, so the "36% cut" applied to a tariff that often did not bind in practice.
+- **Green Box growth.** US and EU farm support did not fall — it was *re-classified* into the unconstrained Green Box. Total OECD support to farmers (the **Producer Support Estimate**) remained large.
+- **Limited tariff reductions for sensitive products** (Japanese rice, EU dairy, US sugar) where minimum-access quotas substituted for genuine market opening.
+
+### 11.4 After the Uruguay Round: Doha and the Bilateral Turn
+
+The **Doha Development Round** was launched in November 2001 with agriculture as a central agenda item. Its goals: deeper Amber Box cuts, reduction of tariff peaks, further export-subsidy reductions. Doha effectively **stalled** at successive Ministerials (Cancún 2003, Hong Kong 2005, Geneva 2008) over US–EU–India–Brazil disagreements on safeguards and subsidy ceilings. Two partial successes were the **Trade Facilitation Agreement (2013)** and the **2015 Nairobi decision** to eliminate agricultural export subsidies.
+
+With the multilateral track stalled, governments shifted to **bilateral and regional FTAs**, several of which delivered material agricultural market access for Australia:
+
+| Agreement                    | Year             | Agricultural significance for Australia                  |
+| ---------------------------- | ---------------- | -------------------------------------------------------- |
+| Australia–US FTA (AUSFTA)    | 2005             | Limited beef and dairy access; SPS framework             |
+| ChAFTA (China–Australia FTA) | 2015             | Phased tariff cuts on beef, wine, dairy, horticulture    |
+| JAEPA (Japan–Australia EPA)  | 2015             | Beef tariff cut from 38.5% toward 9% over 15 years       |
+| CPTPP                        | 2018             | 11-country deal; significant Japan beef and dairy access |
+| EU–Australia FTA             | (in negotiation) | Beef, dairy, sugar access tied to GIs and SPS            |
+
+**Australian position summary.** As a low-support, export-oriented producer, Australia is largely *offensive* in agricultural negotiations — it seeks foreign market access rather than protecting domestic producers from imports. The 2020 China trade actions (anti-dumping tariffs on barley, wine; informal restrictions on coal, cotton, lobster) are a recent reminder that even bound WTO tariffs can be circumvented via SPS measures, anti-dumping cases, and informal political pressure — underscoring why Australia continues to invest in market diversification, SPS compliance credibility, and rules-based dispute settlement.
+
+### 11.5 Why This History Matters for the Welfare Toolkit
+
+The institutional history is not a separate "context" topic — it is what gives the welfare-decomposition tools their bite. Three connections to keep in mind:
+
+1. **Tariffication made the small-country tariff diagram applicable to agriculture.** Before 1995, much of agricultural protection was via quotas, variable levies, and state-trading enterprises that the diagram in §6 cannot represent cleanly.
+2. **The "boxes" classification is essentially welfare classification by distortion.** Amber Box = production-distorting (creates the DWL triangles you computed); Green Box = decoupled (theoretically lump-sum, no DWL). The economics taught in this week is the analytical foundation of the AoA's policy categories.
+3. **The Cairns Group case shows the political-economy ceiling on welfare gains.** The diffuse-gains/concentrated-losses logic in §10.2 explains *why* even a coalition of large agricultural exporters could not eliminate OECD farm support — only re-classify it.
+
+---
+
+## 12. Summary: Trade Policy Analysis Framework
+
+### 12.1 The Analysis Procedure
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -532,32 +621,32 @@ Australia generally pursues **free trade** in agriculture:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 11.2 Key Formulas
+### 12.2 Key Formulas
 
-| Concept | Formula |
-|---------|---------|
-| Imports | $M = D(p) - S(p)$ |
-| Exports | $X = S(p) - D(p)$ |
-| Tariff price (small) | $p_d = p^w + t$ |
-| Tariff revenue | $T = t \times M$ |
-| DWL (tariff) | $DWL = \frac{1}{2}t(\Delta Q_D + \Delta Q_S)$ |
-| Quota rent | $QR = (p^q - p^w) \times \bar{M}$ |
-| Terms of trade | $ToT = P_{export}/P_{import}$ |
+| Concept              | Formula                                       |
+| -------------------- | --------------------------------------------- |
+| Imports              | $M = D(p) - S(p)$                             |
+| Exports              | $X = S(p) - D(p)$                             |
+| Tariff price (small) | $p_d = p^w + t$                               |
+| Tariff revenue       | $T = t \times M$                              |
+| DWL (tariff)         | $DWL = \frac{1}{2}t(\Delta Q_D + \Delta Q_S)$ |
+| Quota rent           | $QR = (p^q - p^w) \times \bar{M}$             |
+| Terms of trade       | $ToT = P_{export}/P_{import}$                 |
 
-### 11.3 Policy Comparison
+### 12.3 Policy Comparison
 
-| Instrument | Price Effect | Welfare Loss | Revenue/Rent |
-|------------|--------------|--------------|--------------|
-| Free trade | $p = p^w$ | None | None |
-| Tariff | $p > p^w$ | DWL | Government |
-| Quota | $p > p^w$ | DWL + rent loss | Quota holders |
-| Export subsidy | $p > p^w$ (domestic) | DWL | Government cost |
+| Instrument     | Price Effect         | Welfare Loss    | Revenue/Rent    |
+| -------------- | -------------------- | --------------- | --------------- |
+| Free trade     | $p = p^w$            | None            | None            |
+| Tariff         | $p > p^w$            | DWL             | Government      |
+| Quota          | $p > p^w$            | DWL + rent loss | Quota holders   |
+| Export subsidy | $p > p^w$ (domestic) | DWL             | Government cost |
 
 ---
 
-## 12. Agricultural Trade Applications
+## 13. Agricultural Trade Applications
 
-### 12.1 Australian Wheat Exports
+### 13.1 Australian Wheat Exports
 
 Australia is a **large exporter** of wheat:
 - ~15% of global wheat trade
@@ -569,7 +658,7 @@ Policy implications:
 - Domestic consumers might benefit short-term
 - Long-term damage to export industry
 
-### 12.2 Beef Import Restrictions
+### 13.2 Beef Import Restrictions
 
 Many countries restrict beef imports (SPS, tariffs):
 - Japan: High tariffs, strict SPS
@@ -581,7 +670,7 @@ Australian response:
 - Develop alternative markets
 - Maintain high SPS standards for credibility
 
-### 12.3 Sugar and Dairy Protection
+### 13.3 Sugar and Dairy Protection
 
 Australia's sugar and dairy sectors face:
 - Subsidized competition (EU, US sugar programs)

@@ -39,6 +39,20 @@ $$\max_{L, K} \; \pi = pf(L, K) - wL - rK$$
 
 Both approaches yield identical solutions when the production function is well-behaved.
 
+### 1.3 Who Maximizes Profit?
+
+**Economic profit** subtracts the opportunity cost of all inputs, including capital and the owner's own time — not just out-of-pocket expenses. Accounting profit $\geq$ economic profit.
+
+**Assumed to maximize profit:**
+
+- **Owner-operated farms** (smallholder and family farms): the standard assumption in agricultural production economics; validated empirically by Lau & Yotopoulos (1971) for Indian farms.
+- **Incorporated agribusiness firms** (grain traders, processors, input suppliers): textbook profit maximisers subject to shareholder pressure.
+- **Cooperatives** (dairy, grain, wine): maximize returns to members — approximates profit maximization when members are price-taking producers.
+
+**Not assumed to maximize profit:**  public agencies, subsistence households, and regulated utilities face different objectives (cost minimization, output targets, social welfare) and require different models.
+
+*This week:* we treat all producers as competitive profit maximizers facing given prices $(p, w, r)$.
+
 ---
 
 ## 2. First-Order Conditions for Profit Maximization
@@ -196,12 +210,12 @@ Only the direct effect matters, giving $\partial \pi/\partial p = y^s$.
 
 ### 6.3 Parallel to Consumer Theory
 
-| Consumer Theory | Producer Theory |
-|-----------------|-----------------|
-| Indirect utility $v(p, m)$ | Profit function $\pi(p, w, r)$ |
+| Consumer Theory                                                                  | Producer Theory                                            |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Indirect utility $v(p, m)$                                                       | Profit function $\pi(p, w, r)$                             |
 | Roy's Identity: $x_i^m = -\frac{\partial v/\partial p_i}{\partial v/\partial m}$ | Hotelling's Lemma: $y^s = \frac{\partial \pi}{\partial p}$ |
-| Expenditure function | Cost function |
-| Shephard's Lemma | Shephard's Lemma (same!) |
+| Expenditure function                                                             | Cost function                                              |
+| Shephard's Lemma                                                                 | Shephard's Lemma (same!)                                   |
 
 ---
 
@@ -217,10 +231,10 @@ In the short run, capital is fixed at $\bar{K}$:
 
 Compare operating vs. shutting down:
 
-| Scenario | Revenue | Cost | Profit |
-|----------|---------|------|--------|
-| Operate | $py$ | $VC + FC$ | $py - VC - FC$ |
-| Shut down | $0$ | $FC$ | $-FC$ |
+| Scenario  | Revenue | Cost      | Profit         |
+| --------- | ------- | --------- | -------------- |
+| Operate   | $py$    | $VC + FC$ | $py - VC - FC$ |
+| Shut down | $0$     | $FC$      | $-FC$          |
 
 **Operate if:** $py - VC - FC > -FC \Rightarrow py > VC \Rightarrow p > AVC$
 
@@ -262,11 +276,11 @@ $$y^s_{LR}(p) = \begin{cases} MC^{-1}(p) & \text{if } p \geq \min AC \\ 0 & \tex
 
 **Free entry** drives the long-run equilibrium:
 
-| Market Condition | Profit | Response |
-|------------------|--------|----------|
-| $p > \min AC$ | $\pi > 0$ | Firms enter |
-| $p < \min AC$ | $\pi < 0$ | Firms exit |
-| $p = \min AC$ | $\pi = 0$ | No change |
+| Market Condition | Profit    | Response    |
+| ---------------- | --------- | ----------- |
+| $p > \min AC$    | $\pi > 0$ | Firms enter |
+| $p < \min AC$    | $\pi < 0$ | Firms exit  |
+| $p = \min AC$    | $\pi = 0$ | No change   |
 
 ### 8.3 Long-Run Competitive Equilibrium
 
@@ -353,7 +367,7 @@ Area between price and supply curve, up to quantity sold.
 $$PS = \pi + FC$$
 
 - In the long run (FC = 0 and $\pi = 0$): PS measures pure economic rent
-- In the short run: PS = Variable profit + Fixed costs
+- In the short run: PS = Variable profit + Fixed costs. This short-run producer surplus is exactly the **quasi-rent** earned by the firm's *fixed* factors — the return above their short-run opportunity cost (zero, by the definition of "fixed") that those factors collect while the firm continues to operate. As the firm's fixed factors become variable in the long run, those quasi-rents are competed away by entry (§§8.2–8.3); they do not survive into long-run equilibrium. The terminology is developed in detail in §11.
 
 ### 10.4 Changes in Producer Surplus
 
@@ -402,21 +416,87 @@ Different land qualities create rent:
 
 ---
 
-## 12. Summary
+## 12. Historical and Empirical Milestones
 
-### 12.1 Key Results
+### 12.1 Hotelling (1932): The Lemma That Bears His Name
 
-| Concept | Condition/Formula |
-|---------|-------------------|
-| Profit-max output | $p = MC(y)$ |
-| Profit-max input use | $VMP_L = w$, $VMP_K = r$ |
-| Short-run supply | $MC$ above $\min AVC$ |
-| Long-run supply | $MC$ above $\min AC$ |
-| LR competitive equilibrium | $p = \min AC$, $\pi = 0$ |
-| Hotelling's Lemma | $\partial \pi / \partial p = y^s$ |
-| Producer surplus | $PS = py - VC = \pi + FC$ |
+**Source:** "Edgeworth's Taxation Paradox and the Nature of Demand and Supply Functions," *Journal of Political Economy*, 40(5), 577–616.
 
-### 12.2 Duality Summary
+**Contribution:** Hotelling proved that differentiating the value function of a maximization problem with respect to a parameter yields the optimal policy function for that parameter — what we now call the envelope theorem applied to the profit function. Specifically, $\partial\pi/\partial p = y^s$ and $\partial\pi/\partial w = -L^d$.
+
+**Context:** The paper addressed a debate about whether specific or ad valorem taxes were more distortionary. As a by-product, Hotelling derived the duality between profit functions and supply/input-demand schedules — a result that sat largely unnoticed until it was absorbed into duality theory by the 1970s.
+
+**Legacy:** Hotelling's Lemma is now the standard one-line derivation of supply and input demands in any applied production study; it replaced the need to solve the firm's optimization problem repeatedly for each price scenario. The result predates Samuelson's formalization by 15 years.
+
+---
+
+### 12.2 Ricardo (1815/1817): Differential Rent and the Marginal Land Principle
+
+**Sources:** "Essay on the Influence of a Low Price of Corn on the Profits of Stock" (1815); *Principles of Political Economy and Taxation*, Ch. 2 (1817).
+
+**Argument:** In a competitive farming economy with land of varying fertility, the price of corn is determined by the cost of production on the *least fertile land in use* (the extensive margin). High-quality land earns a positive differential rent $= (p - AC_i)\cdot y_i$ because it can produce the same output at lower cost. Competition drives economic profit to zero only on marginal land; infra-marginal land earns persistent rent.
+
+**Key result:** $\text{Rent}_i = (AC_{\text{margin}} - AC_i)\cdot y \geq 0$; rent capitalizes into land price $= \text{Rent}/\text{interest rate}$.
+
+**Legacy:** The direct theoretical basis for the "Ricardian rent" terminology, the marginal-land zero-rent condition, and land-price heterogeneity (Section 11.3). Ricardo's framework remains the standard model of agricultural land markets, applied from 19th-century Corn Laws debates to 21st-century water-rights pricing in Australia.
+
+---
+
+### 12.3 Marshall (1890): Quasi-Rent, Producer Surplus, and the Short-Long Distinction
+
+**Source:** *Principles of Economics*, Book V, Chs. 8–9 (1890; 8th ed. 1920).
+
+**Three contributions to this week's material:**
+
+1. **Quasi-rent:** The term and concept — short-run above-normal returns to a fixed factor, distinct from true (Ricardian) rent because they vanish as capacity adjusts in the long run (Section 11.1).
+2. **Producer surplus:** The area above the supply curve and below the price line; explicitly identified as a welfare measure for producers and the basis for policy evaluation (Section 10).
+3. **Short-run/long-run supply:** Marshall introduced the *market period* (all inputs fixed), *short period* (some inputs fixed), and *long period* (all inputs variable) — the taxonomy that underpins the SR/LR supply and shutdown rules in Sections 7–8.
+
+**Legacy:** *Principles* defined the language and graphical toolkit of partial-equilibrium producer analysis for over a century. Every supply-and-demand diagram in this course is Marshallian.
+
+---
+
+### 12.4 Samuelson (1947): Foundations of Producer Theory
+
+**Source:** *Foundations of Economic Analysis*, Ch. 4 (Harvard University Press, 1947).
+
+**Contribution:** Samuelson provided the first rigorous mathematical framework for producer theory: (i) the *envelope theorem* as a general result; (ii) symmetry and negative semi-definiteness of supply and input-demand response matrices; (iii) the *correspondence principle* linking comparative statics to stability conditions.
+
+**Key result (Le Chatelier Principle):** Long-run supply responses are larger than short-run responses:
+$$\frac{\partial y^s_{LR}}{\partial p} \geq \frac{\partial y^s_{SR}}{\partial p} \geq 0$$
+because more inputs are variable in the long run. This is the formal foundation for the SR/LR supply curve diagrams in Sections 7–8.
+
+**Legacy:** *Foundations* turned producer theory from a verbal/graphical discipline into a mathematically precise one. Duality theory (Shephard, Hotelling, Roy) and modern empirical production economics all rest on Samuelson's framework.
+
+---
+
+### 12.5 Lau & Yotopoulos (1971–73): Profit Functions and Farm Efficiency
+
+**Study:** "A Test for Relative Efficiency and Application to Indian Agriculture," *American Economic Review* (1971); extended in Yotopoulos & Lau (1973).
+
+**Method:** Estimated a *normalised restricted profit function* for small and large Indian farms simultaneously, exploiting duality: given output and input prices and fixed land, output supply and input demands are recovered by differentiating a single value function via Hotelling's Lemma.
+
+**Key finding:** Small farms were *equally allocatively efficient* as large farms — factor price ratios equalled VMP ratios on both farm sizes. Apparent productivity differences traced to land quality, not managerial failure.
+
+**Legacy:** Founded the empirical practice of using profit function duals to test efficiency and recover supply elasticities; shaped World Bank agricultural policy on small-farm consolidation for decades. This is the empirical validation of the profit-maximization assumption for owner-operated farms (Section 1.3).
+
+---
+
+## 13. Summary
+
+### 13.1 Key Results
+
+| Concept                    | Condition/Formula                 |
+| -------------------------- | --------------------------------- |
+| Profit-max output          | $p = MC(y)$                       |
+| Profit-max input use       | $VMP_L = w$, $VMP_K = r$          |
+| Short-run supply           | $MC$ above $\min AVC$             |
+| Long-run supply            | $MC$ above $\min AC$              |
+| LR competitive equilibrium | $p = \min AC$, $\pi = 0$          |
+| Hotelling's Lemma          | $\partial \pi / \partial p = y^s$ |
+| Producer surplus           | $PS = py - VC = \pi + FC$         |
+
+### 13.2 Duality Summary
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -445,7 +525,7 @@ Different land qualities create rent:
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 12.3 Preview: Next Week
+### 13.3 Preview: Next Week
 
 With individual firm supply derived, we move to:
 - Market supply and demand
@@ -455,35 +535,21 @@ With individual firm supply derived, we move to:
 
 ---
 
-## 13. Appendix: Linear Programming Preview
+## References and Further Reading
 
-### 13.1 Farm Planning Problem
-
-Many agricultural decisions involve constraints beyond technology:
-- Land availability
-- Labor constraints (seasonal)
-- Water allocations
-- Crop rotation requirements
-
-**Linear Programming (LP)** formulation:
-$$\max_{x_1, x_2, \ldots} \; c_1 x_1 + c_2 x_2 + \ldots$$
-subject to:
-$$a_{11}x_1 + a_{12}x_2 + \ldots \leq b_1$$
-$$a_{21}x_1 + a_{22}x_2 + \ldots \leq b_2$$
-$$x_i \geq 0$$
-
-### 13.2 Shadow Prices
-
-The **dual** of an LP gives shadow prices—the marginal value of relaxing each constraint.
-
-This connects to our duality framework:
-- $\lambda$ in Lagrangian = shadow price of constraint
-- Shephard's/Hotelling's Lemma = envelope conditions
-
----
-
-## References
-
-- Varian, H. (2014). *Intermediate Microeconomics*. Chapters 22-24.
-- Nicholson & Snyder. *Microeconomic Theory*. Chapters 11-13.
+**Core textbooks:**
+- Varian, H. (2014). *Intermediate Microeconomics*. Chapters 22–24.
+- Nicholson & Snyder. *Microeconomic Theory*. Chapters 11–13.
 - Just, R., Hueth, D., & Schmitz, A. (2004). *The Welfare Economics of Public Policy*.
+
+**Further reading (milestones):**
+
+- **Shephard, R. W. (1953).** *Cost and Production Functions*. Princeton University Press.  
+  First rigorous proof that the cost function uniquely characterises the production set; differentiating with respect to input prices recovers conditional factor demands (Shephard's Lemma). Established formal duality between cost and production functions; together with Hotelling (1932) this confirmed the two-way duality in Section 13.2.
+
+- **McFadden, D. (1978).** "Cost, Revenue, and Profit Functions." In M. Fuss & D. McFadden (eds.), *Production Economics: A Dual Approach to Theory and Applications*, Vol. 1, 3–109. North-Holland.  
+  The definitive graduate reference for the profit-function material in this week. Proves all properties of $\pi(p,w,r)$, derives Hotelling's Lemma as a corollary of the envelope theorem, and shows how flexible functional forms (translog, generalised Leontief) serve as second-order approximations to an arbitrary profit function.
+
+- **Lau, L. J. & Yotopoulos, P. A. (1972).** "Profit, Supply, and Factor Demand Functions." *American Economic Review*, 62(1), 11–18.  
+  Companion paper to the 1971 milestone study (Section 12.5); derived supply price elasticities and factor-demand elasticities directly from the estimated normalised profit function by applying Hotelling's Lemma, closing the loop from the theoretical duality diagram (Section 13.2) to an empirical agricultural application.
+

@@ -8,3 +8,15 @@ AnswerKey*
 *_solutions*
 *_rubric*
 *.instructor*
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+*.fdb_latexmk
+*.fls
+texput.log

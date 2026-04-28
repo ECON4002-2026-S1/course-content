@@ -11,11 +11,12 @@ By the end of this week, you will be able to:
 
 1. Represent production technology using production functions
 2. Calculate and interpret marginal and average products
-3. Analyze isoquants and the marginal rate of technical substitution
-4. Classify returns to scale for different production technologies
-5. Solve the cost minimization problem
-6. Derive cost functions and apply Shephard's Lemma
-7. Distinguish short-run from long-run cost curves
+3. Analyze isoquants and the marginal rate of technical substitution; identify the **economic region of production** bounded by ridge lines
+4. Classify returns to scale for different production technologies, including via **Euler's theorem** for homogeneous production functions
+5. Compute the **elasticity of substitution $\sigma$** for Cobb-Douglas, Leontief, linear, and CES technologies
+6. Solve the cost minimization problem and distinguish **technical** from **allocative** efficiency
+7. Derive cost functions and apply Shephard's Lemma
+8. Distinguish short-run from long-run cost curves
 
 ---
 
@@ -25,13 +26,13 @@ By the end of this week, you will be able to:
 
 In consumer theory, agents maximize utility subject to a budget constraint. Producers face a **dual structure**:
 
-| Consumer Theory | Producer Theory |
-|-----------------|-----------------|
-| Maximize utility | Maximize profit |
-| Budget constraint | Technology constraint |
+| Consumer Theory                | Producer Theory                  |
+| ------------------------------ | -------------------------------- |
+| Maximize utility               | Maximize profit                  |
+| Budget constraint              | Technology constraint            |
 | Preferences (utility function) | Technology (production function) |
-| Indifference curves | Isoquants |
-| MRS | MRTS |
+| Indifference curves            | Isoquants                        |
+| MRS                            | MRTS                             |
 
 The mathematical tools are nearly identical—we're applying the same optimization framework to a different economic context.
 
@@ -167,6 +168,17 @@ $$\text{Isoquant}(\bar{y}) = \{(L,K) : f(L,K) = \bar{y}\}$$
                         substitution)      (perfect subs)
 ```
 
+### 4.4 Ridge Lines and the Economic Region of Production
+
+For smooth technologies (e.g. Cobb-Douglas, CES) the isoquants in §4.3 may **bend back** at extreme input ratios, where one input becomes so abundant that adding more of it actually *reduces* output ($MP < 0$ — Stage III in §12.1). The **ridge lines** are the loci where $MP_L = 0$ and $MP_K = 0$:
+
+- Along the upper ridge line, $MP_K = 0$: any extra capital lowers output, so the isoquant becomes vertical.
+- Along the lower ridge line, $MP_L = 0$: any extra labour lowers output, so the isoquant becomes horizontal.
+
+The region **between** the two ridge lines is the **economic region of production**: the set of $(L,K)$ combinations where both inputs have non-negative marginal products and a rational producer would actually operate. Any cost-minimising solution must lie inside the economic region; outside it, you could produce the same output with strictly less of *both* inputs, so any point there is technically inefficient by inspection.
+
+For Cobb-Douglas $f = AL^{\alpha}K^{\beta}$ with $\alpha,\beta > 0$, the marginal products are strictly positive everywhere on the interior, so the ridge lines coincide with the axes and the entire positive orthant is the economic region. Ridge lines only bind for technologies that exhibit Stage-III behaviour for at least one input.
+
 ---
 
 ## 5. Marginal Rate of Technical Substitution
@@ -214,18 +226,37 @@ For $f(L,K) = AL^\alpha K^\beta$:
 $$f(tL, tK) = A(tL)^\alpha(tK)^\beta = t^{\alpha+\beta} A L^\alpha K^\beta = t^{\alpha+\beta} f(L,K)$$
 
 | $\alpha + \beta$ | Returns to Scale |
-|------------------|------------------|
-| $= 1$ | Constant (CRS) |
-| $> 1$ | Increasing (IRS) |
-| $< 1$ | Decreasing (DRS) |
+| ---------------- | ---------------- |
+| $= 1$            | Constant (CRS)   |
+| $> 1$            | Increasing (IRS) |
+| $< 1$            | Decreasing (DRS) |
 
 ### 6.3 Economic Interpretation
 
-| Returns | Interpretation | Agricultural Example |
-|---------|----------------|---------------------|
-| CRS | Replicability | Double all inputs → double output |
-| IRS | Economies of scale | Large farms: specialization, bulk purchasing |
-| DRS | Managerial limits | Very large operations: coordination problems |
+| Returns | Interpretation     | Agricultural Example                         |
+| ------- | ------------------ | -------------------------------------------- |
+| CRS     | Replicability      | Double all inputs → double output            |
+| IRS     | Economies of scale | Large farms: specialization, bulk purchasing |
+| DRS     | Managerial limits  | Very large operations: coordination problems |
+
+### 6.4 Homogeneity and Euler's Theorem
+
+A production function $f(L,K)$ is **homogeneous of degree $k$** if scaling both inputs by $t > 0$ scales output by $t^k$:
+$$f(tL, tK) = t^{k} f(L,K).$$
+Returns to scale (§6.1) is exactly this concept: $k=1$ is CRS, $k>1$ is IRS, $k<1$ is DRS. Cobb-Douglas $f=AL^{\alpha}K^{\beta}$ is homogeneous of degree $\alpha+\beta$.
+
+**Euler's theorem (for homogeneous functions).** If $f$ is homogeneous of degree $k$ and differentiable, then
+$$L \cdot MP_L \;+\; K \cdot MP_K \;=\; k\, f(L,K).$$
+
+*Proof sketch.* Differentiate the identity $f(tL,tK) = t^{k} f(L,K)$ with respect to $t$ and set $t=1$:
+$$L\,f_L(L,K) + K\,f_K(L,K) = k\,f(L,K).$$
+
+**Two economic implications.**
+
+1. **Product-exhaustion under CRS.** With $k=1$ (constant returns) Euler's theorem becomes $L\,MP_L + K\,MP_K = f(L,K)$. If each factor is paid its marginal product (a competitive-equilibrium outcome) then total factor payments **exactly exhaust** the value of output — there are no pure profits left over. This is why neoclassical growth theory typically assumes CRS at the firm level: it is consistent with zero pure profit and a determinate factor-income distribution.
+2. **Output elasticities sum to the degree of homogeneity.** Dividing through by $f(L,K)$:
+$$\varepsilon_L + \varepsilon_K = k, \qquad \varepsilon_L \equiv \frac{L\,MP_L}{f}, \quad \varepsilon_K \equiv \frac{K\,MP_K}{f}.$$
+For Cobb-Douglas, $\varepsilon_L=\alpha$ and $\varepsilon_K=\beta$, so $\alpha+\beta$ is simultaneously (i) the degree of homogeneity, (ii) the sum of output elasticities, and (iii) the returns-to-scale exponent. This is why the same parameter labels appear in every Cobb-Douglas decomposition you will encounter in Weeks 7–8.
 
 ---
 
@@ -264,6 +295,18 @@ $$\boxed{\frac{MP_L}{MP_K} = \frac{w}{r} \quad \Leftrightarrow \quad MRTS_{LK} =
         │ ╱   ╱  ╲ Isocost: wL + rK = C*
         └──────────── L
 ```
+
+### 7.4 Technical vs. Allocative Efficiency
+
+The cost-minimisation problem implicitly bundles **two** distinct efficiency requirements. Following Farrell (1957), it is useful to separate them:
+
+- **Technical efficiency.** A producer is *technically* efficient if it operates **on** its production frontier — i.e. it gets the maximum output achievable from the inputs it uses (equivalently, uses the minimum inputs needed for its output). Technical inefficiency means the producer is *inside* the isoquant for its observed output. Ridge-line violations (§4.4) are an extreme form of technical inefficiency.
+- **Allocative efficiency.** A producer is *allocatively* efficient if its input mix satisfies the tangency condition $MRTS_{LK} = w/r$. Allocative inefficiency means the producer is on the right isoquant (technically efficient) but at the wrong point on it — using too much of the relatively expensive input.
+
+The two conditions together are **economic** (cost) efficiency:
+$$\underbrace{\text{economic efficiency}}_{\min wL + rK \text{ s.t. } f(L,K)=\bar y} \;=\; \underbrace{\text{technical efficiency}}_{\text{on the isoquant}} \;\times\; \underbrace{\text{allocative efficiency}}_{MRTS \;=\; w/r}.$$
+
+**Why decompose?** A regulator or extension officer who observes that a farmer's per-hectare cost is 20% above best practice needs to know *which* component is failing. Technical inefficiency calls for agronomic advice (better seed handling, calibration of spreaders); allocative inefficiency calls for price-response advice (substitute machinery for labour as wages rise). The empirical decomposition uses **stochastic frontier analysis** — see §12.5.
 
 ---
 
@@ -347,11 +390,11 @@ Only the direct effect matters at the margin.
 
 ### 10.3 Parallel to Consumer Theory
 
-| Consumer Theory | Producer Theory |
-|-----------------|-----------------|
-| Expenditure function $e(p, \bar{u})$ | Cost function $C(w, r, \bar{y})$ |
+| Consumer Theory                                     | Producer Theory                                 |
+| --------------------------------------------------- | ----------------------------------------------- |
+| Expenditure function $e(p, \bar{u})$                | Cost function $C(w, r, \bar{y})$                |
 | Shephard's Lemma: $\partial e/\partial p_i = x_i^h$ | Shephard's Lemma: $\partial C/\partial w = L^*$ |
-| Hicksian demand | Conditional input demand |
+| Hicksian demand                                     | Conditional input demand                        |
 
 ---
 
@@ -421,18 +464,94 @@ $$C(y) = \min_{\bar{K}} SC(y; \bar{K})$$
 
 ---
 
-## 12. Summary
+## 12. Empirical Milestones in Production and Cost Economics
 
-### 12.1 Key Relationships
+### 12.1 Heady & Dillon (1961): Empirical Three-Stage Production
 
-| Concept | Formula | Interpretation |
-|---------|---------|----------------|
-| MRTS | $\frac{MP_L}{MP_K}$ | Substitution rate along isoquant |
-| Cost-min condition | $MRTS = w/r$ | Tangency of isoquant and isocost |
-| Shephard's Lemma | $\partial C/\partial w = L^*$ | Envelope property |
-| Returns to scale | $f(tL, tK)$ vs $tf(L,K)$ | Output response to input scaling |
+**Reference:** Heady, E. O. & Dillon, J. L. (1961). *Agricultural Production Functions*. Iowa State University Press.
 
-### 12.2 Duality in Producer Theory
+**Setting:** Controlled fertiliser field experiments varying a single input (e.g., nitrogen) while holding all other inputs fixed.
+
+**Estimated production function:**
+$$q = f(x) = \alpha + \beta x + \gamma x^2 \; (+\, \delta x^3)$$
+
+**Empirical result:** The textbook three-stage production structure emerges when input use is experimentally extended beyond the profit-maximising range:
+- **Stage I:** $MP > AP$, i.e.\ $dq/dx > q/x$ (output elasticity $\varepsilon > 1$; AP still rising)
+- **Stage II:** $0 \leq MP \leq AP$, i.e.\ $0 \leq dq/dx \leq q/x$ ($0 \leq \varepsilon \leq 1$) — the economically rational region
+- **Stage III:** $MP < 0$, i.e.\ $dq/dx < 0$ ($\varepsilon < 0$; over-application/toxicity)
+
+The biological basis: nutrient deficiency (Stage I), physiological limits (Stage II), and toxicity/lodging (Stage III). Market data typically show only Stage II because rational producers do not operate in Stages I or III.
+
+**Agronomic origins:** Mitscherlich (1909, 1923) and Baule (1917) developed canonical biological response functions $q = A(1-e^{-bx})$ from agricultural experiment station data. The law of diminishing returns is biologically grounded, not just a mathematical assumption.
+
+---
+
+### 12.2 Griliches (1963): Input Quality and TFP
+
+**Source:** "The Sources of Measured Productivity Growth: United States Agriculture, 1940–60," *Journal of Political Economy*.
+
+**Data:** U.S. state-level agriculture, 1940–60; Cobb-Douglas $Y = AL^\alpha K^\beta T^\gamma$ with land, labour, capital, and fertiliser as separate inputs.
+
+**Finding:** Most measured TFP growth reflected *quality improvements* in inputs — hybrid seeds, modern fertilisers, improved livestock breeds — rather than disembodied technical efficiency. Omitting input quality inflates the TFP residual. "Technology" is often *embodied in the inputs*, not a free-floating shift in the production frontier.
+
+**Legacy:** Widely regarded as the founding work of modern agricultural productivity analysis; introduced quality-adjusted input indices that are now standard practice in growth accounting.
+
+---
+
+### 12.3 Hayami & Ruttan (1970–71): Induced Innovation and Biased Technical Change
+
+**Source:** *Agricultural Development: An International Perspective* (1971); cross-country panel articles.
+
+**Data:** Cross-country panel (Japan, US, Europe); agricultural production functions estimated allowing factor-biased technical change.
+
+**Finding:** Technology adapts to factor scarcities — land-saving innovation in land-scarce Japan; labour-saving innovation in the land-abundant US. Countries converge not to the same technology but to the same *isoquant map*, approaching it from different directions.
+
+**Key idea:** Relative input prices direct the direction of R&D investment — "induced innovation." This connects isoquant analysis directly to the economics of agricultural innovation and precedes modern directed-technical-change theory (Acemoglu).
+
+---
+
+### 12.4 Translog Models (1970s–80s): Flexible Functional Forms
+
+**Approach:** Christensen–Jorgenson–Lau *translog* production (and cost) function applied to U.S. dairy and crop data.
+
+**Advantage over Cobb-Douglas:** Translog imposes no prior restrictions on substitution elasticities or returns to scale; allows direct statistical tests of CRS, CES, and homotheticity as special cases.
+
+**Key agricultural findings:**
+- Substitution elasticities between land, capital, and labour differ substantially — land is hard to substitute
+- Returns to scale approximately constant at the regional level but vary across individual farm sizes
+
+**Legacy:** Became the benchmark for testing scale economies in farming; widely adopted in cost-function studies of irrigation, livestock, and agribusiness. The translog cost function is a second-order Taylor approximation to an arbitrary cost function in log-price space.
+
+---
+
+### 12.5 Stochastic Frontiers (1977–): Separating Luck from Skill
+
+**Source:** Aigner, Lovell & Schmidt (1977), *Journal of Econometrics*.
+
+**Model:** Output deviates from the production frontier due to two distinct components:
+- **Random shocks** (weather, pest outbreaks, disease) — genuine bad luck
+- **Technical inefficiency** (management quality, information gaps) — controllable
+
+**Why agriculture?** Weather creates genuine stochastic noise; farm heterogeneity is large — separating luck from skill is both necessary and tractable.
+
+**Key finding:** Efficiency gaps worldwide often exceed gains from scale — management quality matters more than farm size.
+
+**Legacy:** Agriculture remained the main empirical playground for stochastic frontier analysis for decades; methods later spread to health, banking, and utilities.
+
+---
+
+## 13. Summary
+
+### 13.1 Key Relationships
+
+| Concept            | Formula                       | Interpretation                   |
+| ------------------ | ----------------------------- | -------------------------------- |
+| MRTS               | $\frac{MP_L}{MP_K}$           | Substitution rate along isoquant |
+| Cost-min condition | $MRTS = w/r$                  | Tangency of isoquant and isocost |
+| Shephard's Lemma   | $\partial C/\partial w = L^*$ | Envelope property                |
+| Returns to scale   | $f(tL, tK)$ vs $tf(L,K)$      | Output response to input scaling |
+
+### 13.2 Duality in Producer Theory
 
 ```
 ┌───────────────────────────────────────────────────────────┐
@@ -455,7 +574,7 @@ $$C(y) = \min_{\bar{K}} SC(y; \bar{K})$$
 └───────────────────────────────────────────────────────────┘
 ```
 
-### 12.3 Preview: Next Week
+### 13.3 Preview: Next Week
 
 With the cost function $C(w,r,y)$ in hand, we'll solve:
 $$\max_y \; py - C(w,r,y)$$

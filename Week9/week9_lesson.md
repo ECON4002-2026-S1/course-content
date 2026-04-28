@@ -16,6 +16,7 @@ By the end of this week, you will be able to:
 5. Analyze welfare effects of taxes and subsidies
 6. Calculate deadweight loss from market interventions
 7. Determine long-run equilibrium with free entry and exit
+8. Identify sources of market power in agricultural input and output markets and explain how imperfect competition shapes equilibrium outcomes and farmer welfare
 
 ---
 
@@ -60,9 +61,29 @@ Perfect competition serves as:
 4. Perfect information
 5. No transaction costs
 
+### 1.3 Equilibrium in Non-Competitive Markets
+
+Most real agricultural input and output markets are **not** perfectly competitive. Understanding where actual equilibria land — and how they diverge from the competitive benchmark — is essential for policy analysis.
+
+#### Seller-Side Market Power
+
+| Market Structure             | How equilibrium is reached                                      | Welfare vs. competition                 |
+| ---------------------------- | --------------------------------------------------------------- | --------------------------------------- |
+| **Perfect competition**      | $p = MC$; many firms; free entry; $\pi \to 0$ in LR             | Maximum $W = CS + PS$                   |
+| **Monopolistic competition** | Each firm faces downsloping demand; LR $\pi = 0$ but $p > MC$   | Some DWL; product variety               |
+| **Oligopoly**                | Few firms; strategic interaction (Cournot, Bertrand, collusion) | $p > MC$; DWL; possible tacit collusion |
+| **Monopoly**                 | $MR = MC$; $p^m > MC$; $Q^m < Q^{\text{comp}}$; $\pi > 0$       | Largest DWL; no supply curve            |
+
+#### Buyer-Side Market Power
+
+| Market Structure             | Equilibrium                                                 | Welfare impact                             |
+| ---------------------------- | ----------------------------------------------------------- | ------------------------------------------ |
+| **Monopsony** (single buyer) | MFC $>$ price paid; farm-gate $p <$ competitive; $Q < Q^*$  | DWL on seller side; buyer captures surplus |
+| **Oligopsony** (few buyers)  | Price below competitive; buyers exercise joint market power | Reduced PS; DWL                            |
+
 ---
 
-## 2. Competitive Markets: Price Taking Behavior
+## 2. Competitive Markets: Price-Taking Behavior
 
 ### 2.1 The Price-Taker Assumption
 
@@ -130,13 +151,13 @@ Consider two consumers with individual demand curves:
 **Step 1**: Find when each consumer enters the market
 
 | Price $p$ | $Q_1^d$ | $Q_2^d$ | $Q^d = Q_1^d + Q_2^d$ |
-|-----------|---------|---------|------------------------|
-| 0         | 12      | 10      | 22                     |
-| 2         | 8       | 8       | 16                     |
-| 4         | 4       | 6       | 10                     |
-| 6         | 0       | 4       | 4                      |
-| 8         | 0       | 2       | 2                      |
-| 10        | 0       | 0       | 0                      |
+| --------- | ------- | ------- | --------------------- |
+| 0         | 12      | 10      | 22                    |
+| 2         | 8       | 8       | 16                    |
+| 4         | 4       | 6       | 10                    |
+| 6         | 0       | 4       | 4                     |
+| 8         | 0       | 2       | 2                     |
+| 10        | 0       | 0       | 0                     |
 
 **Step 2**: Write the aggregate demand (piecewise if needed)
 
@@ -342,13 +363,13 @@ Only at $Q = Q^*$ where $D(p^*) = S(p^*)$ is welfare maximized.
 
 The First Welfare Theorem assumes away important real-world features:
 
-| Assumption | Reality | Consequence |
-|------------|---------|-------------|
-| Perfect competition | Market power exists | Prices above MC |
-| No externalities | Pollution, congestion | Prices don't reflect true costs |
-| Complete markets | Missing markets | Some goods not traded |
-| Perfect information | Asymmetric information | Adverse selection, moral hazard |
-| Zero transaction costs | Search, contracting costs | Some trades not completed |
+| Assumption             | Reality                   | Consequence                     |
+| ---------------------- | ------------------------- | ------------------------------- |
+| Perfect competition    | Market power exists       | Prices above MC                 |
+| No externalities       | Pollution, congestion     | Prices don't reflect true costs |
+| Complete markets       | Missing markets           | Some goods not traded           |
+| Perfect information    | Asymmetric information    | Adverse selection, moral hazard |
+| Zero transaction costs | Search, contracting costs | Some trades not completed       |
 
 **Key insight**: "Efficiency does not mean equity." A Pareto efficient outcome may be very unequal.
 
@@ -385,12 +406,12 @@ $$D(p_b) = S(p_s) \quad \text{with} \quad p_b = p_s + t$$
 
 ### 7.2 Welfare Effects of a Tax
 
-| Component | Change | Formula |
-|-----------|--------|---------|
+| Component        | Change          | Formula                                           |
+| ---------------- | --------------- | ------------------------------------------------- |
 | Consumer Surplus | $\Delta CS < 0$ | Loss: area between old and new consumer positions |
 | Producer Surplus | $\Delta PS < 0$ | Loss: area between old and new producer positions |
-| Tax Revenue | $T > 0$ | $T = t \cdot Q_t$ |
-| Deadweight Loss | $DWL > 0$ | $DWL = -\Delta CS - \Delta PS - T$ |
+| Tax Revenue      | $T > 0$         | $T = t \cdot Q_t$                                 |
+| Deadweight Loss  | $DWL > 0$       | $DWL = -\Delta CS - \Delta PS - T$                |
 
 **Deadweight loss** represents value destroyed—trades that would have occurred but don't because of the tax.
 
@@ -404,12 +425,12 @@ $$p_s = p_b + s$$
 
 **Welfare effects**:
 
-| Component | Change |
-|-----------|--------|
+| Component        | Change                  |
+| ---------------- | ----------------------- |
 | Consumer Surplus | $\Delta CS = +a$ (gain) |
 | Producer Surplus | $\Delta PS = +b$ (gain) |
-| Government Cost | $-(a + b + c)$ |
-| Net Welfare | $-c = DWL$ |
+| Government Cost  | $-(a + b + c)$          |
+| Net Welfare      | $-c = DWL$              |
 
 The subsidy induces "too many" trades—units where MC > marginal value.
 
@@ -510,11 +531,11 @@ Storage arbitrage tends to smooth prices over time:
 
 Common interventions in agricultural markets:
 
-| Policy | Mechanism | Welfare Effect |
-|--------|-----------|----------------|
-| Price floor | Gov't sets $p_{min} > p^*$ | Surplus, storage costs, DWL |
-| Price ceiling | Gov't sets $p_{max} < p^*$ | Shortage, rationing, DWL |
-| Production quota | Limits quantity | Higher prices, DWL |
+| Policy             | Mechanism                     | Welfare Effect                       |
+| ------------------ | ----------------------------- | ------------------------------------ |
+| Price floor        | Gov't sets $p_{min} > p^*$    | Surplus, storage costs, DWL          |
+| Price ceiling      | Gov't sets $p_{max} < p^*$    | Shortage, rationing, DWL             |
+| Production quota   | Limits quantity               | Higher prices, DWL                   |
 | Deficiency payment | Subsidy when $p < p_{target}$ | Gov't cost, potential overproduction |
 
 ### 9.3 Example: Wheat Market Analysis
@@ -533,22 +554,148 @@ $$Q^* = 30 - 2(5.71) = 18.57 \text{ million tonnes}$$
 
 ---
 
-## 10. Summary: The Market Equilibrium Framework
+## 10. Non-Competitive Market Equilibria
 
-### 10.1 Key Equations
+### 10.1 Overview: Equilibrium Under Market Power
 
-| Concept | Formula |
-|---------|---------|
-| Market equilibrium | $D(p^*) = S(p^*)$ |
-| Consumer surplus | $CS = \int_0^{Q^*}[P^d(Q) - p^*]dQ$ |
-| Producer surplus | $PS = \int_0^{Q^*}[p^* - P^s(Q)]dQ$ |
-| Total welfare | $W = CS + PS$ |
-| Tax wedge | $p_b = p_s + t$ |
-| Deadweight loss | $DWL \approx \frac{1}{2}t\Delta Q$ |
-| Long-run price | $p^{LR} = \min AC$ |
-| Number of firms | $n = Q^{LR}/y^*_{firm}$ |
+Sections 2–9 assume all agents are **price-takers**. In reality, many agricultural input and output markets feature firms or buyers with market power — the ability to influence the price. This section analyses how equilibrium changes and why it diverges from the competitive benchmark.
 
-### 10.2 The Welfare Analysis Process
+See Section 1.3 for the overview tables of seller-side and buyer-side structures. The detailed analysis follows.
+
+### 10.2 Monopoly Equilibrium
+
+A monopolist chooses quantity to maximise profit:
+$$\max_Q \; \pi = p(Q) \cdot Q - C(Q)$$
+
+**First-order condition**:
+$$MR(Q) = MC(Q)$$
+
+where marginal revenue $MR = p + Q \cdot \frac{dp}{dQ} < p$ (because increasing output requires lowering price on all units).
+
+**Key properties of monopoly equilibrium**:
+- Price $p^m > MC$ — allocative inefficiency
+- Quantity $Q^m < Q^{\text{comp}}$ — output restriction
+- Positive economic profit ($\pi^m > 0$)
+- **No supply curve**: the monopolist chooses a price-quantity pair, not a supply correspondence
+- DWL is larger when demand is more inelastic (fewer substitutes)
+
+#### Agricultural Example: Seed Patents
+
+Bayer-Monsanto's Roundup Ready soybean and canola traits illustrate seller market power in an agricultural input market:
+- A **technology use fee** (patent licence) is charged per bag of seed, transferring billions annually from farmers to the IP holder
+- Herbicide-tolerant varieties are **bundled** with herbicide purchases (Roundup), raising input costs further
+- The 2018 Bayer-Monsanto merger was cleared with ~USD 9 billion in divestitures ordered by regulators to preserve competition in specific crop-trait segments
+
+### 10.3 Oligopoly: Strategic Interdependence
+
+When a few large firms compete, each must account for rivals' reactions:
+
+| Model               | Decision variable             | Key result                                                       |
+| ------------------- | ----------------------------- | ---------------------------------------------------------------- |
+| **Cournot**         | Quantities set simultaneously | $p > MC$; output between monopoly and competition                |
+| **Bertrand**        | Prices set simultaneously     | With identical products: $p = MC$ ("Bertrand paradox")           |
+| **Tacit collusion** | Implicit coordination         | Monopoly-like outcome; highly fact-sensitive for competition law |
+
+#### Australian Grain Markets: Duopoly in Practice
+
+On the east coast, **GrainCorp** and **Glencore Viterra** control the dominant share of storage, handling, and export infrastructure. Key consequences:
+- Farmers have limited alternatives for selling grain post-harvest
+- Port terminal access is a bottleneck; the ACCC regulates access pricing under Part IIIA of the *Competition and Consumer Act 2010*
+- By contrast, **CBH** (Co-operative Bulk Handling, WA) is a grower-owned cooperative — profits are returned to farmers, partly offsetting the oligopsony problem on the output side
+
+### 10.4 Monopsony Equilibrium
+
+A monopsonist (single buyer) maximises buyer surplus by restricting purchases:
+
+$$\text{Buyer's condition: } MFC = MV$$
+
+where:
+- $MFC$ = marginal factor cost = cost of buying one more unit (including the price rise on all existing purchases)
+- $MV$ = marginal value of the purchased input/product to the buyer
+
+Because the monopsonist faces an upward-sloping supply curve from sellers:
+$$MFC > p_s \quad \text{(price paid to sellers)}$$
+
+**Consequences**:
+- Farm-gate price $p_s$ falls below the competitive level
+- Quantity traded $Q^{\text{mono}} < Q^*$
+- Sellers (farmers) bear the surplus loss; DWL arises from foregone mutually beneficial trades
+- Farmers with **no outside option** (e.g., perishable produce, remote locations) absorb the full monopsony discount
+
+### 10.5 Oligopsony in Practice: Australian Farm Output Markets
+
+**ACCC Supermarket Inquiry (2024)**: Woolworths and Coles (~65% of grocery retail) were found to exercise buyer power through:
+- Requests for below-cost supply as a condition of continued ranging
+- Retrospective deductions (rebates charged after contracts were signed)
+- Threats of de-listing suppliers who refused terms
+
+**Thomas Foods Murray Bridge plant fire (2018)**: The destruction of Australia's largest beef abattoir created a *zone monopsony* — cattle producers within economical trucking distance suddenly had only one or two viable buyers. Farm-gate prices in the affected region fell materially for several months, demonstrating how thin market structure can become with even one buyer removed.
+
+---
+
+## 11. Market Power in Agricultural Supply Chains
+
+### 11.1 Upstream Oligopoly: Farm Input Markets
+
+Farmers face concentrated sellers on the input side:
+
+| Input                       | Key firms                                    | Market structure                                                 | How it affects farmers                                             |
+| --------------------------- | -------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Seeds (GM traits)**       | Bayer-Monsanto, Corteva, Syngenta/CNAC, BASF | ~4 firms >70% global commercial seed sales; patents on GM traits | Technology use fees; herbicide bundling; restricted seed-saving    |
+| **Fertilisers**             | Nutrien, Mosaic, Yara, OCP                   | Potash highly concentrated geographically                        | 2022 Russian sanctions → 200–300% price spikes for N/K fertilisers |
+| **Machinery & diagnostics** | John Deere, CNH, AGCO                        | Software-locked telematics; right-to-repair limited              | Higher repair costs; dependence on dealer networks                 |
+| **Farm inputs retail (AU)** | Nutrien Ag Solutions (formerly Ruralco/CRT)  | Nutrien acquired Ruralco in 2019, gaining ~500 rural stores      | Reduced local competition for agrochemicals and crop inputs        |
+
+### 11.2 Downstream Oligopsony: Farm Output Buyers
+
+Farmers also face concentrated buyers on the output side:
+
+| Commodity                 | Key buyers                                | Market share                                                                               | Notes                                        |
+| ------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| **Fresh produce & dairy** | Woolworths, Coles                         | ~65% grocery retail                                                                        | ACCC Inquiry 2024; mandatory code April 2025 |
+| **Grain (east coast AU)** | GrainCorp, Glencore Viterra; CBH (WA)     | Duopoly on east coast                                                                      | ACCC Part IIIA port terminal access          |
+| **Beef & sheep**          | JBS Australia, NH Foods, Thomas Foods     | 4 processors >80% of cattle slaughter                                                      | Zone monopsony risk (Thomas Foods fire 2018) |
+| **Wool**                  | Multiple but demand concentrated in China | Chinese demand withdrawal (late 2019) cut the Eastern Market Indicator by ~40% in 3 months | Export dependency risk                       |
+
+### 11.3 The Bilateral Squeeze
+
+Australian broadacre farmers face concentrated market power on **both** sides:
+
+| Side                     | Structure               | Effect on farmer                      |
+| ------------------------ | ----------------------- | ------------------------------------- |
+| **Inputs** (upstream)    | Oligopoly (few sellers) | Input prices above competitive level  |
+| **Outputs** (downstream) | Oligopsony (few buyers) | Output prices below competitive level |
+
+The combined effect is called the **bilateral squeeze** or **cost-price squeeze**: farmers are price-takers on both sides of their business, compressed between input oligopoly and output oligopsony. ABARES total factor productivity (TFP) data for broadacre agriculture shows that output price growth has consistently lagged input cost growth over the last two decades, consistent with the bilateral squeeze hypothesis.
+
+### 11.4 Policy Responses to Agricultural Market Power
+
+| Policy instrument           | Mechanism                                                                 | Examples                                                                  |
+| --------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Mandatory conduct codes** | Prohibit specified buyer behaviours; mandatory dispute resolution         | Food and Grocery Code (mandatory April 2025)                              |
+| **Collective bargaining**   | Allow farmers to negotiate collectively without breaching competition law | ACCC s.93 authorisation; used in dairy (Murray Goulburn) and horticulture |
+| **Price transparency**      | Mandatory reporting of transaction prices; reduces information asymmetry  | Cattle and sheep mandatory price reporting since 2020                     |
+| **Infrastructure access**   | Regulate access to bottleneck facilities (silos, port terminals)          | ACCC Part IIIA declarations for grain port terminals                      |
+
+---
+
+## 12. Summary: The Market Equilibrium Framework
+
+### 12.1 Key Equations
+
+| Concept            | Formula                                                             |
+| ------------------ | ------------------------------------------------------------------- |
+| Market equilibrium | $D(p^*) = S(p^*)$                                                   |
+| Consumer surplus   | $CS = \int_0^{Q^*}[P^d(Q) - p^*]dQ$                                 |
+| Producer surplus   | $PS = \int_0^{Q^*}[p^* - P^s(Q)]dQ$                                 |
+| Total welfare      | $W = CS + PS$                                                       |
+| Tax wedge          | $p_b = p_s + t$                                                     |
+| Deadweight loss    | $DWL \approx \frac{1}{2}t\Delta Q$                                  |
+| Long-run price     | $p^{LR} = \min AC$                                                  |
+| Number of firms    | $n = Q^{LR}/y^*_{firm}$                                             |
+| Market power       | Monopoly: $MR = MC$, $p^m > MC$; Monopsony: $MFC = MV$, $p_s < p^*$ |
+
+### 12.2 The Welfare Analysis Process
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -572,7 +719,7 @@ $$Q^* = 30 - 2(5.71) = 18.57 \text{ million tonnes}$$
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 10.3 Looking Ahead
+### 12.3 Looking Ahead
 
 This week's competitive equilibrium framework provides the foundation for:
 - **Week 10**: Market failures (externalities, public goods)

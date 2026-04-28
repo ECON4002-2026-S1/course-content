@@ -15,6 +15,8 @@ By the end of this week, you will be able to:
 4. Solve systems of linear equations using matrices
 5. Apply Cramer's Rule to economic problems
 6. Represent supply-demand systems in matrix form
+7. Build and solve a **Leontief input-output model** to trace direct and indirect inter-industry effects
+8. Use **eigenvalues** to test definiteness of a quadratic form and assess stability of a linear dynamic system
 
 ---
 
@@ -24,14 +26,14 @@ By the end of this week, you will be able to:
 
 Linear algebra is fundamental to economics because many economic relationships can be expressed as systems of linear equations:
 
-| Application | Example |
-|-------------|---------|
-| **Market equilibrium** | Multiple markets with interdependent prices |
+| Application               | Example                                     |
+| ------------------------- | ------------------------------------------- |
+| **Market equilibrium**    | Multiple markets with interdependent prices |
 | **Input-output analysis** | Leontief models of industry interdependence |
-| **Consumer demand** | Linear expenditure systems |
-| **Regression** | Estimating economic relationships from data |
-| **Optimization** | Constraints in linear programming |
-| **Dynamic systems** | Difference equations in macroeconomics |
+| **Consumer demand**       | Linear expenditure systems                  |
+| **Regression**            | Estimating economic relationships from data |
+| **Optimization**          | Constraints in linear programming           |
+| **Dynamic systems**       | Difference equations in macroeconomics      |
 
 ### 1.2 Linear Equations and Their Uses
 
@@ -184,10 +186,10 @@ det(B)   # 0 (singular matrix)
 
 The determinant tells us whether a system of equations has a **unique solution**:
 
-| Determinant | Meaning | Graphical |
-|-------------|---------|-----------|
-| $\det(A) \neq 0$ | **Unique solution** | Lines intersect at one point |
-| $\det(A) = 0$ | **No unique solution** | Lines parallel or identical |
+| Determinant      | Meaning                | Graphical                    |
+| ---------------- | ---------------------- | ---------------------------- |
+| $\det(A) \neq 0$ | **Unique solution**    | Lines intersect at one point |
+| $\det(A) = 0$    | **No unique solution** | Lines parallel or identical  |
 
 **Economic interpretation**: A market system with $\det = 0$ means the equations are dependent—one equation is redundant or the system is inconsistent.
 
@@ -272,6 +274,8 @@ x <- solve(A, b)   # More efficient than solve(A) %*% b
 x                  # Solution: x1 = 3, x2 = 2
 ```
 
+> **Note**: `solve(A, b)` directly solves the linear system using **LU decomposition** — faster and more numerically stable than explicitly forming $A^{-1}$. Always prefer `solve(A, b)` over `solve(A) %*% b` for numerical work.
+
 **Method 2: Cramer's Rule**
 
 For $Ax = b$ with $\det(A) \neq 0$:
@@ -313,11 +317,11 @@ cramers_rule(A, b)   # 3, 2
 
 ### 6.3 Types of Solutions
 
-| $\det(A)$ | System Type | Solution |
-|-----------|-------------|----------|
-| $\neq 0$ | Consistent, independent | Unique |
-| $= 0$, consistent | Dependent | Infinitely many |
-| $= 0$, inconsistent | Contradictory | None |
+| $\det(A)$           | System Type             | Solution        |
+| ------------------- | ----------------------- | --------------- |
+| $\neq 0$            | Consistent, independent | Unique          |
+| $= 0$, consistent   | Dependent               | Infinitely many |
+| $= 0$, inconsistent | Contradictory           | None            |
 
 **Example: Infinite Solutions**
 $$\begin{align}
@@ -383,6 +387,8 @@ $$x = (I - A)^{-1} d$$
 
 The matrix $(I - A)^{-1}$ is the **Leontief inverse**.
 
+**Interpreting individual elements**: Element $[(I-A)^{-1}]_{ij}$ gives the total gross output of sector $i$ required — including all direct and indirect (supply-chain) effects — per unit of final demand for sector $j$. Column $j$ of $(I-A)^{-1}$ therefore gives the full economy-wide impact of a unit increase in final demand for good $j$.
+
 ```r
 # Simple 2-industry example
 # A[i,j] = input from i per unit output of j
@@ -395,6 +401,12 @@ x <- leontief %*% d       # Total output needed
 
 cat("Output required: x1 =", x[1], ", x2 =", x[2])
 ```
+
+**Validity conditions for the Leontief model**:
+
+For the model to have an economically meaningful solution (all gross outputs non-negative), two conditions must hold:
+1. $\det(I - A) \neq 0$: the system has a unique solution.
+2. **Hawkins–Simon conditions**: all leading principal minors of $(I - A)$ are positive. This guarantees $(I - A)^{-1} \geq 0$, ensuring no sector is required to produce negative gross output. If the Hawkins–Simon conditions fail, the model predicts an economically impossible result and the coefficient matrix should be re-examined.
 
 ---
 
@@ -412,11 +424,11 @@ $$Q = \begin{bmatrix} x_1 & x_2 \end{bmatrix} \begin{bmatrix} a_{11} & a_{12} \\
 
 The **definiteness** of a quadratic form determines whether a function has a maximum or minimum:
 
-| Type | Condition | Optimization |
-|------|-----------|--------------|
-| Positive definite | $Q > 0$ for all $x \neq 0$ | Minimum |
-| Negative definite | $Q < 0$ for all $x \neq 0$ | Maximum |
-| Indefinite | $Q$ can be positive or negative | Saddle point |
+| Type              | Condition                       | Optimization |
+| ----------------- | ------------------------------- | ------------ |
+| Positive definite | $Q > 0$ for all $x \neq 0$      | Minimum      |
+| Negative definite | $Q < 0$ for all $x \neq 0$      | Maximum      |
+| Indefinite        | $Q$ can be positive or negative | Saddle point |
 
 **Testing with eigenvalues**: A symmetric matrix is positive definite if all eigenvalues are positive.
 
@@ -428,6 +440,32 @@ A <- matrix(c(2, 1, 1, 3), nrow = 2, byrow = TRUE)
 # Check eigenvalues
 eigen(A)$values  # Both positive → positive definite
 ```
+
+### 8.3 Eigenvalues and Stability of Linear Dynamic Systems
+
+Eigenvalues do double duty in economics. Beyond classifying the curvature of a quadratic form (§8.2), they characterise the **stability** of any linear dynamic system written in matrix form.
+
+Consider a discrete-time system
+$$x_{t+1} = M\,x_t,$$
+where $x_t \in \mathbb{R}^n$ is a state vector (e.g. market shares of two technologies, populations of two competing species, or prices in two interconnected markets) and $M$ is an $n\times n$ transition matrix. Iterating gives $x_t = M^t x_0$. The long-run behaviour of $x_t$ is governed entirely by the eigenvalues of $M$:
+
+- If **all eigenvalues** $\lambda_i$ satisfy $|\lambda_i| < 1$, then $M^t \to 0$ and any initial state decays toward the origin (or toward a fixed equilibrium, in the affine case $x_{t+1}=Mx_t+b$). The system is **asymptotically stable**.
+- If **any eigenvalue** has $|\lambda_i| > 1$, perturbations along the corresponding eigenvector grow without bound. The system is **unstable**.
+- If $|\lambda_i| = 1$ for some $i$ and all others are inside the unit circle, the system is **marginally stable** (e.g. Markov chains have a unit eigenvalue corresponding to the stationary distribution).
+
+This is exactly the test asked for in Practice Problem 9: compute `eigen(M)$values`, then check whether every modulus is below one.
+
+```r
+# Example: simple two-state Markov-style transition matrix
+M <- matrix(c(0.7, 0.4,
+              0.3, 0.6), nrow = 2, byrow = TRUE)
+lam <- eigen(M)$values
+cat("|lambda| =", abs(lam), "\n")
+# One eigenvalue equals 1 (Markov chain) → marginally stable;
+# converges to a stationary distribution rather than to zero.
+```
+
+**Connection between the two uses of eigenvalues.** For a *symmetric* matrix (the relevant case for quadratic forms), all eigenvalues are real, and their **signs** classify definiteness (§8.2). For a general (possibly non-symmetric) transition matrix, eigenvalues may be complex, and their **moduli** classify stability. Both tests are computed by the same R command, `eigen(A)$values`.
 
 ---
 
@@ -445,17 +483,17 @@ eigen(A)$values  # Both positive → positive definite
 
 ### R Functions Summary
 
-| Task | Function |
-|------|----------|
-| Create matrix | `matrix(data, nrow, ncol, byrow)` |
-| Dimensions | `dim()`, `nrow()`, `ncol()` |
-| Transpose | `t(A)` |
-| Matrix multiply | `A %*% B` |
-| Determinant | `det(A)` |
-| Inverse | `solve(A)` |
-| Solve $Ax = b$ | `solve(A, b)` |
-| Identity matrix | `diag(n)` |
-| Eigenvalues | `eigen(A)$values` |
+| Task            | Function                          |
+| --------------- | --------------------------------- |
+| Create matrix   | `matrix(data, nrow, ncol, byrow)` |
+| Dimensions      | `dim()`, `nrow()`, `ncol()`       |
+| Transpose       | `t(A)`                            |
+| Matrix multiply | `A %*% B`                         |
+| Determinant     | `det(A)`                          |
+| Inverse         | `solve(A)`                        |
+| Solve $Ax = b$  | `solve(A, b)`                     |
+| Identity matrix | `diag(n)`                         |
+| Eigenvalues     | `eigen(A)$values`                 |
 
 ---
 
