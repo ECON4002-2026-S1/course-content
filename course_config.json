@@ -1,8 +1,8 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.9.1",
-  "lastUpdated": "2026-04-28",
+  "version": "1.9.2",
+  "lastUpdated": "2026-04-27",
   "institution": {
     "id": "uwa",
     "name": "University of Western Australia",
@@ -743,7 +743,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w9_video",
+          "title": "Market Equilibrium: Prices, Efficiency, and Policy",
+          "description": "Lecture video: Market Equilibrium Analysis",
+          "type": "video",
+          "url": "https://echo360.net.au/media/11908cd8-dd79-4a8b-b09d-d2175f883378/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w9_lab",
