@@ -1,8 +1,8 @@
 {
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
-  "version": "1.9.2",
-  "lastUpdated": "2026-04-27",
+  "version": "1.9.3",
+  "lastUpdated": "2026-05-06",
   "institution": {
     "id": "uwa",
     "name": "University of Western Australia",
@@ -802,7 +802,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w10_video",
+          "title": "International Trade and Policy",
+          "description": "Lecture video: International Trade and Policy",
+          "type": "video",
+          "url": "https://echo360.net.au/media/99aaa0d6-f12b-4393-a98f-f89710230e25/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w10_lab",
