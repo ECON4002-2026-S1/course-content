@@ -2,7 +2,7 @@
   "courseId": "econ4002_2026_sem1",
   "courseName": "Core Concepts in Agricultural and Applied Economics",
   "version": "1.9.3",
-  "lastUpdated": "2026-05-06",
+  "lastUpdated": "2026-05-14",
   "institution": {
     "id": "uwa",
     "name": "University of Western Australia",
@@ -861,7 +861,17 @@
           "requiresAuth": false
         }
       ],
-      "videos": [],
+      "videos": [
+        {
+          "id": "w11_video",
+          "title": "Measures of Economic Welfare",
+          "description": "Lecture video: Measures of Economic Welfare",
+          "type": "video",
+          "url": "https://echo360.net.au/media/00c078ff-89a0-4e70-a3ad-e9f53ec2b8fb/public",
+          "source": "echo360",
+          "requiresAuth": false
+        }
+      ],
       "notebooks": [
         {
           "id": "w11_lab",
